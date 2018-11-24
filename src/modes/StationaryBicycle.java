@@ -1,4 +1,4 @@
-package TSModes;
+package modes;
 
 import data.Item;
 
