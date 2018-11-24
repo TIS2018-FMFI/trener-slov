@@ -1,7 +1,7 @@
 package TSModes;
 
-import TSTypes.Group;
-import TSTypes.Item;
+import data.Group;
+import data.Item;
 
 import java.util.ArrayList;
 

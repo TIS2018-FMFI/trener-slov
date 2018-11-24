@@ -6,7 +6,7 @@ public class Export {
 
     }
 
-    public Boolean gasWriteAccess() {
+    public Boolean hasWriteAccess() {
 
         return false;
     }
