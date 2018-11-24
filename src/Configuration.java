@@ -9,4 +9,12 @@ public class Configuration {
     public void setFontSize(Integer fontSize) {
         this.fontSize = fontSize;
     }
+
+    public Configuration() {
+        this.fontSize = 20;
+    }
+
+    public Configuration(Integer fontSize) {
+        this.fontSize = fontSize;
+    }
 }

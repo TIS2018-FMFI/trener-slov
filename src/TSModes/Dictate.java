@@ -1,6 +1,6 @@
 package TSModes;
 
-import TSTypes.Item;
+import data.Item;
 
 public class Dictate extends GameMode {
     @Override
