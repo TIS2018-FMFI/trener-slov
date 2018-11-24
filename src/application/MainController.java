@@ -1,3 +1,4 @@
+package application;
 import data.Lesson;
 
 import javax.xml.bind.JAXBException;
