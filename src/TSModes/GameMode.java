@@ -1,6 +1,6 @@
 package TSModes;
 
-import TSTypes.*;
+import data.*;
 
 public abstract class GameMode {
 
