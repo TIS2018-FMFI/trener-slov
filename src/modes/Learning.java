@@ -1,8 +1,14 @@
-package TSModes;
+package modes;
 
+import data.Group;
 import data.Item;
 
-public class Dictate extends GameMode {
+import java.util.ArrayList;
+
+public class Learning extends GameMode {
+
+    ArrayList<Group> groups;
+
     @Override
     public Item next(Boolean answerToPrevious) {
         return null;
@@ -12,4 +18,6 @@ public class Dictate extends GameMode {
     protected void randomize() {
 
     }
+
+
 }

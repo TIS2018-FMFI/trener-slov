@@ -1,3 +1,4 @@
+package application;
 public class FileManager {
 
     private String filesDirName = "files";
