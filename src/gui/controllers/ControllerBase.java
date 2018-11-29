@@ -1,12 +1,12 @@
 package gui.controllers;
 
-import java.io.IOException;
-
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public abstract class ControllerBase {
 	
