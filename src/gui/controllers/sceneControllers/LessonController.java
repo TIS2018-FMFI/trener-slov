@@ -1,9 +1,10 @@
-package gui.controllers;
+package gui.controllers.sceneControllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import gui.Scenes;
+import gui.controllers.ControllerBase;
 import data.Lesson;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

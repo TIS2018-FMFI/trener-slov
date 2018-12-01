@@ -1,4 +1,4 @@
-package gui.controllers;
+package gui.controllers.sceneControllers;
 
 import java.net.URL;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import application.Main;
 import data.Lesson;
 import gui.Scenes;
+import gui.controllers.ControllerBase;
 import gui.customCells.LessonListCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
