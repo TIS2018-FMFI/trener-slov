@@ -1,5 +1,10 @@
 
 package application;
+
+import data.Lesson;
+
+import java.util.ArrayList;
+
 public class FileManager {
 
     private String filesDirName = "files";
@@ -11,6 +16,10 @@ public class FileManager {
     }
 
     public void deleteFile(String filePath) {
+
+    }
+
+    public void checkLessonsForNewFiles(ArrayList<Lesson> lessons) {
 
     }
 

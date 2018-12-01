@@ -41,14 +41,6 @@ public class DataController {
        setLessons(CreateDataControllerFromXML(dataFilePath).getLessons());
     }
 
-    public ArrayList<Lesson> loadLessonsFromFile(String path) throws JAXBException, FileNotFoundException {
-        return CreateDataControllerFromXML(path).getLessons();
-    }
-
-    public void saveData(ArrayList<Lesson> lessons, Configuration config) throws JAXBException {
-
-    }
-
     public void saveData() throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(DataController.class);
         Marshaller m = context.createMarshaller();
@@ -57,10 +49,6 @@ public class DataController {
 
         // Write to File
         m.marshal(this, new File(dataFilePath));
-    }
-
-    public void saveLessonsToFile(String path, ArrayList<Lesson> lessons) {
-
     }
 
     public ArrayList<Lesson> getLessons() {
@@ -77,6 +65,10 @@ public class DataController {
 
     public void addLesson(Lesson lessonToAdd) {
         lessons.add(lessonToAdd);
+    }
+
+    public void addLessons(ArrayList<Lesson> lessonsToAdd) {
+        lessons.addAll(lessonsToAdd);
     }
 
     public void removeLesson(Lesson lessonToRemove) {
