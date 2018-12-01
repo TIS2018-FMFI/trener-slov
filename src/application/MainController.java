@@ -18,12 +18,17 @@ public class MainController {
         dataExport = new Export();
     }
 
-    public void importLesson() {
+    public void importLesson(String path) {
+        ArrayList<Lesson> importedLessons = dataImport.loadLessonsFromFile(path);
 
+        if (importedLessons == null)
+            return;
+
+        dataController.addLessons(importedLessons);
     }
 
     public void exportLesson(ArrayList<Lesson> lessons) {
-
+        dataExport.saveLessonsToFile(lessons);
     }
 
     public void removeLesson(Lesson lessonToRemove) {
