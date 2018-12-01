@@ -3,6 +3,7 @@ import data.Configuration;
 import data.Group;
 import data.Item;
 import data.Lesson;
+import gui.Scenes;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,12 +25,16 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
     	mainController = new application.MainController();
+    	mainController.loadData();
     	
-    	Parent mainMenu = FXMLLoader.load(getClass().getResource("/gui/fxml/mainMenu.fxml"));
+    	Parent mainMenu = FXMLLoader.load(getClass().getResource("/gui/fxml/scenes/" + Scenes.MAIN_MENU + ".fxml"));
+    	primaryStage.setMinWidth(800);
+    	primaryStage.setMinHeight(600);
 		primaryStage.setScene(new Scene(mainMenu));
+		primaryStage.setTitle(Scenes.MAIN_MENU.getTitle());
 		primaryStage.show();
 
-		testDataController();
+		//testDataController();
 	}
 
 	private void testDataController() throws FileNotFoundException, JAXBException {
@@ -60,3 +65,4 @@ public class Main extends Application{
 		test.loadData();
 	}
 }
+

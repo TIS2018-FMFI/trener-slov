@@ -1,16 +1,16 @@
-package gui.controllers;
+package gui.customCells;
 
 import java.io.IOException;
 
 import gui.Scenes;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
-public abstract class ControllerBase implements Initializable {
+public abstract class CustomCellBase<T> extends ListCell<T> {
 	
 	public FXMLLoader redirect(Scenes SCENE, MouseEvent event){
 		Node node = (Node) event.getSource();
