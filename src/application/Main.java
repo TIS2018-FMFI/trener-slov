@@ -26,10 +26,12 @@ public class Main extends Application{
     	mainController = new application.MainController();
     	
     	Parent mainMenu = FXMLLoader.load(getClass().getResource("/gui/fxml/mainMenu.fxml"));
+    	primaryStage.setMinWidth(1000);
+    	primaryStage.setMinHeight(800);
 		primaryStage.setScene(new Scene(mainMenu));
 		primaryStage.show();
 
-		testDataController();
+		//testDataController();
 	}
 
 	private void testDataController() throws FileNotFoundException, JAXBException {
