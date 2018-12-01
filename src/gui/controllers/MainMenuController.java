@@ -3,6 +3,7 @@ package gui.controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import gui.Scenes;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -17,7 +18,7 @@ public class MainMenuController extends ControllerBase {
 			// TODO
 		});
 		editBtn.setOnMouseClicked(e -> {
-			redirect("lessonList", e);
+			redirect(Scenes.LESSON_LIST, e);
 		});
 		configBtn.setOnMouseClicked(e -> {
 			// TODO
@@ -29,3 +30,4 @@ public class MainMenuController extends ControllerBase {
 		// TODO Auto-generated method stub
 	}
 }
+
