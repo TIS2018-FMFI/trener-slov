@@ -47,7 +47,7 @@ public class MainController {
     }
 
     public void addLesson(Lesson lessonToAdd) {
-        dataController.removeLesson(lessonToAdd);
+        dataController.addLesson(lessonToAdd);
     }
 
     public ArrayList<Lesson> getLessons() {

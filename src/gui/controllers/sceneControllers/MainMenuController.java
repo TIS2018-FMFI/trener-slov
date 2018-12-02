@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.Main;
 import gui.Scenes;
 import gui.controllers.ControllerBase;
 import gui.controllers.dialogControllers.ConfigDialogController;
@@ -31,11 +32,14 @@ public class MainMenuController extends ControllerBase {
 		configBtn.setOnMouseClicked(e -> {
 			openConfigDialog();
 		});
+		setFontSizeToTexts();
 	}
 
 	@Override
 	protected void setFontSizeToTexts() {
-		// TODO Auto-generated method stub
+		int fontSize = Main.mainController.getFontSize();
+		setFontSizeToNode(startBtn, fontSize);
+		setFontSizeToNode(editBtn, fontSize);
 	}
 	
 	private void openConfigDialog() {
@@ -45,11 +49,16 @@ public class MainMenuController extends ControllerBase {
 			parent = fxmlLoader.load();
 		} catch (IOException e)  { e.printStackTrace(); }
 
-        Scene scene = new Scene(parent, 300, 200);
+        Scene scene = new Scene(parent);
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setMinWidth(600);
+        stage.setMinHeight(300);
         stage.setScene(scene);
         stage.showAndWait();
+       
+        // after dialog close
+        setFontSizeToTexts();
 	}
 }
 

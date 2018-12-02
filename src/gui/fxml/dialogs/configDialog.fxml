@@ -9,9 +9,9 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.dialogControllers.ConfigDialogController">
    <center>
-      <FlowPane alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWrapLength="0.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Velkosť fontu: " />
+            <Label fx:id="label" text="Velkosť fontu: " />
             <TextField fx:id="font" />
          </children>
       </FlowPane>

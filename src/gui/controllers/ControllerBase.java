@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 
 public abstract class ControllerBase implements Initializable {
 	
-	public FXMLLoader redirect(Scenes SCENE, MouseEvent event){
+	public ControllerBase redirect(Scenes SCENE, MouseEvent event){
 		Node node = (Node) event.getSource();
 		Stage stage = (Stage) node.getScene().getWindow();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/fxml/scenes/" + SCENE + ".fxml"));
@@ -24,9 +24,12 @@ public abstract class ControllerBase implements Initializable {
 		stage.sizeToScene();
 		stage.setTitle(SCENE.getTitle());
 		stage.show();
-		return loader;
+		return loader.getController();
 	}
 	
 	protected abstract void setFontSizeToTexts();
 	
+	protected void setFontSizeToNode(Node node, int fontSize) {
+		node.setStyle(String.format("-fx-font-size: %dpx;", fontSize));
+	}
 }
