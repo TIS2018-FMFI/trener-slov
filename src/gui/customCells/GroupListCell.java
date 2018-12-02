@@ -1,30 +1,33 @@
 package gui.customCells;
 
+import data.Group;
 import data.Lesson;
-import gui.controllers.cellControllers.LessonListCellController;
+import gui.controllers.cellControllers.GroupListCellController;
 import javafx.scene.control.Control;
 import javafx.scene.control.ListView;
 
-public class LessonListCell extends CustomCellBase<Lesson> {
+public class GroupListCell extends CustomCellBase<Group>{
 	
-	ListView<Lesson> listview;
-	LessonListCellController controller;
+	ListView<Group> listview;
+	Lesson lesson;
+	GroupListCellController controller;
 	
-	public LessonListCell(ListView<Lesson> listview) {
+	public GroupListCell(ListView<Group> listview, Lesson lesson) {
 		this.listview = listview;
+		this.lesson = lesson;
 	}
 	
 	@Override
-	protected void updateItem(Lesson lesson, boolean empty) {
-		super.updateItem(lesson, empty);
-        if(empty || lesson == null) {
+	protected void updateItem(Group group, boolean empty) {
+		super.updateItem(group, empty);
+        if(empty || group == null) {
         	setText(null);
             setGraphic(null);
             return;
         } 
         
         if (controller == null) {
-        	controller = new LessonListCellController(listview, lesson);
+        	controller = new GroupListCellController(listview, lesson, group);
         }
         controller.update();
         setText(null);

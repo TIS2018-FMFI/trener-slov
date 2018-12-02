@@ -11,12 +11,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.MainMenuController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.sceneControllers.MainMenuController">
    <center>
       <VBox alignment="CENTER" fillWidth="false" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="startBtn" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Start" />
-            <Button fx:id="editBtn" layoutX="384.0" layoutY="198.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Upravenie dát">
+            <Button fx:id="startBtn" alignment="CENTER" minWidth="200.0" mnemonicParsing="false" prefHeight="40.0" text="Start" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" />
+            <Button fx:id="editBtn" layoutX="384.0" layoutY="198.0" minWidth="200.0" mnemonicParsing="false" prefHeight="40.0" text="Upravenie dát" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>

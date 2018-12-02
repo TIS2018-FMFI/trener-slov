@@ -2,9 +2,10 @@ package gui;
 
 public enum Scenes {
 	
-	MAIN_MENU("mainMenu", "Hlavné menu"),
-    LESSON_LIST("lessonList", "Zoznam lekcií"),
-    LESSON("lesson", "Lekcia")
+	MAIN_MENU("mainMenu", "HlavnÃ© menu"),
+    LESSON_LIST("lessonList", "Zoznam lekciÃ­"),
+    LESSON("lesson", "Lekcia"),
+    GROUP("group", "Skupina")
     ;
 
     private final String fxmlName;
