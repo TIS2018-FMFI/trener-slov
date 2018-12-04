@@ -38,7 +38,9 @@ public class DataController {
     }
 
     public void loadData() throws FileNotFoundException, JAXBException {
-       setLessons(CreateDataControllerFromXML(dataFilePath).getLessons());
+        DataController loadedDataController = CreateDataControllerFromXML(dataFilePath);
+        config = loadedDataController.getConfig();
+        setLessons(loadedDataController.getLessons());
     }
 
     public void saveData() throws JAXBException {
@@ -82,6 +84,10 @@ public class DataController {
     public void setFontSize(Integer fontSize) {
         config.setFontSize(fontSize);
     }
+
+    public Configuration getConfig() { return config; }
+
+    public void setConfig(Configuration config) { this.config = config; }
 
     private DataController CreateDataControllerFromXML(String path) throws JAXBException, FileNotFoundException {
         JAXBContext context = JAXBContext.newInstance(DataController.class);
