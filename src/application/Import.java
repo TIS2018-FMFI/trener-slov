@@ -38,8 +38,8 @@ public class Import {
         return "";
     }
 
-    public ArrayList<Lesson> loadLessonsFromFile(String path) {
-        return GetLessonsFromImportedXML(path);
+    public ArrayList<Lesson> loadLessonsFromFile() {
+        return GetLessonsFromImportedXML(packagePath);
     }
 
     private ArrayList<Lesson> GetLessonsFromImportedXML(String path) {

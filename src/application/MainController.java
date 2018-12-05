@@ -29,8 +29,8 @@ public class MainController {
 		}
     }
 
-    public void importLesson(String path) {
-        ArrayList<Lesson> importedLessons = dataImport.loadLessonsFromFile(path);
+    public void importLesson() {
+        ArrayList<Lesson> importedLessons = dataImport.loadLessonsFromFile();
 
         if (importedLessons == null)
             return;
