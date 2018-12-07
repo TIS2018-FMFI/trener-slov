@@ -77,7 +77,7 @@ public class GroupController extends ControllerBase {
 		List<Item> items = group.getItemsInGroup();
 		itemObservableList = FXCollections.observableArrayList(items);
 		itemsListView.setItems(itemObservableList);
-		itemsListView.setCellFactory(group -> new ItemListCell(itemsListView));
+		itemsListView.setCellFactory(group -> new ItemListCell(itemsListView, this.lesson, this.group));
 	}
 	
 	private void filterItems(String search) {
