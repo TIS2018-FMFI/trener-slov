@@ -1,6 +1,7 @@
 package gui.controllers.sceneControllers;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -40,12 +41,15 @@ public class GroupController extends ControllerBase {
 	Group group;
 	boolean isNewGroup;
 	ObservableList<Item> itemObservableList;
+	
+	// TODO drag and drop reordering
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		setFontSizeToTexts();
 		backBtn.setOnMouseClicked(e -> backToParentLesson(e));	
 		okBtn.setOnMouseClicked(e -> saveGroup(e));
+		newItemBtn.setOnMouseClicked(e -> newItem(e));
 		search.textProperty().addListener((observable, oldValue, newValue) -> filterItems(newValue) );
 	}
 
@@ -68,8 +72,10 @@ public class GroupController extends ControllerBase {
 		listItems();
 	}
 	
-	public void createGroup() {
-		// TODO group = new Group("", new ArrayList<>());
+	public void createGroup(Lesson lesson) {
+		this.lesson = lesson;
+		int orderOfNewGroup = lesson.getGroupsInLesson().size() + 1;
+		group = new Group("", orderOfNewGroup, new ArrayList<>());
 		isNewGroup = true;
 	}
 	
@@ -77,18 +83,23 @@ public class GroupController extends ControllerBase {
 		List<Item> items = group.getItemsInGroup();
 		itemObservableList = FXCollections.observableArrayList(items);
 		itemsListView.setItems(itemObservableList);
-		itemsListView.setCellFactory(group -> new ItemListCell(itemsListView));
+		itemsListView.setCellFactory(group -> new ItemListCell(itemsListView, this.lesson, this.group));
 	}
 	
 	private void filterItems(String search) {
 		List<Item> items = group.getItemsInGroup();	
 		itemObservableList = FXCollections.observableArrayList();
 		for (Item item : items) {
-			if (true) {		// TODO filter
+			if (item.getQuestionText().toLowerCase().contains(search.toLowerCase())) {	
 				itemObservableList.add(item);		
 			}
 		}
 		itemsListView.setItems(itemObservableList);
+	}
+	
+	private void newItem(MouseEvent event) {
+		ItemController controller = (ItemController) redirect(Scenes.ITEM, event);
+		controller.createItem(lesson, group);
 	}
 	
 	private void saveGroup(MouseEvent event) {
@@ -108,5 +119,4 @@ public class GroupController extends ControllerBase {
 		LessonController controller = (LessonController) redirect(Scenes.LESSON, event);
 		controller.setLesson(lesson);
 	}
-
 }
