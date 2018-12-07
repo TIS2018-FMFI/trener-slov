@@ -94,6 +94,7 @@ public class LessonController extends ControllerBase {
 	
 	private void saveLesson(MouseEvent event) {
 		lesson.setName(name.getText());
+		updateGroupsOrder();
 		if (isNewLesson) {
 			Main.mainController.addLesson(lesson);
 		}
@@ -105,9 +106,16 @@ public class LessonController extends ControllerBase {
 		redirect(Scenes.LESSON_LIST, event);
 	}
 	
+	private void updateGroupsOrder() {
+		for (int i = 0; i < groupObservableList.size(); i++) {
+			Group group = groupObservableList.get(i);
+			group.setOrder(i+1);
+		}	
+	}
+
 	private void newGroup(MouseEvent event) {
 		GroupController controller = (GroupController) redirect(Scenes.GROUP, event);
-		controller.createGroup();
+		controller.createGroup(lesson);
 	}
 
 }

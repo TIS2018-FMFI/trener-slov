@@ -5,7 +5,8 @@ public enum Scenes {
 	MAIN_MENU("mainMenu", "Hlavné menu"),
     LESSON_LIST("lessonList", "Zoznam lekcií"),
     LESSON("lesson", "Lekcia"),
-    GROUP("group", "Skupina")
+    GROUP("group", "Skupina"),
+    ITEM("item", "Položka")
     ;
 
     private final String fxmlName;
