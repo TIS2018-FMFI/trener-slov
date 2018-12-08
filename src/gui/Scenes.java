@@ -6,11 +6,15 @@ public enum Scenes {
     LESSON_LIST("lessonList", "Zoznam lekcií"),
     LESSON("lesson", "Lekcia"),
     GROUP("group", "Skupina"),
-    ITEM("item", "Položka")
+    ITEM("item", "Položka"),
+    EXPORT_LESSONS("exportLessons", "Export lekcií"), 
+    START_LESSON("startLesson", "Výber lekcie"), 
+    START_MODE("startMode", "Výber módu"), 
+    MODE("mode", "")
     ;
 
     private final String fxmlName;
-    private final String title;
+    private String title;
 
     Scenes(final String fxmlName, final String title) {
         this.fxmlName = fxmlName;
@@ -26,4 +30,7 @@ public enum Scenes {
     	return title;
     }
 
+    public void setTitle(String title) {
+    	this.title = title;
+    }
 }

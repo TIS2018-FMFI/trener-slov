@@ -3,7 +3,6 @@ package gui.customCells;
 import data.Group;
 import data.Item;
 import data.Lesson;
-import gui.controllers.cellControllers.GroupListCellController;
 import gui.controllers.cellControllers.ItemListCellController;
 import javafx.scene.control.Control;
 import javafx.scene.control.ListView;
