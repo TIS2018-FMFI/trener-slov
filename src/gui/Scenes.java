@@ -6,7 +6,8 @@ public enum Scenes {
     LESSON_LIST("lessonList", "Zoznam lekcií"),
     LESSON("lesson", "Lekcia"),
     GROUP("group", "Skupina"),
-    ITEM("item", "Položka")
+    ITEM("item", "Položka"),
+    EXPORT_LESSONS("exportLessons", "Export lekcií")
     ;
 
     private final String fxmlName;
