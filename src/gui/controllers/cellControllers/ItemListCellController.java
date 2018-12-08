@@ -13,7 +13,6 @@ import data.Item;
 import data.Lesson;
 import gui.Scenes;
 import gui.controllers.ControllerBase;
-import gui.controllers.sceneControllers.GroupController;
 import gui.controllers.sceneControllers.ItemController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import javax.xml.bind.JAXBException;
 
 import application.Main;
-import data.Configuration;
 import gui.controllers.ControllerBase;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -16,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class ConfigDialogController extends ControllerBase {
