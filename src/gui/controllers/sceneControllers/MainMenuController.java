@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 import application.Main;
 import gui.Scenes;
 import gui.controllers.ControllerBase;
-import gui.controllers.dialogControllers.ConfigDialogController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,7 +23,7 @@ public class MainMenuController extends ControllerBase {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		startBtn.setOnMouseClicked(e -> {
-			// TODO
+			redirect(Scenes.START_LESSON, e);
 		});
 		editBtn.setOnMouseClicked(e -> {
 			redirect(Scenes.LESSON_LIST, e);
