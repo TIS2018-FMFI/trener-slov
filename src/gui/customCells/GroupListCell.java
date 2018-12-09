@@ -57,8 +57,6 @@ public class GroupListCell extends CustomCellBase<Group>{
                 return;
             }
 
-            ObservableList<Group> items = getListView().getItems();
-
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
             String cellStateSerialized = "";

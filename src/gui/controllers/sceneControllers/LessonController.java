@@ -2,6 +2,7 @@ package gui.controllers.sceneControllers;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -76,6 +77,7 @@ public class LessonController extends ControllerBase {
 	
 	private void listGroups() {
 		List<Group> groups = lesson.getGroupsInLesson();	
+		Collections.sort(groups, (g1, g2) -> g1.getOrder().compareTo(g2.getOrder()));
 		groupObservableList = FXCollections.observableArrayList(groups);
 		groupsListView.setItems(groupObservableList);
 		groupsListView.setCellFactory(group -> new GroupListCell(groupsListView, lesson));
