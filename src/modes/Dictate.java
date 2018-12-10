@@ -8,7 +8,6 @@ import java.util.Collections;
 
 public class Dictate extends GameMode {
     private ArrayList<Item> items;
-
     public Dictate(Lesson less){
         this.lesson=less;
         items=new ArrayList<>();

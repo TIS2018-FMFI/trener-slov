@@ -10,7 +10,6 @@ import java.util.Collections;
 public class Examination extends GameMode {
     ArrayList<Item> items;
     Integer actual;
-
     public Examination(Lesson less){
         this.lesson=less;
         actual=0;

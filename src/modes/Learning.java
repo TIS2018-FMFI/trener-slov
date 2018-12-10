@@ -14,9 +14,9 @@ public class Learning extends GameMode {
     Boolean allTaught;
     Integer actual;
 
-    public Learning(Lesson less,Integer num){
-        this.lesson=less;
+    public Learning(Lesson less, Integer num){
         numOfRepeat=num;
+        this.lesson=less;
         rowOfGroups=new ArrayList<Group>();
         rowOfGroups.add(lesson.getGroupsInLesson().get(0));
         rowOfGroups.add(lesson.getGroupsInLesson().get(1));

@@ -1,7 +1,11 @@
 package application;
+import data.Configuration;
+import data.Item;
 import data.Lesson;
 
 import javax.xml.bind.JAXBException;
+
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class MainController {
@@ -12,18 +16,31 @@ public class MainController {
     private Export dataExport;
 
     public MainController() {
-        dataController = new DataController();
+        dataController = new DataController(new ArrayList<Lesson>(), "data/data.xml", new Configuration());
         soundManager = new SoundManager();
         dataImport = new Import();
         dataExport = new Export();
     }
+    
+    public void loadData() {
+    	try {
+			dataController.loadData();
+		} catch (FileNotFoundException | JAXBException e) {
+			e.printStackTrace();
+		}
+    }
 
     public void importLesson() {
+        ArrayList<Lesson> importedLessons = dataImport.loadLessonsFromFile();
 
+        if (importedLessons == null)
+            return;
+
+        dataController.addLessons(importedLessons);
     }
 
     public void exportLesson(ArrayList<Lesson> lessons) {
-
+        dataExport.saveLessonsToFile(lessons);
     }
 
     public void removeLesson(Lesson lessonToRemove) {
@@ -31,7 +48,7 @@ public class MainController {
     }
 
     public void addLesson(Lesson lessonToAdd) {
-        dataController.removeLesson(lessonToAdd);
+        dataController.addLesson(lessonToAdd);
     }
 
     public ArrayList<Lesson> getLessons() {
@@ -56,6 +73,10 @@ public class MainController {
 
     public void setFontSize(Integer fontSize) {
         dataController.setFontSize(fontSize);
+    }
+
+    public void saveFilesInItem(Item item, String newQImage, String newQSound, String newAImage, String newASound) {
+        dataController.saveFilesInItem(item, newQImage, newQSound, newAImage, newASound);
     }
 
 }

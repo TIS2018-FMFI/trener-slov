@@ -3,6 +3,7 @@ import data.Configuration;
 import data.Group;
 import data.Item;
 import data.Lesson;
+import gui.Scenes;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,14 +22,18 @@ public class Main extends Application{
     }
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) throws Exception {		
     	mainController = new application.MainController();
+    	mainController.loadData();
     	
-    	Parent mainMenu = FXMLLoader.load(getClass().getResource("/gui/fxml/mainMenu.fxml"));
+    	Parent mainMenu = FXMLLoader.load(getClass().getResource("/gui/fxml/scenes/" + Scenes.MAIN_MENU + ".fxml"));
+    	primaryStage.setMinWidth(800);
+    	primaryStage.setMinHeight(600);
 		primaryStage.setScene(new Scene(mainMenu));
+		primaryStage.setTitle(Scenes.MAIN_MENU.getTitle());
 		primaryStage.show();
 
-		testDataController();
+//		testDataController();
 	}
 
 	private void testDataController() throws FileNotFoundException, JAXBException {
@@ -38,6 +43,19 @@ public class Main extends Application{
 		Item testItem1 = new Item("textQ1","imgQ1","soundQ1","textA1","imgA1","soundA1");
 		Item testItem2 = new Item("textQ2","imgQ2","soundQ2","textA2","imgA2","soundA2");
 		Item testItem3 = new Item("textQ3","imgQ3","soundQ3","textA3","imgA3","soundA3");
+
+		test.saveFilesInItem(
+			testItem1,
+			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\test\\e9b29e55777900281dc1df02ff9c8c34e18c3eb5_full.jpg",
+			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\test\\Chookity Pah.wav",
+			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\trener-slov\\data\\files\\images\\ClassDiagram.jpeg",
+			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\test\\Chookity1.wav"
+		);
+
+        System.out.println(testItem1.getQuestionSound());
+        System.out.println(testItem1.getQuestionImg());
+        System.out.println(testItem1.getAnswerSound());
+        System.out.println(testItem1.getAnswerImg());
 
 		ArrayList<Item> testItems = new ArrayList<>();
 		testItems.add(testItem1);
@@ -59,3 +77,4 @@ public class Main extends Application{
 		test.loadData();
 	}
 }
+
