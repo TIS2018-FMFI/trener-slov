@@ -3,7 +3,6 @@ package modes;
 import data.Group;
 import data.Item;
 import data.Lesson;
-
 import java.util.ArrayList;
 
 public class Learning extends GameMode {
@@ -32,7 +31,6 @@ public class Learning extends GameMode {
 
     @Override
     protected void randomize() {
-
 
     }
     protected Boolean fillRow(){
