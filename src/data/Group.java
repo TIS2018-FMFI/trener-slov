@@ -1,13 +1,14 @@
 package data;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 @XmlRootElement(namespace = "group")
 @XmlAccessorType(XmlAccessType.FIELD)
 
-public class Group {
+public class Group implements Serializable {
 
     private String name;
     private Integer order;

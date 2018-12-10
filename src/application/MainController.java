@@ -1,5 +1,6 @@
 package application;
 import data.Configuration;
+import data.Item;
 import data.Lesson;
 
 import javax.xml.bind.JAXBException;
@@ -72,6 +73,10 @@ public class MainController {
 
     public void setFontSize(Integer fontSize) {
         dataController.setFontSize(fontSize);
+    }
+
+    public void saveFilesInItem(Item item, String newQImage, String newQSound, String newAImage, String newASound) {
+        dataController.saveFilesInItem(item, newQImage, newQSound, newAImage, newASound);
     }
 
 }
