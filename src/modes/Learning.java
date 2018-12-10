@@ -2,6 +2,7 @@ package modes;
 
 import data.Group;
 import data.Item;
+import data.Lesson;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,8 @@ public class Learning extends GameMode {
     Boolean allTaught;
     Integer actual;
 
-    public Learning(Integer num){
+    public Learning(Lesson less,Integer num){
+        this.lesson=less;
         numOfRepeat=num;
         rowOfGroups=new ArrayList<Group>();
         rowOfGroups.add(lesson.getGroupsInLesson().get(0));
