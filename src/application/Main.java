@@ -34,7 +34,7 @@ public class Main extends Application{
 		primaryStage.setTitle(Scenes.MAIN_MENU.getTitle());
 		primaryStage.show();
 
-		//testDataController();
+//		testDataController();
 	}
 
 	private void testDataController() throws FileNotFoundException, JAXBException {
@@ -44,6 +44,19 @@ public class Main extends Application{
 		Item testItem1 = new Item("textQ1","imgQ1","soundQ1","textA1","imgA1","soundA1");
 		Item testItem2 = new Item("textQ2","imgQ2","soundQ2","textA2","imgA2","soundA2");
 		Item testItem3 = new Item("textQ3","imgQ3","soundQ3","textA3","imgA3","soundA3");
+
+		test.saveFilesInItem(
+			testItem1,
+			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\test\\e9b29e55777900281dc1df02ff9c8c34e18c3eb5_full.jpg",
+			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\test\\Chookity Pah.wav",
+			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\trener-slov\\data\\files\\images\\ClassDiagram.jpeg",
+			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\test\\Chookity1.wav"
+		);
+
+        System.out.println(testItem1.getQuestionSound());
+        System.out.println(testItem1.getQuestionImg());
+        System.out.println(testItem1.getAnswerSound());
+        System.out.println(testItem1.getAnswerImg());
 
 		ArrayList<Item> testItems = new ArrayList<>();
 		testItems.add(testItem1);
