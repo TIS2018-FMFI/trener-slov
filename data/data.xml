@@ -4,6 +4,7 @@
     <config>
         <fontSize>20</fontSize>
     </config>
+    <fm/>
     <lessons>
         <lesson>
             <groups>
@@ -13,6 +14,7 @@
                     <items>
                         <item>
                             <questionText>Otazka111?</questionText>
+                            <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
                             <answerText>Odpoved111!</answerText>
                         </item>
                         <item>
