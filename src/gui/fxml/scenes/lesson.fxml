@@ -50,9 +50,6 @@
                <center>
                   <ListView fx:id="groupsListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </center>
-               <top>
-                  <TextField fx:id="search" promptText="Vyhľadaj..." BorderPane.alignment="CENTER" />
-               </top>
             </BorderPane>
          </children>
       </VBox>

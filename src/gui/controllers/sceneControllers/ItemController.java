@@ -135,9 +135,8 @@ public class ItemController extends ControllerBase {
 	private void saveItem(MouseEvent event) {
 		item.setQuestionText(qTextValue.getText());
 		item.setAnswerText(aTextValue.getText());
-		
-		// TODO tuto funkciu bude treba v MC
-		//Main.mainController.saveFilesInItem(item, newQImage, newQSound, newAImage, newASound);
+
+		Main.mainController.saveFilesInItem(item, newQImage, newQSound, newAImage, newASound);
 		
 		if (isNewItem) {
 			group.addItem(item);

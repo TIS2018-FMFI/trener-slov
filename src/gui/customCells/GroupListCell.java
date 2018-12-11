@@ -5,11 +5,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 
 import data.Group;
 import data.Lesson;
 import gui.controllers.cellControllers.GroupListCellController;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Control;
 import javafx.scene.control.ListCell;
@@ -56,18 +59,17 @@ public class GroupListCell extends CustomCellBase<Group>{
             if (getItem() == null) {
                 return;
             }
-
-            ObservableList<Group> items = getListView().getItems();
-
+            
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
             String cellStateSerialized = "";
             try {
                 ByteArrayOutputStream bo = new ByteArrayOutputStream();
                 ObjectOutputStream so = new ObjectOutputStream(bo);
-                so.writeObject((Group)getItem());
-                so.flush();
-                cellStateSerialized = bo.toString();
+                so.writeObject((Group)getItem());      
+                so.close();     
+                cellStateSerialized = Base64.getEncoder().encodeToString(bo.toByteArray()); 
+                
             } catch (Exception e) {
                 System.err.println(e);
             }
@@ -105,33 +107,49 @@ public class GroupListCell extends CustomCellBase<Group>{
             if (getItem() == null) {
                 return;
             }
-
             Dragboard db = event.getDragboard();
             boolean success = false;
-
+            
             if (db.hasString()) {
                 ObservableList<Group> items = getListView().getItems();
-                Group cellState = null;
+                Group draggedGroup = null;
                 try {
-                    byte b[] = db.getString().getBytes(); 
+                    byte[] b = Base64.getDecoder().decode(db.getString());           
                     ByteArrayInputStream bi = new ByteArrayInputStream(b);
                     ObjectInputStream si = new ObjectInputStream(bi);
-                    cellState = (Group) si.readObject();
+                    draggedGroup = (Group) si.readObject();
+                    si.close();
+                 
                 } catch (Exception e) {
                     System.err.println(e);
                 }
-                 
-                int draggedIdx = items.indexOf(cellState);
+                
+                int draggedIdx = 0;
+                for (int i = 0; i < items.size(); i++) {
+                	Group group = items.get(i);
+					if (group.getName().equals(draggedGroup.getName())) {
+						draggedIdx = i;
+						break;
+					}
+				}
+                
                 int thisIdx = items.indexOf(getItem());
-                 
+                     
                 items.set(draggedIdx, getItem());
-                items.set(thisIdx, cellState);
- 
-                List<Group> itemscopy = new ArrayList<>(getListView().getItems());
-                getListView().getItems().setAll(itemscopy);
+                items.set(thisIdx, draggedGroup);
+                for (int i = 0; i < items.size(); i++) {
+					items.get(i).setOrder(i + 1);
+				}
+        
+        		List<Group> groups = new ArrayList<>(items);
+        		Collections.sort(groups, (g1, g2) -> g1.getOrder().compareTo(g2.getOrder()));
+        		ObservableList<Group> groupObservableList = FXCollections.observableArrayList(groups);
+        		listview.setItems(groupObservableList);
+        		listview.setCellFactory(group -> new GroupListCell(listview, lesson));
  
                 success = true;
             }
+            
             event.setDropCompleted(success);
             event.consume();
         });
