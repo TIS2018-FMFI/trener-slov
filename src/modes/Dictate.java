@@ -2,13 +2,14 @@ package modes;
 
 import data.Group;
 import data.Item;
-
+import data.Lesson;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Dictate extends GameMode {
     private ArrayList<Item> items;
-    public Dictate(){
+    public Dictate(Lesson less){
+        this.lesson=less;
         items=new ArrayList<>();
         for (Group group : lesson.getGroupsInLesson()) {
             for (Item item : group.getItemsInGroup()) {
