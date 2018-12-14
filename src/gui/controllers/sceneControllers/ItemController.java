@@ -100,7 +100,6 @@ public class ItemController extends ControllerBase {
 	private void switchQuestionAndAnswer() {
 		item.switchQuestionAndAnswer();
 		setTexts();
-		switchNewFiles();
 	}
 
 	private void setTexts() {
@@ -149,14 +148,5 @@ public class ItemController extends ControllerBase {
 			return file.getAbsolutePath();
 		}
 		return null;
-	}
-	
-	private void switchNewFiles() {
-		/*String tmpNewQImage = newAImage;
-		String tmpNewQSound = newASound;
-		newAImage = newQImage;
-		newASound = newQSound;
-		newQImage = tmpNewQImage;
-		newQSound = tmpNewQSound;*/
 	}
 }

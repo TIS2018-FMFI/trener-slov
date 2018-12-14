@@ -81,17 +81,6 @@ public class LessonController extends ControllerBase {
 		groupsListView.setCellFactory(group -> new GroupListCell(groupsListView, lesson));
 	}
 	
-	private void filterGroups(String search) {
-		List<Group> groups = lesson.getGroupsInLesson();	
-		groupObservableList = FXCollections.observableArrayList();
-		for (Group group : groups) {
-			if (group.getName().toLowerCase().contains(search.toLowerCase())) {
-				groupObservableList.add(group);
-			}
-		}
-		groupsListView.setItems(groupObservableList);
-	}
-	
 	private void saveLesson(MouseEvent event) {
 		lesson.setName(name.getText());
 		updateGroupsOrder();
