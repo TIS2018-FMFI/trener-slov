@@ -1,12 +1,14 @@
 package data;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(namespace = "item")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Item {
+public class Item implements Serializable{
 
 
     private String questionText;

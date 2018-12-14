@@ -1,19 +1,28 @@
 package gui.controllers.sceneControllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import application.Main;
 import data.Lesson;
 import gui.Scenes;
 import gui.controllers.ControllerBase;
+import gui.controllers.dialogControllers.LearningModeConfigDialogController;
+import gui.controllers.dialogControllers.StationaryBicycleModeConfigDialogController;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import modes.Dictate;
 import modes.Examination;
 import modes.GameMode;
@@ -57,28 +66,27 @@ public class StartModeController extends ControllerBase {
 		String title = "";
 		if (modeClass.equals(Learning.class)) {
 			title = "Učenie";		
-			/** 
-			 * Ak sa vyberie mód učenie, vyskočí okno, v ktorom sa bude dať nastaviť počet opakovaní skupín v lekcii, 
-			*  po ktorom sa skupina označí ako prebraná. 
-			*/
-			int num = 0;
-			mode = new Learning(num);
+			int num = openLearningModeConfigDialog();
+			if (num == 0) {
+				return;
+			}
+			mode = new Learning(lesson, num);
 		}
 		else if (modeClass.equals(Exception.class)) {
 			title = "Skúšanie";
-			mode = new Examination();
+			mode = new Examination(lesson);
 		}
 		else if (modeClass.equals(Dictate.class)) {
 			title = "Diktát";
-			mode = new Dictate();
+			mode = new Dictate(lesson);
 		}
 		else if (modeClass.equals(StationaryBicycle.class)) {
 			title = "Stacinárny bicykel";
-			mode = new StationaryBicycle();
-			/**
-			 * Ak sa vyberie mód stacionárny bicykel, vyskočí okno, v ktorom sa bude dať nastaviť dĺžka trvania módu v sekundách, 
-			 * počet prehraní zvuku odpovede (ak má odpoveď zvuk) a dĺžka trvania zobrazenia otázky v sekundách. 
-			 */
+			List<Integer> configValues = openStationaryBicycleModeConfigDialog();
+			if (configValues.get(0) == 0 || configValues.get(1) == 0 || configValues.get(2) == 0) {
+				return;
+			}
+			mode = new StationaryBicycle(lesson, configValues.get(0), configValues.get(1), configValues.get(2));
 		}
 		
 		title += " - " + lesson.getName();
@@ -86,5 +94,46 @@ public class StartModeController extends ControllerBase {
 		modeScene.setTitle(title);
 		ModeController controller = (ModeController) redirect(modeScene, e);
 		controller.setMode(mode);
+	}
+
+	private int openLearningModeConfigDialog() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/fxml/dialogs/learningModeConfigDialog.fxml"));
+        Stage stage = createDialogStage(fxmlLoader);
+        
+		AtomicInteger number = new AtomicInteger(0);
+        LearningModeConfigDialogController controller = fxmlLoader.getController();
+        controller.setNumber(number);
+        
+        stage.showAndWait();
+        return number.get();
+	}
+	
+	private List<Integer> openStationaryBicycleModeConfigDialog() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/fxml/dialogs/stationaryBicycleModeConfigDialog.fxml"));
+        Stage stage = createDialogStage(fxmlLoader);
+        
+		AtomicInteger numberOfAnswersPlay = new AtomicInteger(0);
+		AtomicInteger pauseDurationInSecs = new AtomicInteger(0);
+		AtomicInteger modeDurationInSecs = new AtomicInteger(0);
+		StationaryBicycleModeConfigDialogController controller = fxmlLoader.getController();
+        controller.setNumbers(numberOfAnswersPlay, pauseDurationInSecs, modeDurationInSecs);
+        
+        stage.showAndWait();
+        return Arrays.asList(numberOfAnswersPlay.get(), pauseDurationInSecs.get(), modeDurationInSecs.get());
+	}
+	
+	private Stage createDialogStage(FXMLLoader loader) {
+        Parent parent = null;
+		try {
+			parent = loader.load();
+		} catch (IOException e)  { e.printStackTrace(); }
+
+        Scene scene = new Scene(parent);
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setMinWidth(600);
+        stage.setMinHeight(300);
+        stage.setScene(scene);
+        return stage;
 	}
 }

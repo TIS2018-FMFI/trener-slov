@@ -4,6 +4,7 @@
     <config>
         <fontSize>20</fontSize>
     </config>
+    <fm/>
     <lessons>
         <lesson>
             <groups>
@@ -13,6 +14,8 @@
                     <items>
                         <item>
                             <questionText>Otazka111?</questionText>
+                            <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
+                            <questionSound>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\sounds\right.png</questionSound>
                             <answerText>Odpoved111!</answerText>
                         </item>
                         <item>
@@ -27,7 +30,7 @@
                 </group>
                 <group>
                     <name>group12</name>
-                    <order>2</order>
+                    <order>1</order>
                     <items>
                         <item>
                             <questionText>Otazka121?</questionText>
@@ -45,7 +48,7 @@
                 </group>
                 <group>
                     <name>group13</name>
-                    <order>3</order>
+                    <order>1</order>
                     <items>
                         <item>
                             <questionText>Otazka131?</questionText>

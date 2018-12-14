@@ -2,6 +2,7 @@ package gui.controllers.sceneControllers;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -31,7 +32,7 @@ public class LessonController extends ControllerBase {
 	Label nameLabel;
 	
 	@FXML
-	TextField name, search;
+	TextField name;
 	
 	@FXML
 	ListView<Group> groupsListView;
@@ -47,7 +48,6 @@ public class LessonController extends ControllerBase {
 		backBtn.setOnMouseClicked(e -> redirect(Scenes.LESSON_LIST, e));
 		okBtn.setOnMouseClicked(e -> saveLesson(e));
 		newGroupBtn.setOnMouseClicked(e -> newGroup(e));
-		search.textProperty().addListener((observable, oldValue, newValue) -> filterGroups(newValue) );
 	}
 
 	@Override
@@ -58,7 +58,6 @@ public class LessonController extends ControllerBase {
 		setFontSizeToNode(okBtn, fontSize);
 		setFontSizeToNode(nameLabel, fontSize);
 		setFontSizeToNode(name, fontSize);
-		setFontSizeToNode(search, fontSize);
 	}
 
 	public void setLesson(Lesson lesson) {
@@ -76,6 +75,7 @@ public class LessonController extends ControllerBase {
 	
 	private void listGroups() {
 		List<Group> groups = lesson.getGroupsInLesson();	
+		Collections.sort(groups, (g1, g2) -> g1.getOrder().compareTo(g2.getOrder()));
 		groupObservableList = FXCollections.observableArrayList(groups);
 		groupsListView.setItems(groupObservableList);
 		groupsListView.setCellFactory(group -> new GroupListCell(groupsListView, lesson));
@@ -107,10 +107,13 @@ public class LessonController extends ControllerBase {
 	}
 	
 	private void updateGroupsOrder() {
-		for (int i = 0; i < groupObservableList.size(); i++) {
-			Group group = groupObservableList.get(i);
-			group.setOrder(i+1);
-		}	
+		for (Group group : lesson.getGroupsInLesson()) {
+			for (Group group2 : groupsListView.getItems()) {
+				if (group.getName().equals(group2.getName())) {
+					group.setOrder(group2.getOrder());
+				}
+			}
+		}
 	}
 
 	private void newGroup(MouseEvent event) {

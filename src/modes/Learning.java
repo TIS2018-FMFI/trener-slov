@@ -20,6 +20,7 @@ public class Learning extends GameMode {
         rowOfGroups.add(lesson.getGroupsInLesson().get(0));
         rowOfGroups.add(lesson.getGroupsInLesson().get(1));
         index=1;
+        actual=0;
     }
 
     @Override

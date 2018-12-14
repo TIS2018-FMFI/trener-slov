@@ -44,8 +44,6 @@ public class ItemController extends ControllerBase {
 	@FXML
 	TextField qTextValue, qImageValue, qSoundValue, aTextValue, aImageValue, aSoundValue;
 	
-	String newQImage, newQSound, newAImage, newASound;
-	
 	boolean isNewItem;
 	Lesson lesson;
 	Group group;
@@ -58,20 +56,16 @@ public class ItemController extends ControllerBase {
 		okBtn.setOnMouseClicked(e -> saveItem(e));
 		switchBtn.setOnMouseClicked(e -> switchQuestionAndAnswer());
 		qImageChooseBtn.setOnMouseClicked(e -> {
-			newQImage = chooseFile(e); 
-			setNewFileNamesToTextFields();
+			setFilePathToTextField(qImageValue, e);
 		});
 		qSoundChooseBtn.setOnMouseClicked(e -> {
-			newQSound = chooseFile(e); 
-			setNewFileNamesToTextFields();
+			setFilePathToTextField(qSoundValue, e);
 		});
 		aImageChooseBtn.setOnMouseClicked(e -> {
-			newAImage = chooseFile(e); 
-			setNewFileNamesToTextFields();
+			setFilePathToTextField(aImageValue, e);
 		});
 		aSoundChooseBtn.setOnMouseClicked(e -> {
-			newASound = chooseFile(e); 
-			setNewFileNamesToTextFields();
+			setFilePathToTextField(aSoundValue, e);
 		});
 	}
 
@@ -107,7 +101,6 @@ public class ItemController extends ControllerBase {
 		item.switchQuestionAndAnswer();
 		setTexts();
 		switchNewFiles();
-		setNewFileNamesToTextFields();
 	}
 
 	private void setTexts() {
@@ -119,25 +112,15 @@ public class ItemController extends ControllerBase {
 		aSoundValue.setText(item.getAnswerSound());
 	}
 	
-	private void setNewFileNamesToTextFields(){
-		setNewFileNameToTextField(newQImage, qImageValue);
-		setNewFileNameToTextField(newQSound, qSoundValue);
-		setNewFileNameToTextField(newAImage, aImageValue);
-		setNewFileNameToTextField(newASound, aSoundValue);
-	}
-	
-	private void setNewFileNameToTextField(String newString, TextField textField) {
-		if (newString != null) {
-			textField.setText(newString);
-		}
+	private void setFilePathToTextField(TextField textfield, MouseEvent e){
+		textfield.setText(chooseFile(e));
 	}
 	
 	private void saveItem(MouseEvent event) {
 		item.setQuestionText(qTextValue.getText());
 		item.setAnswerText(aTextValue.getText());
-		
-		// TODO tuto funkciu bude treba v MC
-		//Main.mainController.saveFilesInItem(item, newQImage, newQSound, newAImage, newASound);
+
+		Main.mainController.saveFilesInItem(item, qImageValue.getText(), qSoundValue.getText(), aImageValue.getText(), aSoundValue.getText());
 		
 		if (isNewItem) {
 			group.addItem(item);
@@ -169,11 +152,11 @@ public class ItemController extends ControllerBase {
 	}
 	
 	private void switchNewFiles() {
-		String tmpNewQImage = newAImage;
+		/*String tmpNewQImage = newAImage;
 		String tmpNewQSound = newASound;
 		newAImage = newQImage;
 		newASound = newQSound;
 		newQImage = tmpNewQImage;
-		newQSound = tmpNewQSound;
+		newQSound = tmpNewQSound;*/
 	}
 }

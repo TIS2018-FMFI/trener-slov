@@ -13,6 +13,7 @@ public class Examination extends GameMode {
     public Examination(Lesson less){
         this.lesson=less;
         actual=0;
+        items = new ArrayList<>();
         for (Group group : lesson.getGroupsInLesson()) {
             for (Item item : group.getItemsInGroup()) {
                 items.add(item);
