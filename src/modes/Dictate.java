@@ -13,7 +13,7 @@ public class Dictate extends GameMode {
         items=new ArrayList<>();
         for (Group group : lesson.getGroupsInLesson()) {
             for (Item item : group.getItemsInGroup()) {
-                if (!item.getQuestionSound().equals(null) && !item.getAnswerText().equals(null)) items.add(item);
+                if (item.getQuestionSound() != null && item.getAnswerText() != null) items.add(item);
             }
         }
         randomize();

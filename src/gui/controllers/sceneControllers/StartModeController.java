@@ -70,15 +70,15 @@ public class StartModeController extends ControllerBase {
 			if (num == 0) {
 				return;
 			}
-			mode = new Learning(num);
+			mode = new Learning(lesson, num);
 		}
 		else if (modeClass.equals(Exception.class)) {
 			title = "Skúšanie";
-			mode = new Examination();
+			mode = new Examination(lesson);
 		}
 		else if (modeClass.equals(Dictate.class)) {
 			title = "Diktát";
-			mode = new Dictate();
+			mode = new Dictate(lesson);
 		}
 		else if (modeClass.equals(StationaryBicycle.class)) {
 			title = "Stacinárny bicykel";
@@ -86,8 +86,7 @@ public class StartModeController extends ControllerBase {
 			if (configValues.get(0) == 0 || configValues.get(1) == 0 || configValues.get(2) == 0) {
 				return;
 			}
-			// TODO poslat hodnoty + do kazdeho modu aj lekciu
-			mode = new StationaryBicycle();
+			mode = new StationaryBicycle(lesson, configValues.get(0), configValues.get(1), configValues.get(2));
 		}
 		
 		title += " - " + lesson.getName();
