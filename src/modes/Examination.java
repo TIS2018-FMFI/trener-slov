@@ -2,6 +2,7 @@ package modes;
 
 import data.Group;
 import data.Item;
+import data.Lesson;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +10,8 @@ import java.util.Collections;
 public class Examination extends GameMode {
     ArrayList<Item> items;
     Integer actual;
-    public Examination(){
+    public Examination(Lesson less){
+        this.lesson=less;
         actual=0;
         for (Group group : lesson.getGroupsInLesson()) {
             for (Item item : group.getItemsInGroup()) {
