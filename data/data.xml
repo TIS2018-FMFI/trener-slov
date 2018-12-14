@@ -26,6 +26,18 @@
                             <questionText>Otazka113?</questionText>
                             <answerText>Odpoved113!</answerText>
                         </item>
+                		<item>
+                            <questionText>Otazka114?</questionText>
+                            <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
+                            <questionSound>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\sounds\right.png</questionSound>
+                            <answerText>Odpoved114!</answerText>
+                        </item>
+                		<item>
+                            <questionText>Otazka115?</questionText>
+                            <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
+                            <questionSound>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\sounds\right.png</questionSound>
+                            <answerText>Odpoved115!</answerText>
+                        </item>
                     </items>
                 </group>
                 <group>
@@ -44,6 +56,12 @@
                             <questionText>Otazka123?</questionText>
                             <answerText>Odpoved123!</answerText>
                         </item>
+                		<item>
+                            <questionText>Otazka124?</questionText>
+                            <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
+                            <questionSound>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\sounds\right.png</questionSound>
+                            <answerText>Odpoved124!</answerText>
+						 </item>
                     </items>
                 </group>
                 <group>
@@ -62,6 +80,12 @@
                             <questionText>Otazka133?</questionText>
                             <answerText>Odpoved133!</answerText>
                         </item>
+                	 	<item>
+                            <questionText>Otazka134?</questionText>
+                            <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
+                            <questionSound>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\sounds\right.png</questionSound>
+                            <answerText>Odpoved134!</answerText>
+						 </item>
                     </items>
                 </group>
             </groups>
