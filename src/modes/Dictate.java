@@ -17,6 +17,7 @@ public class Dictate extends GameMode {
             }
         }
         randomize();
+        this.printItems();
     }
     @Override
     public Item next(Boolean answerToPrevious) {
@@ -41,5 +42,11 @@ public class Dictate extends GameMode {
     @Override
     protected void randomize()  {
         Collections.shuffle(items);
+    }
+    protected void printItems(){
+        String arr="[";
+        for (Item i:items) arr += i.getQuestionText()+", ";
+        arr+="]";
+        System.out.println(arr);
     }
 }
