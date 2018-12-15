@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class ItemController extends ControllerBase {
@@ -39,10 +40,13 @@ public class ItemController extends ControllerBase {
 	ImageView qImageChooseImg, qSoundChooseImg, aImageChooseImg, aSoundChooseImg;
 	
 	@FXML
-	Label qLabel, aLabel, qTextLabel, qImageLabel, qSoundLabel, aTextLabel, aImageLabel, aSoundLabel;
+	Label qLabel, aLabel, qTextLabel, qImageLabel, qSoundLabel, aTextLabel, aImageLabel, aSoundLabel, lessonGroupNameLabel;
 	
 	@FXML
 	TextField qTextValue, qImageValue, qSoundValue, aTextValue, aImageValue, aSoundValue;
+	
+	final ExtensionFilter extensionsImages = new ExtensionFilter("images", Arrays.asList("*.jpg", "*.png"));
+	final ExtensionFilter extensionsSounds = new ExtensionFilter("sounds", Arrays.asList("*.mp3", "*.wav"));
 	
 	boolean isNewItem;
 	Lesson lesson;
@@ -56,16 +60,16 @@ public class ItemController extends ControllerBase {
 		okBtn.setOnMouseClicked(e -> saveItem(e));
 		switchBtn.setOnMouseClicked(e -> switchQuestionAndAnswer());
 		qImageChooseBtn.setOnMouseClicked(e -> {
-			setFilePathToTextField(qImageValue, e);
+			setFilePathToTextField(qImageValue, extensionsImages,  e);
 		});
 		qSoundChooseBtn.setOnMouseClicked(e -> {
-			setFilePathToTextField(qSoundValue, e);
+			setFilePathToTextField(qSoundValue, extensionsSounds, e);
 		});
 		aImageChooseBtn.setOnMouseClicked(e -> {
-			setFilePathToTextField(aImageValue, e);
+			setFilePathToTextField(aImageValue, extensionsImages, e);
 		});
 		aSoundChooseBtn.setOnMouseClicked(e -> {
-			setFilePathToTextField(aSoundValue, e);
+			setFilePathToTextField(aSoundValue, extensionsSounds, e);
 		});
 	}
 
@@ -77,7 +81,8 @@ public class ItemController extends ControllerBase {
 		List<Node> nodes = Arrays.asList(
 				backBtn, switchBtn, okBtn, qTextLabel, qImageLabel, qSoundLabel, aTextLabel, aImageLabel, aSoundLabel, 
 				qTextValue, qTextValue, qImageValue, qImageValue, qSoundValue, aTextValue, aTextValue, aImageValue,
-				aImageValue, aSoundValue, qImageChooseBtn, qSoundChooseBtn, qSoundChooseBtn, aImageChooseBtn, aSoundChooseBtn
+				aImageValue, aSoundValue, qImageChooseBtn, qSoundChooseBtn, qSoundChooseBtn, aImageChooseBtn, aSoundChooseBtn,
+				lessonGroupNameLabel
 		);
 		setFontSizeToAllNodes(nodes, fontSize);
 	}
@@ -87,7 +92,8 @@ public class ItemController extends ControllerBase {
 		this.group = group;
 		this.item = item;
 		setTexts();
-		isNewItem = false;
+		isNewItem = false;		
+		lessonGroupNameLabel.setText(lesson.getName() + " - " + group.getName());
 	}
 	
 	public void createItem(Lesson lesson, Group group) {
@@ -95,12 +101,12 @@ public class ItemController extends ControllerBase {
 		this.group = group;
 		item = new Item();
 		isNewItem = true;
+		lessonGroupNameLabel.setText(lesson.getName() + " - " + group.getName());
 	}
 	
 	private void switchQuestionAndAnswer() {
 		item.switchQuestionAndAnswer();
 		setTexts();
-		switchNewFiles();
 	}
 
 	private void setTexts() {
@@ -112,8 +118,8 @@ public class ItemController extends ControllerBase {
 		aSoundValue.setText(item.getAnswerSound());
 	}
 	
-	private void setFilePathToTextField(TextField textfield, MouseEvent e){
-		textfield.setText(chooseFile(e));
+	private void setFilePathToTextField(TextField textfield, ExtensionFilter extensions, MouseEvent e){
+		textfield.setText(chooseFile(extensions, e));
 	}
 	
 	private void saveItem(MouseEvent event) {
@@ -138,25 +144,17 @@ public class ItemController extends ControllerBase {
 		controller.setGroup(lesson, group);
 	}
 	
-	private String chooseFile(MouseEvent e) {
+	private String chooseFile(ExtensionFilter extensions, MouseEvent e) {
 		Node node = (Node) e.getSource();
 		Stage stage = (Stage) node.getScene().getWindow(); 
 		
 		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(extensions);
 		fileChooser.setTitle("Vyber súbor !");
 		File file = fileChooser.showOpenDialog(stage);
 		if (file != null) {
 			return file.getAbsolutePath();
 		}
 		return null;
-	}
-	
-	private void switchNewFiles() {
-		/*String tmpNewQImage = newAImage;
-		String tmpNewQSound = newASound;
-		newAImage = newQImage;
-		newASound = newQSound;
-		newQImage = tmpNewQImage;
-		newQSound = tmpNewQSound;*/
 	}
 }

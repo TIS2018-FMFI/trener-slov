@@ -15,6 +15,10 @@ public abstract class ControllerBase implements Initializable {
 	
 	public ControllerBase redirect(Scenes SCENE, MouseEvent event){
 		Node node = (Node) event.getSource();
+		return redirect(SCENE, node);
+	}
+	
+	public ControllerBase redirect(Scenes SCENE, Node node){
 		Stage stage = (Stage) node.getScene().getWindow();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/fxml/scenes/" + SCENE + ".fxml"));
 		Scene scene = null;

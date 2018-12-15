@@ -1,28 +1,38 @@
 package gui.controllers.sceneControllers;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import application.Main;
 import data.Item;
 import gui.ModeTimer;
+import gui.Scenes;
 import gui.controllers.ControllerBase;
+import gui.controllers.dialogControllers.ModeQuitDialogController;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import modes.GameMode;
 
 public class ModeController extends ControllerBase {
 	
 	@FXML
-	Button showAnswerBtn, wrongBtn, rightBtn, playSoundBtn;
+	Button showAnswerBtn, wrongBtn, rightBtn, playSoundBtn, quitBtn;
 	
 	@FXML
 	Label text;
@@ -47,8 +57,9 @@ public class ModeController extends ControllerBase {
 		timer.start();
 
 		item = mode.next(null);
-		checkItem();
-		showQuestion();
+		if (checkItem()) {
+			showQuestion();
+		}
 	}
 	
 	private void initializeBtns() {
@@ -56,12 +67,20 @@ public class ModeController extends ControllerBase {
 		wrongBtn.setOnMouseClicked(e -> wrong());
 		rightBtn.setOnMouseClicked(e -> right());
 		playSoundBtn.setOnMouseClicked(e -> playSound());
+		quitBtn.setOnMouseClicked(e -> quit(e));
+		
+		// TODO skusit vytuningovat resizovanie obrazka zarovno s oknom
+		/*imageParent.heightProperty().addListener(new ChangeListener<Number>() {
+		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+		        System.out.println("Height: " + newSceneHeight);
+		    }
+		});*/
 	}
 
 	@Override
 	protected void setFontSizeToTexts() {
 		int fontSize = Main.mainController.getFontSize();
-		List<Node> nodes = Arrays.asList(showAnswerBtn, text);
+		List<Node> nodes = Arrays.asList(showAnswerBtn, text, quitBtn);
 		setFontSizeToAllNodes(nodes, fontSize);
 	}
 
@@ -94,22 +113,33 @@ public class ModeController extends ControllerBase {
 	
 	private void right() {
 		item = mode.next(true);
-		checkItem();
-		showQuestion();
+		if (checkItem()) {
+			showQuestion();
+		}
 	}
 	
 	private void wrong() {
 		item = mode.next(false);
-		checkItem();
-		showQuestion();
-	}
-	
-	private void checkItem() {
-		if (item == null) {
-			showStats();
+		if (checkItem()) {
+			showQuestion();
 		}
 	}
 	
+	private boolean checkItem() {
+		if (item == null) {
+			boolean startModeAgain = showQuitDialog();
+			if (startModeAgain) {
+				mode.reinitialize();
+				start();
+			}
+			else {
+				redirect(Scenes.START_LESSON, quitBtn);
+			}
+			return false;
+		}
+		return true;
+	}
+
 	private void setImage(String imagePath) {
         File file = new File(imagePath);
         Image image = new Image(file.toURI().toString());
@@ -132,8 +162,34 @@ public class ModeController extends ControllerBase {
 		}
 	}
 	
-	private void showStats() {
-		System.out.println("Mod skoncil lebo uz nema ziadny item a ide sa ukazat statistika (este sa neukaze lebo nie je naimlementovana a preto to hodi error z ModeControlleru) !!! ");
-		// TODO skoci a ukaz statistiku
+	private boolean showQuitDialog() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/fxml/dialogs/modeQuitDialog.fxml"));
+        Stage stage = createDialogStage(fxmlLoader);
+        
+        AtomicBoolean startAgain = new AtomicBoolean();
+		ModeQuitDialogController controller = fxmlLoader.getController();
+        controller.setResultObject(startAgain);
+        
+        stage.showAndWait();
+        return startAgain.get();
+	}	
+	
+	private Stage createDialogStage(FXMLLoader loader) {
+        Parent parent = null;
+		try {
+			parent = loader.load();
+		} catch (IOException e)  { e.printStackTrace(); }
+
+        Scene scene = new Scene(parent);
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setMinWidth(600);
+        stage.setMinHeight(300);
+        stage.setScene(scene);
+        return stage;
+	}
+	
+	private void quit(MouseEvent e) {
+		redirect(Scenes.START_LESSON, e);
 	}
 }

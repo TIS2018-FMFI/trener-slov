@@ -44,5 +44,10 @@ public class Learning extends GameMode {
         }
         else return false;
     }
+    
+	@Override
+	public void reinitialize() {
+		// znovu pripravi polozky 
+	}
 
 }

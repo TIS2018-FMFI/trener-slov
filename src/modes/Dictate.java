@@ -49,4 +49,8 @@ public class Dictate extends GameMode {
         arr+="]";
         System.out.println(arr);
     }
+	@Override
+	public void reinitialize() {
+		// znovu pripravi polozky 
+	}
 }
