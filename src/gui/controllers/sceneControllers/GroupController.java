@@ -29,7 +29,7 @@ public class GroupController extends ControllerBase {
 	Button backBtn, newItemBtn, okBtn;
 	
 	@FXML
-	Label nameLabel;
+	Label nameLabel, lessonNameLabel;
 	
 	@FXML
 	TextField name, search;
@@ -62,6 +62,7 @@ public class GroupController extends ControllerBase {
 		setFontSizeToNode(nameLabel, fontSize);
 		setFontSizeToNode(name, fontSize);
 		setFontSizeToNode(search, fontSize);
+		setFontSizeToNode(lessonNameLabel, fontSize);
 	}
 
 	public void setGroup(Lesson lesson, Group group) {
@@ -69,6 +70,7 @@ public class GroupController extends ControllerBase {
 		this.group = group;
 		isNewGroup = false;
 		name.setText(group.getName());
+		lessonNameLabel.setText(lesson.getName());
 		listItems();
 	}
 	
