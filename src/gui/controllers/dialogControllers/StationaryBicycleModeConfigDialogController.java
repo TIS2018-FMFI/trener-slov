@@ -64,8 +64,7 @@ public class StationaryBicycleModeConfigDialogController extends ControllerBase 
 	
 	private void start(MouseEvent event) {
 		if (numberOfAnswersPlayValue.getText().equals("")
-				||  pauseDurationInSecsValue.getText().equals("")
-				|| modeDurationInSecsValue.getText().equals("")) {
+				||  pauseDurationInSecsValue.getText().equals("")) {
 			return;
 		}
 		Node source = (Node)  event.getSource(); 

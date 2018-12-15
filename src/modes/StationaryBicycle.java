@@ -25,4 +25,9 @@ public class StationaryBicycle extends GameMode {
     protected void randomize() {
 
     }
+    
+	@Override
+	public void reinitialize() {
+		// znovu pripravi polozky 
+	}
 }
