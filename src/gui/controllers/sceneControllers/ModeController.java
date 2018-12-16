@@ -14,6 +14,8 @@ import gui.ModeTimer;
 import gui.Scenes;
 import gui.controllers.ControllerBase;
 import gui.controllers.dialogControllers.ModeQuitDialogController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -68,13 +70,6 @@ public class ModeController extends ControllerBase {
 		rightBtn.setOnMouseClicked(e -> right());
 		playSoundBtn.setOnMouseClicked(e -> playSound());
 		quitBtn.setOnMouseClicked(e -> quit(e));
-		
-		// TODO skusit vytuningovat resizovanie obrazka zarovno s oknom
-		/*imageParent.heightProperty().addListener(new ChangeListener<Number>() {
-		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-		        System.out.println("Height: " + newSceneHeight);
-		    }
-		});*/
 	}
 
 	@Override
@@ -145,6 +140,7 @@ public class ModeController extends ControllerBase {
         Image image = new Image(file.toURI().toString());
         imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
+        imageView.setFitHeight(imageParent.getHeight());
 		imageView.fitHeightProperty().bind(imageParent.heightProperty());
 		imageParent.setCenter(imageView);
 	}
@@ -181,6 +177,7 @@ public class ModeController extends ControllerBase {
 		} catch (IOException e)  { e.printStackTrace(); }
 
         Scene scene = new Scene(parent);
+    	scene.getStylesheets().add(getClass().getResource("/gui/styles.css").toExternalForm());
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinWidth(600);

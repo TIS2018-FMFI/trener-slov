@@ -2,7 +2,7 @@
 <data xmlns:ns2="item" xmlns:ns3="group" xmlns:ns4="lesson">
     <dataFilePath>data/data.xml</dataFilePath>
     <config>
-        <fontSize>20</fontSize>
+        <fontSize>18</fontSize>
     </config>
     <fm/>
     <lessons>
@@ -26,13 +26,13 @@
                             <questionText>Otazka113?</questionText>
                             <answerText>Odpoved113!</answerText>
                         </item>
-                		<item>
+                        <item>
                             <questionText>Otazka114?</questionText>
                             <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
                             <questionSound>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\sounds\right.png</questionSound>
                             <answerText>Odpoved114!</answerText>
                         </item>
-                		<item>
+                        <item>
                             <questionText>Otazka115?</questionText>
                             <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
                             <questionSound>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\sounds\right.png</questionSound>
@@ -42,7 +42,7 @@
                 </group>
                 <group>
                     <name>group12</name>
-                    <order>1</order>
+                    <order>2</order>
                     <items>
                         <item>
                             <questionText>Otazka121?</questionText>
@@ -56,17 +56,17 @@
                             <questionText>Otazka123?</questionText>
                             <answerText>Odpoved123!</answerText>
                         </item>
-                		<item>
+                        <item>
                             <questionText>Otazka124?</questionText>
                             <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
                             <questionSound>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\sounds\right.png</questionSound>
                             <answerText>Odpoved124!</answerText>
-						 </item>
+                        </item>
                     </items>
                 </group>
                 <group>
                     <name>group13</name>
-                    <order>1</order>
+                    <order>3</order>
                     <items>
                         <item>
                             <questionText>Otazka131?</questionText>
@@ -80,12 +80,12 @@
                             <questionText>Otazka133?</questionText>
                             <answerText>Odpoved133!</answerText>
                         </item>
-                	 	<item>
+                        <item>
                             <questionText>Otazka134?</questionText>
                             <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
                             <questionSound>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\sounds\right.png</questionSound>
                             <answerText>Odpoved134!</answerText>
-						 </item>
+                        </item>
                     </items>
                 </group>
             </groups>

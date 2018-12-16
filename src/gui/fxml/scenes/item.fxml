@@ -22,7 +22,7 @@
             <HBox spacing="20.0">
                <children>
                   <Button fx:id="switchBtn" mnemonicParsing="false" text="Vymeniť" />
-                  <Button fx:id="okBtn" mnemonicParsing="false" text="Ok" />
+                  <Button fx:id="okBtn" minWidth="100.0" mnemonicParsing="false" text="Ok" />
                </children>
             </HBox>
          </children>
