@@ -9,18 +9,12 @@ import java.util.Collections;
 
 public class Examination extends GameMode {
     ArrayList<Item> items;
-    Integer actual;
     public Examination(Lesson less){
         this.lesson=less;
-        items = new ArrayList<>();
-        for (Group group : lesson.getGroupsInLesson()) {
-            for (Item item : group.getItemsInGroup()) {
-                items.add(item);
-            }
-        }
-        randomize();
+        reinitialize();
         this.printItems();
     }
+
     @Override
     public Item next(Boolean answerToPrevious) {// ak prva polozka tak predchadzajuca odpoved bude null
         if (!items.isEmpty()){
@@ -38,8 +32,10 @@ public class Examination extends GameMode {
                 return items.get(0);
             }
         }
+        this.printItems();
         return null;
     }
+
     @Override
     protected void randomize() {
         Collections.shuffle(items);
@@ -53,6 +49,12 @@ public class Examination extends GameMode {
     
 	@Override
 	public void reinitialize() {
-		// znovu pripravi polozky 
+        items = new ArrayList<>();
+        for (Group group : lesson.getGroupsInLesson()) {
+            for (Item item : group.getItemsInGroup()) {
+                items.add(item);
+            }
+        }
+        randomize();
 	}
 }
