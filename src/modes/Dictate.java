@@ -8,15 +8,10 @@ import java.util.Collections;
 
 public class Dictate extends GameMode {
     private ArrayList<Item> items;
+
     public Dictate(Lesson less){
         this.lesson=less;
-        items=new ArrayList<>();
-        for (Group group : lesson.getGroupsInLesson()) {
-            for (Item item : group.getItemsInGroup()) {
-                if (item.getQuestionSound() != null && item.getAnswerText() != null) items.add(item);
-            }
-        }
-        randomize();
+        reinitialize();
         this.printItems();
     }
     @Override
@@ -31,6 +26,7 @@ public class Dictate extends GameMode {
                 return items.get(0);
             }
             else if (answerToPrevious==false){
+                this.printItems();
                 items.add(items.get(0));
                 items.remove(0);
                 return items.get(0);
@@ -49,8 +45,15 @@ public class Dictate extends GameMode {
         arr+="]";
         System.out.println(arr);
     }
+
 	@Override
 	public void reinitialize() {
-		// znovu pripravi polozky 
+        items=new ArrayList<>();
+        for (Group group : lesson.getGroupsInLesson()) {
+            for (Item item : group.getItemsInGroup()) {
+                if (item.getQuestionSound() != null && item.getAnswerText() != null) items.add(item);
+            }
+        }
+        randomize();
 	}
 }

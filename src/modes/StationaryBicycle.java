@@ -18,7 +18,6 @@ public class StationaryBicycle extends GameMode {
         this.numberOfAnswersPlay=number;
         this.pauseDurationInSecs=pause;
         this.pauseDurationInSecs=modeDur;
-
         reinitialize();
     }
 
@@ -40,7 +39,6 @@ public class StationaryBicycle extends GameMode {
             }
         }
         randomize();
-        
         copiedItems=cloneList(items);
 	}
 
