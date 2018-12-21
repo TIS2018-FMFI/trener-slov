@@ -123,6 +123,10 @@ public class ItemController extends ControllerBase {
 	}
 	
 	private void saveItem(MouseEvent event) {
+		if (!check()) {
+			// TODO show alert
+			return;
+		}
 		item.setQuestionText(qTextValue.getText());
 		item.setAnswerText(aTextValue.getText());
 
@@ -139,6 +143,11 @@ public class ItemController extends ControllerBase {
 		backToParentGroup(event);
 	}
 	
+	private boolean check() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	private void backToParentGroup(MouseEvent event) {
 		GroupController controller = (GroupController) redirect(Scenes.GROUP, event);
 		controller.setGroup(lesson, group);

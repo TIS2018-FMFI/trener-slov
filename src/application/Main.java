@@ -34,7 +34,6 @@ public class Main extends Application{
     	Scene scene = new Scene(mainMenu);
     	scene.getStylesheets().add(getClass().getResource("/gui/styles.css").toExternalForm());
 		primaryStage.setScene(scene);
-		primaryStage.initStyle(StageStyle.UTILITY);
 		primaryStage.setTitle(Scenes.MAIN_MENU.getTitle());
 		primaryStage.show();
 
