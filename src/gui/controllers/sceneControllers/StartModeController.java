@@ -84,6 +84,7 @@ public class StartModeController extends ControllerBase {
 			title = "Stacinárny bicykel";
 			List<Integer> configValues = openStationaryBicycleModeConfigDialog();
 			if (configValues.get(0) == 0 || configValues.get(1) == 0 || configValues.get(2) == 0) {
+				System.out.println("jedno z nich je nula");
 				return;
 			}
 			mode = new StationaryBicycle(lesson, configValues.get(0), configValues.get(1), configValues.get(2));
@@ -112,7 +113,7 @@ public class StartModeController extends ControllerBase {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/fxml/dialogs/stationaryBicycleModeConfigDialog.fxml"));
         Stage stage = createDialogStage(fxmlLoader);
         
-		AtomicInteger numberOfAnswersPlay = new AtomicInteger(0);
+		AtomicInteger numberOfAnswersPlay = new AtomicInteger(3);
 		AtomicInteger pauseDurationInSecs = new AtomicInteger(0);
 		AtomicInteger modeDurationInSecs = new AtomicInteger(0);
 		StationaryBicycleModeConfigDialogController controller = fxmlLoader.getController();

@@ -14,8 +14,6 @@ import gui.ModeTimer;
 import gui.Scenes;
 import gui.controllers.ControllerBase;
 import gui.controllers.dialogControllers.ModeQuitDialogController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -25,11 +23,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modes.GameMode;
+import modes.StationaryBicycle;
 
 public class ModeController extends ControllerBase {
 	
@@ -56,6 +54,10 @@ public class ModeController extends ControllerBase {
 	
 	private void start() {
 		timer = new ModeTimer(this);
+		if (isStationaryBicycle()) {
+			StationaryBicycle sb = (StationaryBicycle)mode;
+			//timer.quitModeAfterLimit(sb.getpModeDurationInSecs())
+		}
 		timer.start();
 
 		item = mode.next(null);
@@ -69,7 +71,7 @@ public class ModeController extends ControllerBase {
 		wrongBtn.setOnMouseClicked(e -> wrong());
 		rightBtn.setOnMouseClicked(e -> right());
 		playSoundBtn.setOnMouseClicked(e -> playSound());
-		quitBtn.setOnMouseClicked(e -> quit(e));
+		quitBtn.setOnMouseClicked(e -> quit());
 	}
 
 	@Override
@@ -84,8 +86,26 @@ public class ModeController extends ControllerBase {
 		start();
 	}
 	
+	public void quit() {
+		boolean startModeAgain = showQuitDialog();
+		if (startModeAgain) {
+			mode.reinitialize();
+			start();
+		}
+		else {
+			redirect(Scenes.START_LESSON, quitBtn);
+		}
+	}
+	
 	private void showQuestion() {
-		showAnswerBtn.setVisible(true);
+		if (isStationaryBicycle()) {
+			showAnswerBtn.setVisible(false);
+			StationaryBicycle sb = (StationaryBicycle)mode;
+			//timer.afterNSecondsShowAnswer(sb.getpPauseDurationInSecs());
+		}
+		else {
+			showAnswerBtn.setVisible(true);
+		}
 		rightBtn.setVisible(false);
 		wrongBtn.setVisible(false);
 		text.setText( (item.getQuestionText() == null) ? "" : item.getQuestionText() );
@@ -95,14 +115,40 @@ public class ModeController extends ControllerBase {
 		}
 	}
 	
-	private void showAnswer() {
+	public void showAnswer() {
 		showAnswerBtn.setVisible(false);
-		rightBtn.setVisible(true);
-		wrongBtn.setVisible(true);
+		if (isStationaryBicycle()) {
+			rightBtn.setVisible(false);
+			wrongBtn.setVisible(false);
+		}
+		else {
+			rightBtn.setVisible(true);
+			wrongBtn.setVisible(true);
+		}
 		text.setText( (item.getAnswerText() == null) ? "" : item.getAnswerText() );
-		playSoundBtn.setVisible( (item.getAnswerSound() != null) );
 		if (item.getAnswerImg() != null) {
 			setImage(item.getAnswerImg());
+		}
+		handleAnswerSound();
+	}
+	
+	private void handleAnswerSound() {
+		if (item.getAnswerSound() == null) {
+			playSoundBtn.setVisible(false);
+			if (isStationaryBicycle()) {
+				// nech tva tolko co otazka, potom nech ukaze otazku
+			}
+		}
+		else {
+			playSoundBtn.setVisible(true);
+			if (isStationaryBicycle()) {
+				playSoundBtn.setDisable(true);
+				// kolko krat bolo zvolene ze sa ma zvuk prehrat, ho prehra a caka az kym sa neprehral posledny krat
+				// poto ukaze otazku
+				// bude treba aby play Sound vratil trvanie prehrania
+				
+				playSoundBtn.setDisable(false);
+			}
 		}
 	}
 	
@@ -122,14 +168,7 @@ public class ModeController extends ControllerBase {
 	
 	private boolean checkItem() {
 		if (item == null) {
-			boolean startModeAgain = showQuitDialog();
-			if (startModeAgain) {
-				mode.reinitialize();
-				start();
-			}
-			else {
-				redirect(Scenes.START_LESSON, quitBtn);
-			}
+			quit();
 			return false;
 		}
 		return true;
@@ -146,6 +185,7 @@ public class ModeController extends ControllerBase {
 	}
 	
 	private void playSound() {
+		// TODO nech vrati kolko zvuk trva
 		String soundPath = null;
 		if (showAnswerBtn.isVisible()) {
 			soundPath = item.getQuestionSound();
@@ -186,7 +226,12 @@ public class ModeController extends ControllerBase {
         return stage;
 	}
 	
-	private void quit(MouseEvent e) {
-		redirect(Scenes.START_LESSON, e);
+	private boolean isStationaryBicycle() {
+		try {
+			StationaryBicycle sb = (StationaryBicycle) mode;
+			return true;
+		}
+		catch (ClassCastException e) {}
+		return false;
 	}
 }
