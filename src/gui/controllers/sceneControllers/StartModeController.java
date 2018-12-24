@@ -95,6 +95,7 @@ public class StartModeController extends ControllerBase {
 		modeScene.setTitle(title);
 		ModeController controller = (ModeController) redirect(modeScene, e);
 		controller.setMode(mode);
+		controller.start();
 	}
 
 	private int openLearningModeConfigDialog() {

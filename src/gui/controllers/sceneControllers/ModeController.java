@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import application.Main;
 import data.Item;
-import gui.ModeTimer;
+import gui.WaitAndCallGuiMethod;
 import gui.Scenes;
 import gui.controllers.ControllerBase;
 import gui.controllers.dialogControllers.ModeQuitDialogController;
@@ -43,7 +43,7 @@ public class ModeController extends ControllerBase {
 	ImageView imageView;
 	
 	GameMode mode;
-	ModeTimer timer;
+	WaitAndCallGuiMethod timer;
 	Item item;
 
 	@Override
@@ -52,13 +52,14 @@ public class ModeController extends ControllerBase {
 		initializeBtns();
 	}
 	
-	private void start() {
-		timer = new ModeTimer(this);
+	public void start() {
 		if (isStationaryBicycle()) {
 			StationaryBicycle sb = (StationaryBicycle)mode;
-			//timer.quitModeAfterLimit(sb.getpModeDurationInSecs())
+			new WaitAndCallGuiMethod(sb.getModeDurationInSecs(), () -> {
+				quit();
+				return null;
+			});
 		}
-		timer.start();
 
 		item = mode.next(null);
 		if (checkItem()) {
@@ -83,7 +84,6 @@ public class ModeController extends ControllerBase {
 
 	public void setMode(GameMode mode) {
 		this.mode = mode;
-		start();
 	}
 	
 	public void quit() {
@@ -98,20 +98,21 @@ public class ModeController extends ControllerBase {
 	}
 	
 	private void showQuestion() {
-		if (isStationaryBicycle()) {
-			showAnswerBtn.setVisible(false);
-			StationaryBicycle sb = (StationaryBicycle)mode;
-			//timer.afterNSecondsShowAnswer(sb.getpPauseDurationInSecs());
-		}
-		else {
-			showAnswerBtn.setVisible(true);
-		}
+		showAnswerBtn.setVisible(true);
 		rightBtn.setVisible(false);
 		wrongBtn.setVisible(false);
 		text.setText( (item.getQuestionText() == null) ? "" : item.getQuestionText() );
 		playSoundBtn.setVisible( (item.getQuestionSound() != null) );
 		if (item.getQuestionImg() != null) {
 			setImage(item.getQuestionImg());
+		}
+		if (isStationaryBicycle()) {
+		    showAnswerBtn.setVisible(false);
+			StationaryBicycle sb = (StationaryBicycle)mode;
+			new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
+				showAnswer();
+				return null;
+			});
 		}
 	}
 	
@@ -129,14 +130,18 @@ public class ModeController extends ControllerBase {
 		if (item.getAnswerImg() != null) {
 			setImage(item.getAnswerImg());
 		}
-		handleAnswerSound();
+		handleAnswerDuration();
 	}
 	
-	private void handleAnswerSound() {
+	private void handleAnswerDuration() {
 		if (item.getAnswerSound() == null) {
 			playSoundBtn.setVisible(false);
 			if (isStationaryBicycle()) {
-				// nech tva tolko co otazka, potom nech ukaze otazku
+				StationaryBicycle sb = (StationaryBicycle)mode;
+				new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
+					right();
+					return null;
+				});
 			}
 		}
 		else {
