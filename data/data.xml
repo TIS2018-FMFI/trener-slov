@@ -206,6 +206,11 @@
                         </item>
                     </items>
                 </group>
+                <group>
+                    <name>group34</name>
+                    <order>4</order>
+                    <items/>
+                </group>
             </groups>
             <name>lesson3</name>
         </lesson>

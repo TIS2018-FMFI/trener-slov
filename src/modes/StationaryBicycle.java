@@ -47,4 +47,7 @@ public class StationaryBicycle extends GameMode {
         for (Item i:list) newL.add(i);
         return newL;
     }
+    public Integer getNumberOfPlay(){ return numberOfAnswersPlay; }
+    public Integer getPauseDurationInSecs(){ return pauseDurationInSecs; }
+    public Integer getModeDurationInSecs(){ return modeDurationInSecs; }
 }
