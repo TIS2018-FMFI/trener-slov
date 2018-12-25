@@ -24,6 +24,7 @@ public abstract class ControllerBase implements Initializable {
 		Scene scene = null;
 		try {
 			scene = new Scene(loader.load(), node.getScene().getWidth(), node.getScene().getHeight());
+			scene.getStylesheets().add(getClass().getResource("/gui/styles.css").toExternalForm());
 		} catch (IOException e) { e.printStackTrace(); }
 		stage.setScene(scene);
 		stage.sizeToScene();

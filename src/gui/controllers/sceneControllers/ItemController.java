@@ -15,9 +15,11 @@ import gui.Scenes;
 import gui.controllers.ControllerBase;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -123,6 +125,10 @@ public class ItemController extends ControllerBase {
 	}
 	
 	private void saveItem(MouseEvent event) {
+		if (!check()) {
+			showAlert();
+			return;
+		}
 		item.setQuestionText(qTextValue.getText());
 		item.setAnswerText(aTextValue.getText());
 
@@ -139,6 +145,20 @@ public class ItemController extends ControllerBase {
 		backToParentGroup(event);
 	}
 	
+	private boolean check() {
+		boolean questionIsFilled = (!qTextValue.getText().isEmpty() || !qImageValue.getText().isEmpty() || !qSoundValue.getText().isEmpty());
+		boolean answerIsFilled = (!aTextValue.getText().isEmpty() || !aImageValue.getText().isEmpty() || !aSoundValue.getText().isEmpty());;
+		return (questionIsFilled && answerIsFilled);
+	}
+	
+    private void showAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("");
+        alert.setHeaderText(null);
+        alert.setContentText("Musí byť vyplnený aspoň jeden údaj z otázky a aspoň jeden údaj z odpovede.");
+        alert.showAndWait();
+    }
+
 	private void backToParentGroup(MouseEvent event) {
 		GroupController controller = (GroupController) redirect(Scenes.GROUP, event);
 		controller.setGroup(lesson, group);

@@ -27,7 +27,7 @@
             <Button fx:id="newGroupBtn" mnemonicParsing="false" text="Vytvor skupinu" BorderPane.alignment="CENTER" />
          </left>
          <right>
-            <Button fx:id="okBtn" mnemonicParsing="false" text="Ok" BorderPane.alignment="CENTER" />
+            <Button fx:id="okBtn" minWidth="100.0" mnemonicParsing="false" text="Ok" BorderPane.alignment="CENTER" />
          </right>
          <BorderPane.margin>
             <Insets left="20.0" right="20.0" />

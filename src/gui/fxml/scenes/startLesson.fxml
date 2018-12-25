@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-
-<BorderPane fx:id="pane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="gui.controllers.sceneControllers.StartLessonController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.sceneControllers.StartLessonController">
    <top>
       <FlowPane alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="50.0" BorderPane.alignment="CENTER">
          <children>

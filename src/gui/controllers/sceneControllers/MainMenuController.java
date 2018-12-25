@@ -49,6 +49,7 @@ public class MainMenuController extends ControllerBase {
 		} catch (IOException e)  { e.printStackTrace(); }
 
         Scene scene = new Scene(parent);
+    	scene.getStylesheets().add(getClass().getResource("/gui/styles.css").toExternalForm());
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinWidth(600);

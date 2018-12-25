@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
@@ -30,7 +31,9 @@ public class Main extends Application{
     	Parent mainMenu = FXMLLoader.load(getClass().getResource("/gui/fxml/scenes/" + Scenes.MAIN_MENU + ".fxml"));
     	primaryStage.setMinWidth(800);
     	primaryStage.setMinHeight(600);
-		primaryStage.setScene(new Scene(mainMenu));
+    	Scene scene = new Scene(mainMenu);
+    	scene.getStylesheets().add(getClass().getResource("/gui/styles.css").toExternalForm());
+		primaryStage.setScene(scene);
 		primaryStage.setTitle(Scenes.MAIN_MENU.getTitle());
 		primaryStage.show();
 

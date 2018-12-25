@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import application.Main;
 import data.Item;
-import gui.ModeTimer;
+import gui.WaitAndCallGuiMethod;
 import gui.Scenes;
 import gui.controllers.ControllerBase;
 import gui.controllers.dialogControllers.ModeQuitDialogController;
@@ -23,11 +23,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modes.GameMode;
+import modes.StationaryBicycle;
 
 public class ModeController extends ControllerBase {
 	
@@ -43,7 +43,7 @@ public class ModeController extends ControllerBase {
 	ImageView imageView;
 	
 	GameMode mode;
-	ModeTimer timer;
+	WaitAndCallGuiMethod timer;
 	Item item;
 
 	@Override
@@ -52,9 +52,14 @@ public class ModeController extends ControllerBase {
 		initializeBtns();
 	}
 	
-	private void start() {
-		timer = new ModeTimer(this);
-		timer.start();
+	public void start() {
+		if (isStationaryBicycle()) {
+			StationaryBicycle sb = (StationaryBicycle)mode;
+			new WaitAndCallGuiMethod(sb.getModeDurationInSecs(), () -> {
+				quit();
+				return null;
+			});
+		}
 
 		item = mode.next(null);
 		if (checkItem()) {
@@ -67,14 +72,7 @@ public class ModeController extends ControllerBase {
 		wrongBtn.setOnMouseClicked(e -> wrong());
 		rightBtn.setOnMouseClicked(e -> right());
 		playSoundBtn.setOnMouseClicked(e -> playSound());
-		quitBtn.setOnMouseClicked(e -> quit(e));
-		
-		// TODO skusit vytuningovat resizovanie obrazka zarovno s oknom
-		/*imageParent.heightProperty().addListener(new ChangeListener<Number>() {
-		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-		        System.out.println("Height: " + newSceneHeight);
-		    }
-		});*/
+		quitBtn.setOnMouseClicked(e -> quit());
 	}
 
 	@Override
@@ -86,7 +84,17 @@ public class ModeController extends ControllerBase {
 
 	public void setMode(GameMode mode) {
 		this.mode = mode;
-		start();
+	}
+	
+	public void quit() {
+		boolean startModeAgain = showQuitDialog();
+		if (startModeAgain) {
+			mode.reinitialize();
+			start();
+		}
+		else {
+			redirect(Scenes.START_LESSON, quitBtn);
+		}
 	}
 	
 	private void showQuestion() {
@@ -98,16 +106,54 @@ public class ModeController extends ControllerBase {
 		if (item.getQuestionImg() != null) {
 			setImage(item.getQuestionImg());
 		}
+		if (isStationaryBicycle()) {
+		    showAnswerBtn.setVisible(false);
+			StationaryBicycle sb = (StationaryBicycle)mode;
+			new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
+				showAnswer();
+				return null;
+			});
+		}
 	}
 	
-	private void showAnswer() {
+	public void showAnswer() {
 		showAnswerBtn.setVisible(false);
-		rightBtn.setVisible(true);
-		wrongBtn.setVisible(true);
+		if (isStationaryBicycle()) {
+			rightBtn.setVisible(false);
+			wrongBtn.setVisible(false);
+		}
+		else {
+			rightBtn.setVisible(true);
+			wrongBtn.setVisible(true);
+		}
 		text.setText( (item.getAnswerText() == null) ? "" : item.getAnswerText() );
-		playSoundBtn.setVisible( (item.getAnswerSound() != null) );
 		if (item.getAnswerImg() != null) {
 			setImage(item.getAnswerImg());
+		}
+		handleAnswerDuration();
+	}
+	
+	private void handleAnswerDuration() {
+		if (item.getAnswerSound() == null) {
+			playSoundBtn.setVisible(false);
+			if (isStationaryBicycle()) {
+				StationaryBicycle sb = (StationaryBicycle)mode;
+				new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
+					right();
+					return null;
+				});
+			}
+		}
+		else {
+			playSoundBtn.setVisible(true);
+			if (isStationaryBicycle()) {
+				playSoundBtn.setDisable(true);
+				// kolko krat bolo zvolene ze sa ma zvuk prehrat, ho prehra a caka az kym sa neprehral posledny krat
+				// poto ukaze otazku
+				// bude treba aby play Sound vratil trvanie prehrania
+				
+				playSoundBtn.setDisable(false);
+			}
 		}
 	}
 	
@@ -127,14 +173,7 @@ public class ModeController extends ControllerBase {
 	
 	private boolean checkItem() {
 		if (item == null) {
-			boolean startModeAgain = showQuitDialog();
-			if (startModeAgain) {
-				mode.reinitialize();
-				start();
-			}
-			else {
-				redirect(Scenes.START_LESSON, quitBtn);
-			}
+			quit();
 			return false;
 		}
 		return true;
@@ -145,11 +184,13 @@ public class ModeController extends ControllerBase {
         Image image = new Image(file.toURI().toString());
         imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
+        imageView.setFitHeight(imageParent.getHeight());
 		imageView.fitHeightProperty().bind(imageParent.heightProperty());
 		imageParent.setCenter(imageView);
 	}
 	
 	private void playSound() {
+		// TODO nech vrati kolko zvuk trva
 		String soundPath = null;
 		if (showAnswerBtn.isVisible()) {
 			soundPath = item.getQuestionSound();
@@ -181,6 +222,7 @@ public class ModeController extends ControllerBase {
 		} catch (IOException e)  { e.printStackTrace(); }
 
         Scene scene = new Scene(parent);
+    	scene.getStylesheets().add(getClass().getResource("/gui/styles.css").toExternalForm());
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinWidth(600);
@@ -189,7 +231,12 @@ public class ModeController extends ControllerBase {
         return stage;
 	}
 	
-	private void quit(MouseEvent e) {
-		redirect(Scenes.START_LESSON, e);
+	private boolean isStationaryBicycle() {
+		try {
+			StationaryBicycle sb = (StationaryBicycle) mode;
+			return true;
+		}
+		catch (ClassCastException e) {}
+		return false;
 	}
 }

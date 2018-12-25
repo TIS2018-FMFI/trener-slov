@@ -2,7 +2,7 @@
 <data xmlns:ns2="item" xmlns:ns3="group" xmlns:ns4="lesson">
     <dataFilePath>data/data.xml</dataFilePath>
     <config>
-        <fontSize>20</fontSize>
+        <fontSize>18</fontSize>
     </config>
     <fm/>
     <lessons>
@@ -42,7 +42,7 @@
                 </group>
                 <group>
                     <name>group12</name>
-                    <order>1</order>
+                    <order>2</order>
                     <items>
                         <item>
                             <questionText>Otazka121?</questionText>
@@ -66,7 +66,7 @@
                 </group>
                 <group>
                     <name>group13</name>
-                    <order>1</order>
+                    <order>3</order>
                     <items>
                         <item>
                             <questionText>Otazka131?</questionText>
