@@ -17,7 +17,7 @@ public class StationaryBicycle extends GameMode {
         this.lesson=less;
         this.numberOfAnswersPlay=number;
         this.pauseDurationInSecs=pause;
-        this.pauseDurationInSecs=modeDur;
+        this.modeDurationInSecs=modeDur;
         reinitialize();
     }
 
