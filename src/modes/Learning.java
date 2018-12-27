@@ -11,9 +11,9 @@ public class Learning extends GameMode {
     ArrayList<Group> skupiny;
     ArrayList<Group> rowOfG;
     ArrayList<Item> row;
-    Integer actual=-1;
-    Integer end=2;
-    Boolean fazeOneDone=false;
+    Integer actual;
+    Integer end;
+    Boolean phaseOneDone;
     HashMap<Group,Integer> corrAnswers;
 
     public Learning(Lesson less, Integer num){
@@ -24,24 +24,28 @@ public class Learning extends GameMode {
 
     @Override
     public Item next(Boolean answerToPrevious) {
-        if (answerToPrevious==null){
-            return row.remove(0);
-        }
-        else if (answerToPrevious==true){
-            if (row.isEmpty()) {
-                Integer i=corrAnswers.get(rowOfG.get(actual));
-                i++;
-                corrAnswers.put(rowOfG.get(actual),i);
-                printHash();
+        if (!phaseOneDone){
+            if (answerToPrevious==null){
+                return row.remove(0);
+            }
+            else if (answerToPrevious==true){
+                if (row.isEmpty()) {
+                    Integer i=corrAnswers.get(rowOfG.get(actual));
+                    i++;
+                    corrAnswers.put(rowOfG.get(actual),i);
+                    printHash();
+                    addNextItems();
+                }
+                if (phaseOneDone) return null;
+                else return row.remove(0);
+            }
+            else if (answerToPrevious==false){
+                addActualGroup();
                 addNextItems();
             }
             return row.remove(0);
         }
-        else if (answerToPrevious==false){
-            addActualGroup();
-            addNextItems();
-        }
-        return row.remove(0);
+        else return null;
     }
 
     @Override
@@ -49,6 +53,9 @@ public class Learning extends GameMode {
     
 	@Override
 	public void reinitialize() {
+        actual=-1;
+        end=2;
+        phaseOneDone = false;
         skupiny=new ArrayList<>();
         row=new ArrayList<>();
         corrAnswers=new HashMap<>();
@@ -71,14 +78,22 @@ public class Learning extends GameMode {
             actual=0;
             addNextGroup();
         }
-        for (Item i:rowOfG.get(actual).getItemsInGroup()){ row.add(i);}
-        System.out.println("Actual group is "+actual);
+        if (checkAll()){
+           phaseOneDone =true;
+           System.out.println("Prva faza ukoncena!!!!!!!!!!!!!!!!!");
+        }
+        else {
+            System.out.println(rowOfG.get(actual).getName()+"*"+(corrAnswers.get(rowOfG.get(actual)))+" <= "+numOfRepeat);
+            if (corrAnswers.get(rowOfG.get(actual))<numOfRepeat){
+                for (Item i:rowOfG.get(actual).getItemsInGroup()){ row.add(i);}
+            }
+            else addNextItems();
+        }
     }
     protected void addNextGroup(){
         if (end==skupiny.size()) end=0;
         rowOfG.add(skupiny.get(end));
         end++;
-
         printRow();
     }
     protected void addActualGroup(){
@@ -109,6 +124,12 @@ public class Learning extends GameMode {
             if (g==skupiny.get(i)) return i;
         }
         return null;
+    }
+    protected Boolean checkAll(){
+        for (Group g:skupiny) {
+            if (corrAnswers.get(g)<numOfRepeat) return false;
+        }
+        return true;
     }
     protected void printHash(){
         String v="{ ";
