@@ -36,8 +36,7 @@ public class Learning extends GameMode {
                     printHash();
                     addNextItems();
                 }
-                if (phaseOneDone) return null;
-                else return row.remove(0);
+                return row.remove(0);
             }
             else if (answerToPrevious==false){
                 addActualGroup();
@@ -45,7 +44,11 @@ public class Learning extends GameMode {
             }
             return row.remove(0);
         }
-        else return null;
+        else {
+            if (row.isEmpty() && skupiny.isEmpty()) return null;
+            if (row.isEmpty()) addNextItems();
+            return row.remove(0);
+        }
     }
 
     @Override
@@ -69,49 +72,69 @@ public class Learning extends GameMode {
         printGroups();
         printRow();
         addNextItems();
-
     }
+
     protected void addNextItems(){
         row.clear();
-        actual++;
-        if (actual==rowOfG.size()){
-            actual=0;
-            addNextGroup();
-        }
-        if (checkAll()){
-           phaseOneDone =true;
-           System.out.println("Prva faza ukoncena!!!!!!!!!!!!!!!!!");
+        if (!phaseOneDone){
+            actual++;
+            if (actual==rowOfG.size()){
+                actual=0;
+                addNextGroup();
+            }
+            if (checkAll()){
+                phaseOneDone = true;
+                System.out.println("Prva faza ukoncena!!!!!!!!!!!!!!!!!");
+                for (Group g:skupiny) {
+                    for (Item i:g.getItemsInGroup()) {
+                        row.add(i);
+                    }
+                }
+                skupiny.remove(0);
+            }
+            else {
+                if (corrAnswers.get(rowOfG.get(actual))<numOfRepeat){
+                    for (Item i:rowOfG.get(actual).getItemsInGroup()){ row.add(i);}
+                }
+                else addNextItems();
+            }
         }
         else {
-            System.out.println(rowOfG.get(actual).getName()+"*"+(corrAnswers.get(rowOfG.get(actual)))+" <= "+numOfRepeat);
-            if (corrAnswers.get(rowOfG.get(actual))<numOfRepeat){
-                for (Item i:rowOfG.get(actual).getItemsInGroup()){ row.add(i);}
+            for (Group g:skupiny) {
+                for (Item i:g.getItemsInGroup()) {
+                    row.add(i);
+                }
             }
-            else addNextItems();
+            if (!skupiny.isEmpty()) skupiny.remove(0);
         }
     }
+
     protected void addNextGroup(){
         if (end==skupiny.size()) end=0;
         rowOfG.add(skupiny.get(end));
         end++;
         printRow();
     }
+
     protected void addActualGroup(){
-        rowOfG.add(skupiny.get(actual));
+        rowOfG.add(rowOfG.get(actual));
         printRow();
     }
+
     protected void printRow(){
         String vysl="{ ";
         for (Group g : rowOfG){ vysl+=g.getName()+", ";}
         vysl+="}";
         System.out.println(vysl);
     }
+
     protected void printGroups(){
         String vysl="{ ";
         for (Group g : skupiny){ vysl+=g.getName()+", ";}
         vysl+="}";
         System.out.println(vysl);
     }
+
     protected int count(Group g){
         int i=0;
         for (Group gg:rowOfG) {
@@ -119,6 +142,7 @@ public class Learning extends GameMode {
         }
         return i;
     }
+
     protected Integer index(Group g){
         for (int i = 0; i < skupiny.size(); i++) {
             if (g==skupiny.get(i)) return i;
@@ -131,6 +155,7 @@ public class Learning extends GameMode {
         }
         return true;
     }
+
     protected void printHash(){
         String v="{ ";
         for (Group g: corrAnswers.keySet()) {
