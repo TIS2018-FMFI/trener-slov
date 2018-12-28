@@ -43,7 +43,9 @@ public class ModeController extends ControllerBase {
 	ImageView imageView;
 	
 	GameMode mode;
-	WaitAndCallGuiMethod timer;
+	WaitAndCallGuiMethod modeTimer;
+	WaitAndCallGuiMethod questionTimer;
+	WaitAndCallGuiMethod answerTimer;
 	Item item;
 
 	@Override
@@ -54,8 +56,14 @@ public class ModeController extends ControllerBase {
 	
 	public void start() {
 		if (isStationaryBicycle()) {
-			StationaryBicycle sb = (StationaryBicycle)mode;
-			new WaitAndCallGuiMethod(sb.getModeDurationInSecs(), () -> {
+			StationaryBicycle sb = (StationaryBicycle) mode;
+			modeTimer = new WaitAndCallGuiMethod(sb.getModeDurationInSecs(), () -> {
+				if (questionTimer != null) {
+					questionTimer.stop();
+				}
+				if (answerTimer != null) {
+					answerTimer.stop();
+				}
 				quit();
 				return null;
 			});
@@ -109,7 +117,7 @@ public class ModeController extends ControllerBase {
 		if (isStationaryBicycle()) {
 		    showAnswerBtn.setVisible(false);
 			StationaryBicycle sb = (StationaryBicycle)mode;
-			new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
+			questionTimer = new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
 				showAnswer();
 				return null;
 			});
@@ -138,7 +146,7 @@ public class ModeController extends ControllerBase {
 			playSoundBtn.setVisible(false);
 			if (isStationaryBicycle()) {
 				StationaryBicycle sb = (StationaryBicycle)mode;
-				new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
+				answerTimer = new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
 					right();
 					return null;
 				});
