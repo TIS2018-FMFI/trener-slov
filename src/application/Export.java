@@ -2,6 +2,7 @@ package application;
 
 import data.Lesson;
 
+import javax.swing.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -18,6 +19,16 @@ public class Export {
     }
 
     private void chooseTargetPath() {
+        JButton open = new JButton();
+        JFileChooser fo = new JFileChooser();
+        fo.setCurrentDirectory(new java.io.File("C:"));
+        fo.setDialogTitle("hello");
+        fo.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        if(fo.showOpenDialog(open) == JFileChooser.APPROVE_OPTION){
+            //
+        }
+        targetPath = fo.getSelectedFile().getAbsolutePath();
+        System.out.println("you choose:"+fo.getSelectedFile().getAbsolutePath());
 
     }
 
