@@ -37,7 +37,7 @@ public class Main extends Application{
 		primaryStage.setTitle(Scenes.MAIN_MENU.getTitle());
 		primaryStage.show();
 
-//		testDataController();
+		testDataController();
 	}
 
 	private void testDataController() throws FileNotFoundException, JAXBException {
@@ -52,8 +52,8 @@ public class Main extends Application{
 			testItem1,
 			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\test\\e9b29e55777900281dc1df02ff9c8c34e18c3eb5_full.jpg",
 			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\test\\Chookity Pah.wav",
-			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\trener-slov\\data\\files\\images\\ClassDiagram.jpeg",
-			"C:\\Users\\Kjub\\Documents\\skola\\TIS\\test\\Chookity1.wav"
+			"data\\files\\images\\ClassDiagram.jpeg",
+			"data\\files\\sounds\\Chookity1.wav"
 		);
 
         System.out.println(testItem1.getQuestionSound());

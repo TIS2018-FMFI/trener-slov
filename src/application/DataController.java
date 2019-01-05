@@ -126,10 +126,17 @@ public class DataController {
         String filePath = fp;
         File checkedFile;
 
-        if (!fm.fileIsAlreadyInApplication(filePath)) {
+        if (!fm.filePathIsInApplication(filePath)) {
             checkedFile = new File(filePath);
             filePath = createNewFileNameIfThisExists(checkedFile.getName(), fileTypePath);
             fm.copyFileFromTo(fp, filePath);
+        }
+        else {
+            checkedFile = new File(filePath);
+            if (!checkedFile.exists()) {
+                System.out.println("FILE: " + checkedFile.getPath() + " DOESNT EXIST INSIDE APPLICATION!");
+            }
+
         }
         return filePath;
     }
