@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import application.Main;
+import application.MainController;
 import data.Item;
 import gui.WaitAndCallGuiMethod;
 import gui.Scenes;
@@ -44,8 +45,7 @@ public class ModeController extends ControllerBase {
 	
 	GameMode mode;
 	WaitAndCallGuiMethod modeTimer;
-	WaitAndCallGuiMethod questionTimer;
-	WaitAndCallGuiMethod answerTimer;
+	WaitAndCallGuiMethod itemDurationTimer;
 	Item item;
 
 	@Override
@@ -58,11 +58,8 @@ public class ModeController extends ControllerBase {
 		if (isStationaryBicycle()) {
 			StationaryBicycle sb = (StationaryBicycle) mode;
 			modeTimer = new WaitAndCallGuiMethod(sb.getModeDurationInSecs(), () -> {
-				if (questionTimer != null) {
-					questionTimer.stop();
-				}
-				if (answerTimer != null) {
-					answerTimer.stop();
+				if (itemDurationTimer != null) {
+					itemDurationTimer.stop();
 				}
 				quit();
 				return null;
@@ -110,18 +107,10 @@ public class ModeController extends ControllerBase {
 		rightBtn.setVisible(false);
 		wrongBtn.setVisible(false);
 		text.setText( (item.getQuestionText() == null) ? "" : item.getQuestionText() );
-		playSoundBtn.setVisible( (item.getQuestionSound() != null) );
 		if (item.getQuestionImg() != null) {
 			setImage(item.getQuestionImg());
 		}
-		if (isStationaryBicycle()) {
-		    showAnswerBtn.setVisible(false);
-			StationaryBicycle sb = (StationaryBicycle)mode;
-			questionTimer = new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
-				showAnswer();
-				return null;
-			});
-		}
+		handleDuration();
 	}
 	
 	public void showAnswer() {
@@ -138,28 +127,43 @@ public class ModeController extends ControllerBase {
 		if (item.getAnswerImg() != null) {
 			setImage(item.getAnswerImg());
 		}
-		handleAnswerDuration();
+		handleDuration();
 	}
 	
-	private void handleAnswerDuration() {
+	private void handleDuration() {
+		// ak nemame zvuk
 		if (item.getAnswerSound() == null) {
+			// nie je tlacitko zvuku
 			playSoundBtn.setVisible(false);
+			// ak je stacionarny bicykel
 			if (isStationaryBicycle()) {
+				// caka sa tolko, kolko sa urcilo
 				StationaryBicycle sb = (StationaryBicycle)mode;
-				answerTimer = new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
+				itemDurationTimer = new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
 					right();
 					return null;
 				});
 			}
 		}
+		// ak mame zvuk
 		else {
+			// tlacitko je viditelne
 			playSoundBtn.setVisible(true);
+			// aj je stacionarny bicykel
 			if (isStationaryBicycle()) {
+				// caka sa tolko, ako dlho trva prehrat zvuk zvoleny pocet krat s nejakou prestavkou medzi prehratiami
+				StationaryBicycle sb = (StationaryBicycle) mode;
 				playSoundBtn.setDisable(true);
-				// kolko krat bolo zvolene ze sa ma zvuk prehrat, ho prehra a caka az kym sa neprehral posledny krat
-				// poto ukaze otazku
-				// bude treba aby play Sound vratil trvanie prehrania
-				
+				Double soundDuration = Main.mainController.getSoundDuration(getSoundPathOfCurrentItem());
+				Double pauseAfterSoundInSeconds = 2.0; 
+				Double waitDuration = soundDuration + pauseAfterSoundInSeconds;
+				playSound();
+				for (int i = 0; i < (sb.getNumberOfPlay() - 1); i++) {
+					new WaitAndCallGuiMethod(waitDuration, () -> {
+						playSound();
+						return null;
+					});
+				}
 				playSoundBtn.setDisable(false);
 			}
 		}
@@ -197,15 +201,15 @@ public class ModeController extends ControllerBase {
 		imageParent.setCenter(imageView);
 	}
 	
-	private void playSound() {
-		// TODO nech vrati kolko zvuk trva
-		String soundPath = null;
+	private String getSoundPathOfCurrentItem() {
 		if (showAnswerBtn.isVisible()) {
-			soundPath = item.getQuestionSound();
+			return item.getQuestionSound();
 		}
-		else {
-			soundPath = item.getAnswerSound();
-		}
+		return item.getAnswerSound();
+	}
+	
+	private void playSound() {
+		String soundPath = getSoundPathOfCurrentItem();
 		if (soundPath != null) {
 			Main.mainController.playSound(soundPath);
 		}
