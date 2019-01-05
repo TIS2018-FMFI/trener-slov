@@ -1,6 +1,13 @@
 package application;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.TagException;
+
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,10 +74,10 @@ public class SoundManager {
     public double sound_time(String soundFilePath) {
         if (check_path(soundFilePath) == true) {
             if (soundFilePath.toLowerCase().endsWith("wav")) {
-                duration_wav(soundFilePath);
+                return duration_wav(soundFilePath);
             }
             if (soundFilePath.toLowerCase().endsWith("mp3")) {
-                duration_mp3(soundFilePath);
+                return duration_mp3(soundFilePath);
             }
         }
         return 0.0;
@@ -93,22 +100,25 @@ public class SoundManager {
     }
 
     private double duration_mp3(String soundFilePath){
+        double duration=0;
+        File file=new File(soundFilePath);
+
+        AudioFile audioFile = null;
         try {
-            FileInputStream fileInputStream = new FileInputStream(soundFilePath);       //problem> prehravanie mp3 aj ked len zistujem dlzku???
-            Player player = new Player(fileInputStream);
-            long startTime = System.currentTimeMillis();
-            player.play();
-            long estimatedTime = System.currentTimeMillis() - startTime;
-            double elapsedTimeInSecond = (double) estimatedTime / 1_000_000_000;
-            return estimatedTime;
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
+            audioFile = AudioFileIO.read(file);
+        } catch (CannotReadException e) {
             e.printStackTrace();
-        } catch (JavaLayerException e) {
-            // TODO Auto-generated catch block
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TagException e) {
+            e.printStackTrace();
+        } catch (ReadOnlyFileException e) {
+            e.printStackTrace();
+        } catch (InvalidAudioFrameException e) {
             e.printStackTrace();
         }
-        return 0.0;
+        duration= audioFile.getAudioHeader().getTrackLength();
+        return duration;
     }
 
 }
