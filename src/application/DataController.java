@@ -105,19 +105,19 @@ public class DataController {
         if (item == null)
             return;
 
-        if (newQImage != null) {
+        if (newQImage != null && !newQImage.equals("")) {
             item.setQuestionImg(saveFileAndReturnPath(newQImage, fm.getFullImagesDirName()));
         }
 
-        if (newQSound != null) {
+        if (newQSound != null  && !newQSound.equals("")) {
             item.setQuestionSound(saveFileAndReturnPath(newQSound, fm.getFullSoundsDirName()));
         }
 
-        if (newAImage != null) {
+        if (newAImage != null  && !newAImage.equals("")) {
            item.setAnswerImg(saveFileAndReturnPath(newAImage, fm.getFullImagesDirName()));
         }
 
-        if (newASound != null) {
+        if (newASound != null  && !newASound.equals("")) {
             item.setAnswerSound(saveFileAndReturnPath(newASound, fm.getFullSoundsDirName()));
         }
     }
