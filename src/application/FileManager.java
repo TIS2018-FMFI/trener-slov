@@ -47,7 +47,10 @@ public class FileManager {
     }
 
     public void deleteFile(String filePath) {
-
+        File fileToDelete = new File(filePath);
+        if (fileToDelete.exists()){
+            fileToDelete.delete();
+        }
     }
 
     public void checkLessonsForNewFiles(ArrayList<Lesson> lessons) {
