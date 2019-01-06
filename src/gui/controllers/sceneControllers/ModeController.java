@@ -43,7 +43,8 @@ public class ModeController extends ControllerBase {
 	ImageView imageView;
 	
 	GameMode mode;
-	WaitAndCallGuiMethod timer;
+	WaitAndCallGuiMethod modeTimer;
+	WaitAndCallGuiMethod itemDurationTimer;
 	Item item;
 
 	@Override
@@ -54,11 +55,17 @@ public class ModeController extends ControllerBase {
 	
 	public void start() {
 		if (isStationaryBicycle()) {
-			StationaryBicycle sb = (StationaryBicycle)mode;
-			new WaitAndCallGuiMethod(sb.getModeDurationInSecs(), () -> {
-				quit();
-				return null;
-			});
+			StationaryBicycle sb = (StationaryBicycle) mode;
+			Integer modeDuration = sb.getModeDurationInSecs();
+			if (modeDuration != 0) {
+				modeTimer = new WaitAndCallGuiMethod(modeDuration, () -> {
+					if (itemDurationTimer != null) {
+						itemDurationTimer.stop();
+					}
+					quit();
+					return null;
+				});
+			}
 		}
 
 		item = mode.next(null);
@@ -102,18 +109,10 @@ public class ModeController extends ControllerBase {
 		rightBtn.setVisible(false);
 		wrongBtn.setVisible(false);
 		text.setText( (item.getQuestionText() == null) ? "" : item.getQuestionText() );
-		playSoundBtn.setVisible( (item.getQuestionSound() != null) );
 		if (item.getQuestionImg() != null) {
 			setImage(item.getQuestionImg());
 		}
-		if (isStationaryBicycle()) {
-		    showAnswerBtn.setVisible(false);
-			StationaryBicycle sb = (StationaryBicycle)mode;
-			new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
-				showAnswer();
-				return null;
-			});
-		}
+		handleDuration(item.getQuestionSound());
 	}
 	
 	public void showAnswer() {
@@ -130,28 +129,45 @@ public class ModeController extends ControllerBase {
 		if (item.getAnswerImg() != null) {
 			setImage(item.getAnswerImg());
 		}
-		handleAnswerDuration();
+		handleDuration(item.getAnswerSound());
 	}
 	
-	private void handleAnswerDuration() {
-		if (item.getAnswerSound() == null) {
+	private void handleDuration(String soundPath) {
+		// ak nemame zvuk
+		if (soundPath == null) {
+			// nie je tlacitko zvuku
 			playSoundBtn.setVisible(false);
+			// ak je stacionarny bicykel
 			if (isStationaryBicycle()) {
+				// caka sa tolko, kolko sa urcilo
+				showAnswerBtn.setVisible(false);
 				StationaryBicycle sb = (StationaryBicycle)mode;
-				new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
+				itemDurationTimer = new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
 					right();
 					return null;
 				});
 			}
 		}
+		// ak mame zvuk
 		else {
+			// tlacitko je viditelne
 			playSoundBtn.setVisible(true);
+			// aj je stacionarny bicykel
 			if (isStationaryBicycle()) {
+				// caka sa tolko, ako dlho trva prehrat zvuk zvoleny pocet krat s nejakou prestavkou medzi prehratiami
+				showAnswerBtn.setVisible(false);
+				StationaryBicycle sb = (StationaryBicycle) mode;
 				playSoundBtn.setDisable(true);
-				// kolko krat bolo zvolene ze sa ma zvuk prehrat, ho prehra a caka az kym sa neprehral posledny krat
-				// poto ukaze otazku
-				// bude treba aby play Sound vratil trvanie prehrania
-				
+				Double soundDuration = Main.mainController.getSoundDuration(getSoundPathOfCurrentItem());
+				Double pauseAfterSoundInSeconds = 2.0; 
+				Double waitDuration = soundDuration + pauseAfterSoundInSeconds;
+				playSound();
+				for (int i = 0; i < (sb.getNumberOfPlay() - 1); i++) {
+					new WaitAndCallGuiMethod(waitDuration, () -> {
+						playSound();
+						return null;
+					});
+				}
 				playSoundBtn.setDisable(false);
 			}
 		}
@@ -189,15 +205,15 @@ public class ModeController extends ControllerBase {
 		imageParent.setCenter(imageView);
 	}
 	
-	private void playSound() {
-		// TODO nech vrati kolko zvuk trva
-		String soundPath = null;
+	private String getSoundPathOfCurrentItem() {
 		if (showAnswerBtn.isVisible()) {
-			soundPath = item.getQuestionSound();
+			return item.getQuestionSound();
 		}
-		else {
-			soundPath = item.getAnswerSound();
-		}
+		return item.getAnswerSound();
+	}
+	
+	private void playSound() {
+		String soundPath = getSoundPathOfCurrentItem();
 		if (soundPath != null) {
 			Main.mainController.playSound(soundPath);
 		}

@@ -83,8 +83,8 @@ public class StartModeController extends ControllerBase {
 		else if (modeClass.equals(StationaryBicycle.class)) {
 			title = "Stacinárny bicykel";
 			List<Integer> configValues = openStationaryBicycleModeConfigDialog();
-			if (configValues.get(0) == 0 || configValues.get(1) == 0 || configValues.get(2) == 0) {
-				System.out.println("jedno z nich je nula");
+			if (configValues.get(0) == 0 || configValues.get(1) == 0) {
+				System.out.println("jedno z nich je nula");				// configValues.get(1) moze byt 0  - (trvanie modu = nekonecno)
 				return;
 			}
 			mode = new StationaryBicycle(lesson, configValues.get(0), configValues.get(1), configValues.get(2));

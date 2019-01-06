@@ -8,8 +8,19 @@ import javafx.application.Platform;
 
 public class WaitAndCallGuiMethod {
 	
+	private Timer timer;
+	
 	public WaitAndCallGuiMethod(Integer waitDurationSeconds, Callable<Void> function) {
-		new Timer().schedule( 
+		waitAndCallGuiMethod(waitDurationSeconds * 1000, function);
+	}
+	
+	public WaitAndCallGuiMethod(Double waitDurationSeconds, Callable<Void> function) {
+		waitAndCallGuiMethod((long) (waitDurationSeconds * 1000), function);
+	}
+	
+	private void waitAndCallGuiMethod(long waitDurationMiliseconds, Callable<Void> function) {
+		timer = new Timer();
+		timer.schedule( 
 		        new TimerTask() {
 		            @Override
 		            public void run() {
@@ -22,7 +33,11 @@ public class WaitAndCallGuiMethod {
 						});
 		            }
 		        }, 
-		        waitDurationSeconds * 1000
+		        waitDurationMiliseconds
 		);
+	}
+
+	public void stop() {
+		timer.cancel();
 	}
 }

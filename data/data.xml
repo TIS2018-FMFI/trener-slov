@@ -99,7 +99,9 @@
                     <items>
                         <item>
                             <questionText>Otazka211?</questionText>
+                            <questionSound>data\files\sounds\randomSound.mp3</questionSound>
                             <answerText>Odpoved211!</answerText>
+                            <answerImg>data\files\images\settings.png</answerImg>
                         </item>
                         <item>
                             <questionText>Otazka212?</questionText>
