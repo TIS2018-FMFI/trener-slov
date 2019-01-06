@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import application.Main;
-import application.MainController;
 import data.Item;
 import gui.WaitAndCallGuiMethod;
 import gui.Scenes;
@@ -57,13 +56,16 @@ public class ModeController extends ControllerBase {
 	public void start() {
 		if (isStationaryBicycle()) {
 			StationaryBicycle sb = (StationaryBicycle) mode;
-			modeTimer = new WaitAndCallGuiMethod(sb.getModeDurationInSecs(), () -> {
-				if (itemDurationTimer != null) {
-					itemDurationTimer.stop();
-				}
-				quit();
-				return null;
-			});
+			Integer modeDuration = sb.getModeDurationInSecs();
+			if (modeDuration != 0) {
+				modeTimer = new WaitAndCallGuiMethod(modeDuration, () -> {
+					if (itemDurationTimer != null) {
+						itemDurationTimer.stop();
+					}
+					quit();
+					return null;
+				});
+			}
 		}
 
 		item = mode.next(null);
@@ -110,7 +112,7 @@ public class ModeController extends ControllerBase {
 		if (item.getQuestionImg() != null) {
 			setImage(item.getQuestionImg());
 		}
-		handleDuration();
+		handleDuration(item.getQuestionSound());
 	}
 	
 	public void showAnswer() {
@@ -127,17 +129,18 @@ public class ModeController extends ControllerBase {
 		if (item.getAnswerImg() != null) {
 			setImage(item.getAnswerImg());
 		}
-		handleDuration();
+		handleDuration(item.getAnswerSound());
 	}
 	
-	private void handleDuration() {
+	private void handleDuration(String soundPath) {
 		// ak nemame zvuk
-		if (item.getAnswerSound() == null) {
+		if (soundPath == null) {
 			// nie je tlacitko zvuku
 			playSoundBtn.setVisible(false);
 			// ak je stacionarny bicykel
 			if (isStationaryBicycle()) {
 				// caka sa tolko, kolko sa urcilo
+				showAnswerBtn.setVisible(false);
 				StationaryBicycle sb = (StationaryBicycle)mode;
 				itemDurationTimer = new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
 					right();
@@ -152,6 +155,7 @@ public class ModeController extends ControllerBase {
 			// aj je stacionarny bicykel
 			if (isStationaryBicycle()) {
 				// caka sa tolko, ako dlho trva prehrat zvuk zvoleny pocet krat s nejakou prestavkou medzi prehratiami
+				showAnswerBtn.setVisible(false);
 				StationaryBicycle sb = (StationaryBicycle) mode;
 				playSoundBtn.setDisable(true);
 				Double soundDuration = Main.mainController.getSoundDuration(getSoundPathOfCurrentItem());

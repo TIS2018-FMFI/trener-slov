@@ -37,7 +37,7 @@ public class Main extends Application{
 		primaryStage.setTitle(Scenes.MAIN_MENU.getTitle());
 		primaryStage.show();
 
-		testDataController();
+		//testDataController();
 	}
 
 	private void testDataController() throws FileNotFoundException, JAXBException {
