@@ -105,21 +105,64 @@ public class DataController {
         if (item == null)
             return;
 
-        if (newQImage != null) {
+        String oldItemPathToCheck;
+
+        if (hasStringValue(newQImage)) {
             item.setQuestionImg(saveFileAndReturnPath(newQImage, fm.getFullImagesDirName()));
         }
+        else {
+            if (changedPathToNone(item.getQuestionImg(), newQImage)) {
+                oldItemPathToCheck = item.getQuestionImg();
+                item.setQuestionImg(null);
 
-        if (newQSound != null) {
+                if (!fileIsInAnotherItem(oldItemPathToCheck))
+                    fm.deleteFile(oldItemPathToCheck);
+
+            }
+        }
+
+        if (hasStringValue(newQSound)) {
             item.setQuestionSound(saveFileAndReturnPath(newQSound, fm.getFullSoundsDirName()));
         }
+        else {
+            if (changedPathToNone(item.getQuestionSound(),newQSound)) {
+                oldItemPathToCheck = item.getQuestionImg();
+                item.setQuestionSound(null);
 
-        if (newAImage != null) {
+                if (!fileIsInAnotherItem(oldItemPathToCheck))
+                    fm.deleteFile(oldItemPathToCheck);
+            }
+        }
+
+        if (hasStringValue(newAImage)) {
            item.setAnswerImg(saveFileAndReturnPath(newAImage, fm.getFullImagesDirName()));
         }
+        else {
+            if (changedPathToNone(item.getAnswerImg(), newAImage)) {
+                oldItemPathToCheck = item.getAnswerImg();
+                item.setAnswerImg(null);
 
-        if (newASound != null) {
+                if (!fileIsInAnotherItem(oldItemPathToCheck))
+                    fm.deleteFile(oldItemPathToCheck);
+            }
+        }
+
+        if (hasStringValue(newASound)) {
             item.setAnswerSound(saveFileAndReturnPath(newASound, fm.getFullSoundsDirName()));
         }
+        else {
+            if (changedPathToNone(item.getAnswerSound(), newASound)) {
+                oldItemPathToCheck = item.getAnswerSound();
+                item.setAnswerSound(null);
+
+                if (!fileIsInAnotherItem(oldItemPathToCheck))
+                    fm.deleteFile(oldItemPathToCheck);
+            }
+        }
+    }
+
+    private boolean changedPathToNone(String oldValue, String newValue) {
+        return hasStringValue(oldValue) && !hasStringValue(newValue);
     }
 
     private String saveFileAndReturnPath(String fp, String fileTypePath) {
@@ -139,6 +182,21 @@ public class DataController {
 
         }
         return filePath;
+    }
+
+    private boolean fileIsInAnotherItem(String filePath) {
+        for (Lesson lesson: lessons) {
+            for (Group group: lesson.getGroupsInLesson()) {
+                for (Item item: group.getItemsInGroup()) {
+                    if (item.containsFile(filePath)) {
+
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     private String createNewFileNameIfThisExists(String fileNameToCheck, String fileTypeDirPath) {
@@ -163,6 +221,10 @@ public class DataController {
         String fileExtension = stringAfterLastSeparator(fileNameToCheck, ".");
 
         return newFilePath + "." + fileExtension;
+    }
+
+    private boolean hasStringValue(String string) {
+        return string != null && !string.equals("");
     }
 
 

@@ -14,8 +14,6 @@
                     <items>
                         <item>
                             <questionText>Otazka111?</questionText>
-                            <questionImg>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\images\file.png</questionImg>
-                            <questionSound>C:\Users\xToni\eclipse-workspace\trener-slov\data\files\sounds\right.png</questionSound>
                             <answerText>Odpoved111!</answerText>
                         </item>
                         <item>
@@ -45,8 +43,8 @@
                     <order>2</order>
                     <items>
                         <item>
-                            <questionText>Otazka121?</questionText>
-                            <answerText>Odpoved121!</answerText>
+                            <questionText>Odpoved121!</questionText>
+                            <answerText>Otazka121?</answerText>
                         </item>
                         <item>
                             <questionText>Otazka122?</questionText>

@@ -92,4 +92,8 @@ public class Item implements Serializable{
     public void setAnswerSound(String answerSound) {
         this.answerSound = answerSound;
     }
+
+    public boolean containsFile(String path) {
+        return path.equals(questionImg) || path.equals(questionSound) || path.equals(answerImg) || path.equals(answerSound);
+    }
 }
