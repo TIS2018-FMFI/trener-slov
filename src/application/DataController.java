@@ -228,12 +228,12 @@ public class DataController {
     }
 
 
-    public String stringAfterLastSeparator(String fileName, String separator) {
+    private String stringAfterLastSeparator(String fileName, String separator) {
         int i = fileName.lastIndexOf(separator);
         return fileName.substring(i + 1);
     }
 
-    public String stringBeforeLastSeparator(String fileName, String separator) {
+    private String stringBeforeLastSeparator(String fileName, String separator) {
         int i = fileName.lastIndexOf(separator);
         return fileName.substring(0, i);
     }
