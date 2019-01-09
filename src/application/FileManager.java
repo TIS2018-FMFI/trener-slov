@@ -42,19 +42,11 @@ public class FileManager {
         createNonExistingDirectories();
     }
 
-    public void moveFileToFilesDir(String filePath, String targetDir) {
-
-    }
-
     public void deleteFile(String filePath) {
         File fileToDelete = new File(filePath);
         if (fileToDelete.exists()){
             fileToDelete.delete();
         }
-    }
-
-    public void checkLessonsForNewFiles(ArrayList<Lesson> lessons) {
-
     }
 
     public ArrayList<String> getAllFilesFromType(String fileTypeDirPath) {
@@ -129,11 +121,11 @@ public class FileManager {
     }
 
     public String getFullImagesDirName() {
-        return dataDirName + "\\" + filesDirName + "\\" + imagesDirName;
+        return getDataDirName() + "\\" + getFilesDirName() + "\\" + getImagesDirName();
     }
 
     public String getFullSoundsDirName() {
-        return dataDirName + "\\" + filesDirName + "\\" + soundsDirName;
+        return getDataDirName() + "\\" + getFilesDirName() + "\\" + getSoundsDirName();
     }
 
     public void copyFileFromTo(String srcPath, String destPath) {
