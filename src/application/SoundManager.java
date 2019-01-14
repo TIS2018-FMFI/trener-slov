@@ -88,7 +88,7 @@ public class SoundManager {
         try {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(Clap));
-            return clip.getMicrosecondLength();
+            return clip.getMicrosecondLength()/1000000;
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         } catch (IOException e) {
