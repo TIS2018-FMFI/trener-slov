@@ -23,6 +23,7 @@ public class Export {
     private String targetPath;
     private ArrayList<Lesson> xml;
     private FileManager fm;
+    private DataController controller;
 
     public Export() {
         fm = new FileManager();
@@ -31,19 +32,14 @@ public class Export {
     private void chooseTargetPath() throws IOException {
         try {
             JButton open = new JButton();
-            JFileChooser fo = new JFileChooser();
-            fo.setCurrentDirectory(new java.io.File("C:"));
-            fo.setDialogTitle("chooser");
-            fo.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            if (fo.showOpenDialog(open) == JFileChooser.APPROVE_OPTION) {
+            JFileChooser choose_folder = new JFileChooser();
+            choose_folder.setCurrentDirectory(new java.io.File("C:"));
+            choose_folder.setDialogTitle("chooser");
+            choose_folder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            if (choose_folder.showOpenDialog(open) == JFileChooser.APPROVE_OPTION) {
                 //
             }
-            if (fo == null) {
-                targetPath = "";
-            } else {
-                targetPath = fo.getSelectedFile().getAbsolutePath();
-            }
-            System.out.println("you choose:" + fo.getSelectedFile().getAbsolutePath());
+            targetPath = choose_folder.getSelectedFile().getAbsolutePath();
             zipFile("images");
             zipFile("sounds");
         }
@@ -55,9 +51,9 @@ public class Export {
 
     private void delete_zip(String path){
         File file = new File(path+"/images.zip");
-        boolean deleted = file.delete();
+        file.delete();
         file = new File(path+"/sounds.zip");
-        deleted = file.delete();
+        file.delete();
     }
 
 
@@ -76,24 +72,25 @@ public class Export {
             Files.walk(sourceDirPath).filter(path -> !Files.isDirectory(path))
                     .forEach(path -> {
                         ZipEntry zipEntry = new ZipEntry(sourceDirPath.relativize(path).toString());
-                        System.out.println(zipEntry.getName());
                         if(is_in_xml(zipEntry.getName(), type) == true) {
 
                             try {
                                 zipOutputStream.putNextEntry(zipEntry);
                                 zipOutputStream.write(Files.readAllBytes(path));
                                 zipOutputStream.closeEntry();
-                            } catch (Exception e) {
-                                System.err.println(e);
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
+
+
                         }
                     });
         }
     }
 
-    private boolean is_in_xml(String nazov, String type){
+    private boolean is_in_xml(String name, String type){
 
-        if(type.equals("all") && (nazov.equals("images.zip") || nazov.equals("sounds.zip") || nazov.endsWith(".xml"))){
+        if(type.equals("all") && (name.equals("images.zip") || name.equals("sounds.zip") || name.endsWith(".xml"))){
             return true;
         }
         Iterator<Lesson> it = xml.iterator();
@@ -103,15 +100,14 @@ public class Export {
                 Iterator<Item> i = iter.next().getItemsInGroup().iterator();
                 while(i.hasNext()) {
                     Item fi = i.next();
-                    //System.out.println(nazov+ "    " +fi.getQuestionImg());
                     if(type.equals("images")) {
                         if(fi.getAnswerImg()!=null){
-                            if (fi.getAnswerImg().endsWith(nazov)){
+                            if (fi.getAnswerImg().endsWith(name)){
                                 return true;
                             }
                         }
                         else if(fi.getQuestionImg()!=null){
-                            if (fi.getQuestionImg().endsWith(nazov)) {
+                            if (fi.getQuestionImg().endsWith(name)) {
                                 return true;
                             }
                         }
@@ -119,12 +115,12 @@ public class Export {
                     }
                     else if(type.equals("sounds")){
                         if(fi.getAnswerSound()!=null){
-                            if (fi.getAnswerSound().endsWith(nazov)){
+                            if (fi.getAnswerSound().endsWith(name)){
                                 return true;
                             }
                         }
                         if(fi.getQuestionSound() != null) {
-                            if (fi.getQuestionSound().endsWith(nazov)) {
+                            if (fi.getQuestionSound().endsWith(name)) {
                                 return true;
                             }
                         }
@@ -140,25 +136,30 @@ public class Export {
 
     public Boolean hasWriteAccess() {
         File file = new File(targetPath+"/data.zip");
-        if(file.exists()){
-            return true;
+        return file.exists() && file.canWrite();
+    }
+
+    private String check_rename_filename(String path){
+        File file = new File(path+".zip");
+        if(file.exists()==false){
+            return path+".zip";
         }
-        return false;
+        int new_index_file = 0;
+        while (file.exists()){
+            new_index_file++;
+            file = new File(path+new_index_file+".zip");
+
+
+        }
+       return  path+new_index_file+".zip";
     }
 
-    public String getDataFilePath() {
-
-        return "";
-    }
-
-    public String getFilesDirPath() {
-
-        return "";
-    }
 
     private void delete_xml(String name){
         File file = new File(targetPath+name);
-        file.delete();
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
 
@@ -178,17 +179,17 @@ public class Export {
             JAXBContext context = JAXBContext.newInstance(DataController.class);
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            System.out.println(targetPath);
-            m.marshal(dcToExport, new File(targetPath+"/random.xml"));
+            m.marshal(dcToExport, new File(targetPath+"/lessons.xml"));
 
             try {
-                zipDirectory(targetPath, targetPath+"/data.zip","all");
+                String a = check_rename_filename(targetPath+"/data");
+                zipDirectory(targetPath, a,"all");
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             delete_zip(targetPath);
-            delete_xml("/random.xml");
+            delete_xml("/lessons.xml");
             return true;
         }
         catch (JAXBException e) {

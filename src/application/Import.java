@@ -17,11 +17,11 @@ import java.util.zip.ZipInputStream;
 public class Import {
 
     private FileManager fm;
-    JFileChooser c;
+    JFileChooser filechooser;
     String folderName;
     char first;
     String END_SAVE_PATH = "data";
-    private File f;
+    private File choose_file;
 
     public Import() {
         fm = new FileManager();
@@ -31,15 +31,14 @@ public class Import {
 
     private void choosePackagePath() throws IOException {
        try {
-           c = new JFileChooser();
-           c.setDialogTitle("choose file");
+           filechooser = new JFileChooser();
+           filechooser.setDialogTitle("choose file");
 
-           int x = c.showOpenDialog(null);
-           if (x == JFileChooser.APPROVE_OPTION) {
-               f = c.getSelectedFile();
-               if (is_zip_check(f.getName()) == true) {
-                   first = f.toString().charAt(0);
-                   packagePath = f.getPath();
+           int return_value_chooser = filechooser.showOpenDialog(null);
+           if (return_value_chooser == JFileChooser.APPROVE_OPTION) {
+               choose_file = filechooser.getSelectedFile();
+               if (is_zip_check(choose_file.getName()) == true) {
+                   packagePath = choose_file.getPath();
                    unzip(packagePath, END_SAVE_PATH);
                } else {
                    System.out.println("exception");        //tu by to malo bud vratit chybu aleboupozornenie pre pouzivatela
@@ -63,14 +62,14 @@ public class Import {
         packagePath="data/"+name;
         ArrayList<Lesson> pom = GetLessonsFromImportedXML(packagePath);
         System.out.println(pom);
-        Iterator<Lesson> it = pom.iterator();
-        while(it.hasNext()) {
-            Iterator<Group> iter =  it.next().getGroupsInLesson().iterator();
-            while(iter.hasNext()) {
-                Iterator<Item> i = iter.next().getItemsInGroup().iterator();
-                while(i.hasNext()) {
-                    Item fi = i.next();
-                    if(check_items(fi) == false){
+        Iterator<Lesson> lessonIterator = pom.iterator();
+        while(lessonIterator.hasNext()) {
+            Iterator<Group> groupIterator =  lessonIterator.next().getGroupsInLesson().iterator();
+            while(groupIterator.hasNext()) {
+                Iterator<Item> itemIterator = groupIterator.next().getItemsInGroup().iterator();
+                while(itemIterator.hasNext()) {
+                    Item item = itemIterator.next();
+                    if(check_items(item) == false){
                         return false;
                     }
                 }
@@ -80,33 +79,19 @@ public class Import {
     }
 
     private boolean check_items(Item item){
-        if(check_path(item.getQuestionSound()) == false || check_path(item.getQuestionImg()) == false ||
-        check_path(item.getAnswerSound()) == false || check_path(item.getAnswerImg()) == false){
-
-            return false;
-        }
-        return true;
+        return (check_path(item.getQuestionSound()) == false || check_path(item.getQuestionImg()) == false ||
+                check_path(item.getAnswerSound()) == false || check_path(item.getAnswerImg()) == false);
     }
 
-    private boolean check_path(String path){
-        if(path != null){
+    private boolean check_path(String path) {
+        if (path != null) {
             File f = new File(path);
-            if(f.exists()== false) {
-                return false;
-            }
+            return f.exists();
+
         }
         return true;
     }
 
-    public String getDataFilePath() {
-
-        return "";
-    }
-
-    public String getFilesDirPath() {
-
-        return "";
-    }
 
     public void unzip(String path, String save_path) throws IOException {
         String name="";
