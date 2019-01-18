@@ -46,6 +46,7 @@ public class ModeController extends ControllerBase {
 	WaitAndCallGuiMethod modeTimer;
 	WaitAndCallGuiMethod itemDurationTimer;
 	Item item;
+	boolean isQuestion;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -78,7 +79,7 @@ public class ModeController extends ControllerBase {
 		showAnswerBtn.setOnMouseClicked(e -> showAnswer());
 		wrongBtn.setOnMouseClicked(e -> wrong());
 		rightBtn.setOnMouseClicked(e -> right());
-		playSoundBtn.setOnMouseClicked(e -> playSound());
+		playSoundBtn.setOnMouseClicked(e -> playSound(null));
 		quitBtn.setOnMouseClicked(e -> quit());
 	}
 
@@ -105,6 +106,7 @@ public class ModeController extends ControllerBase {
 	}
 	
 	private void showQuestion() {
+		isQuestion = true;
 		showAnswerBtn.setVisible(true);
 		rightBtn.setVisible(false);
 		wrongBtn.setVisible(false);
@@ -116,6 +118,7 @@ public class ModeController extends ControllerBase {
 	}
 	
 	public void showAnswer() {
+		isQuestion = false;
 		showAnswerBtn.setVisible(false);
 		if (isStationaryBicycle()) {
 			rightBtn.setVisible(false);
@@ -143,7 +146,7 @@ public class ModeController extends ControllerBase {
 				showAnswerBtn.setVisible(false);
 				StationaryBicycle sb = (StationaryBicycle)mode;
 				itemDurationTimer = new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
-					right();
+					nextInStationaryBicycle();
 					return null;
 				});
 			}
@@ -158,17 +161,10 @@ public class ModeController extends ControllerBase {
 				showAnswerBtn.setVisible(false);
 				StationaryBicycle sb = (StationaryBicycle) mode;
 				playSoundBtn.setDisable(true);
-				Double soundDuration = Main.mainController.getSoundDuration(getSoundPathOfCurrentItem());
+				Double soundDuration = Main.mainController.getSoundDuration(soundPath);
 				Double pauseAfterSoundInSeconds = 2.0; 
 				Double waitDuration = soundDuration + pauseAfterSoundInSeconds;
-				playSound();
-				for (int i = 0; i < (sb.getNumberOfPlay() - 1); i++) {
-					new WaitAndCallGuiMethod(waitDuration, () -> {
-						playSound();
-						return null;
-					});
-				}
-				playSoundBtn.setDisable(false);
+				playSoundRecursive(soundPath, sb.getNumberOfPlay(), waitDuration);
 			}
 		}
 	}
@@ -184,6 +180,15 @@ public class ModeController extends ControllerBase {
 		item = mode.next(false);
 		if (checkItem()) {
 			showQuestion();
+		}
+	}
+	
+	private void nextInStationaryBicycle() {
+		if (isQuestion) {
+			showAnswer();
+		}
+		else {
+			right();
 		}
 	}
 	
@@ -206,17 +211,32 @@ public class ModeController extends ControllerBase {
 	}
 	
 	private String getSoundPathOfCurrentItem() {
-		if (showAnswerBtn.isVisible()) {
+		if (isQuestion) {
 			return item.getQuestionSound();
 		}
 		return item.getAnswerSound();
 	}
 	
-	private void playSound() {
-		String soundPath = getSoundPathOfCurrentItem();
-		if (soundPath != null) {
+	private void playSound(String soundPath) {
+		if ( soundPath == null ) {
+			soundPath = getSoundPathOfCurrentItem();
+		}
+		if ( soundPath != null ) {
 			Main.mainController.playSound(soundPath);
 		}
+	}
+	
+	private void playSoundRecursive(String soundPath, int countOfPlays, Double waitDuration) {
+		if (countOfPlays == 0) {
+			playSoundBtn.setDisable(false);
+			nextInStationaryBicycle();
+			return;
+		}
+		new WaitAndCallGuiMethod(waitDuration, () -> {
+			playSoundRecursive(soundPath, countOfPlays-1, waitDuration);
+			return null;
+		});
+		playSound(soundPath);
 	}
 	
 	private boolean showQuitDialog() {
