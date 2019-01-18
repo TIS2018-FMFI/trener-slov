@@ -25,9 +25,6 @@
          <children>
             <Button fx:id="backBtn" mnemonicParsing="false" text="Späť" minWidth="100" />
          </children>
-         <padding>
-            <Insets left="20.0" />
-         </padding>
       </FlowPane>
    </bottom>
 </BorderPane>
