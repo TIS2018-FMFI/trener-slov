@@ -80,11 +80,8 @@
    <top>
       <FlowPane alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="quitBtn" mnemonicParsing="false" text="Skončiť" />
+            <Button fx:id="quitBtn" mnemonicParsing="false" text="Skončiť" minWidth="100" />
          </children>
-         <padding>
-            <Insets left="20.0" />
-         </padding>
       </FlowPane>
    </top>
 </BorderPane>

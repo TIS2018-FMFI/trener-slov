@@ -32,7 +32,7 @@ public class Import {
     private void choosePackagePath() throws IOException {
        try {
            filechooser = new JFileChooser();
-           filechooser.setDialogTitle("choose file");
+           filechooser.setDialogTitle("Import");
 
            int return_value_chooser = filechooser.showOpenDialog(null);
            if (return_value_chooser == JFileChooser.APPROVE_OPTION) {

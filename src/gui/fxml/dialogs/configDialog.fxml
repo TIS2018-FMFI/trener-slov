@@ -19,11 +19,8 @@
    <bottom>
       <FlowPane alignment="CENTER_RIGHT" prefHeight="50.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="okBtn" mnemonicParsing="false" text="OK" />
+            <Button fx:id="okBtn" mnemonicParsing="false" text="OK" minWidth="100" />
          </children>
-         <BorderPane.margin>
-            <Insets right="20.0" />
-         </BorderPane.margin>
       </FlowPane>
    </bottom>
 </BorderPane>

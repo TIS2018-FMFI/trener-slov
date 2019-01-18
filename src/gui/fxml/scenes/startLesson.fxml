@@ -6,26 +6,28 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 
+<?import javafx.scene.layout.HBox?>
 <BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.sceneControllers.StartLessonController">
    <top>
-      <FlowPane alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="50.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="backBtn" mnemonicParsing="false" text="Späť" />
-         </children>
-         <padding>
-            <Insets left="20.0" />
-         </padding>
-      </FlowPane>
    </top>
    <bottom>
-      <FlowPane alignment="CENTER_RIGHT" minWidth="-Infinity" prefHeight="50.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="startBtn" mnemonicParsing="false" text="Spustiť" />
-         </children>
-         <padding>
-            <Insets right="20.0" />
-         </padding>
-      </FlowPane>
+      <BorderPane prefHeight="50.0" BorderPane.alignment="CENTER">
+         <left>
+            <FlowPane alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="50.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="backBtn" mnemonicParsing="false" text="Späť" minWidth="100" />
+               </children>
+            </FlowPane>
+         </left>
+         <right>
+            <HBox alignment="CENTER_RIGHT" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="startBtn" mnemonicParsing="false" text="Spustiť" />
+               </children>
+            </HBox>
+         </right>
+      </BorderPane>
+
    </bottom>
    <center>
       <ListView fx:id="listView" BorderPane.alignment="CENTER" />
