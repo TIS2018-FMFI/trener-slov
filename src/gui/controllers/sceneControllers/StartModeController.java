@@ -83,7 +83,8 @@ public class StartModeController extends ControllerBase {
 		else if (modeClass.equals(StationaryBicycle.class)) {
 			title = "Stacinárny bicykel";
 			List<Integer> configValues = openStationaryBicycleModeConfigDialog();
-			if (configValues.get(0) == 0 || configValues.get(1) == 0 || configValues.get(2) == 0) {
+			if (configValues.get(0) == 0 || configValues.get(1) == 0) {
+				System.out.println("jedno z nich je nula");				// configValues.get(1) moze byt 0  - (trvanie modu = nekonecno)
 				return;
 			}
 			mode = new StationaryBicycle(lesson, configValues.get(0), configValues.get(1), configValues.get(2));
@@ -94,6 +95,7 @@ public class StartModeController extends ControllerBase {
 		modeScene.setTitle(title);
 		ModeController controller = (ModeController) redirect(modeScene, e);
 		controller.setMode(mode);
+		controller.start();
 	}
 
 	private int openLearningModeConfigDialog() {
@@ -112,7 +114,7 @@ public class StartModeController extends ControllerBase {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/fxml/dialogs/stationaryBicycleModeConfigDialog.fxml"));
         Stage stage = createDialogStage(fxmlLoader);
         
-		AtomicInteger numberOfAnswersPlay = new AtomicInteger(0);
+		AtomicInteger numberOfAnswersPlay = new AtomicInteger(3);
 		AtomicInteger pauseDurationInSecs = new AtomicInteger(0);
 		AtomicInteger modeDurationInSecs = new AtomicInteger(0);
 		StationaryBicycleModeConfigDialogController controller = fxmlLoader.getController();
@@ -129,6 +131,7 @@ public class StartModeController extends ControllerBase {
 		} catch (IOException e)  { e.printStackTrace(); }
 
         Scene scene = new Scene(parent);
+    	scene.getStylesheets().add(getClass().getResource("/gui/styles.css").toExternalForm());
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinWidth(600);

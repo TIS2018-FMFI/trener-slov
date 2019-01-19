@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import application.Main;
 import data.Item;
-import gui.ModeTimer;
+import gui.WaitAndCallGuiMethod;
 import gui.Scenes;
 import gui.controllers.ControllerBase;
 import gui.controllers.dialogControllers.ModeQuitDialogController;
@@ -23,11 +23,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modes.GameMode;
+import modes.StationaryBicycle;
 
 public class ModeController extends ControllerBase {
 	
@@ -43,8 +43,10 @@ public class ModeController extends ControllerBase {
 	ImageView imageView;
 	
 	GameMode mode;
-	ModeTimer timer;
+	WaitAndCallGuiMethod modeTimer;
+	WaitAndCallGuiMethod itemDurationTimer;
 	Item item;
+	boolean isQuestion;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -52,9 +54,20 @@ public class ModeController extends ControllerBase {
 		initializeBtns();
 	}
 	
-	private void start() {
-		timer = new ModeTimer(this);
-		timer.start();
+	public void start() {
+		if (isStationaryBicycle()) {
+			StationaryBicycle sb = (StationaryBicycle) mode;
+			Integer modeDuration = sb.getModeDurationInSecs();
+			if (modeDuration != 0) {
+				modeTimer = new WaitAndCallGuiMethod(modeDuration, () -> {
+					if (itemDurationTimer != null) {
+						itemDurationTimer.stop();
+					}
+					quit();
+					return null;
+				});
+			}
+		}
 
 		item = mode.next(null);
 		if (checkItem()) {
@@ -66,15 +79,8 @@ public class ModeController extends ControllerBase {
 		showAnswerBtn.setOnMouseClicked(e -> showAnswer());
 		wrongBtn.setOnMouseClicked(e -> wrong());
 		rightBtn.setOnMouseClicked(e -> right());
-		playSoundBtn.setOnMouseClicked(e -> playSound());
-		quitBtn.setOnMouseClicked(e -> quit(e));
-		
-		// TODO skusit vytuningovat resizovanie obrazka zarovno s oknom
-		/*imageParent.heightProperty().addListener(new ChangeListener<Number>() {
-		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-		        System.out.println("Height: " + newSceneHeight);
-		    }
-		});*/
+		playSoundBtn.setOnMouseClicked(e -> playSound(null));
+		quitBtn.setOnMouseClicked(e -> quit());
 	}
 
 	@Override
@@ -86,28 +92,80 @@ public class ModeController extends ControllerBase {
 
 	public void setMode(GameMode mode) {
 		this.mode = mode;
-		start();
+	}
+	
+	public void quit() {
+		boolean startModeAgain = showQuitDialog();
+		if (startModeAgain) {
+			mode.reinitialize();
+			start();
+		}
+		else {
+			redirect(Scenes.START_LESSON, quitBtn);
+		}
 	}
 	
 	private void showQuestion() {
+		isQuestion = true;
 		showAnswerBtn.setVisible(true);
 		rightBtn.setVisible(false);
 		wrongBtn.setVisible(false);
 		text.setText( (item.getQuestionText() == null) ? "" : item.getQuestionText() );
-		playSoundBtn.setVisible( (item.getQuestionSound() != null) );
 		if (item.getQuestionImg() != null) {
 			setImage(item.getQuestionImg());
 		}
+		handleDuration(item.getQuestionSound());
 	}
 	
-	private void showAnswer() {
+	public void showAnswer() {
+		isQuestion = false;
 		showAnswerBtn.setVisible(false);
-		rightBtn.setVisible(true);
-		wrongBtn.setVisible(true);
+		if (isStationaryBicycle()) {
+			rightBtn.setVisible(false);
+			wrongBtn.setVisible(false);
+		}
+		else {
+			rightBtn.setVisible(true);
+			wrongBtn.setVisible(true);
+		}
 		text.setText( (item.getAnswerText() == null) ? "" : item.getAnswerText() );
-		playSoundBtn.setVisible( (item.getAnswerSound() != null) );
 		if (item.getAnswerImg() != null) {
 			setImage(item.getAnswerImg());
+		}
+		handleDuration(item.getAnswerSound());
+	}
+	
+	private void handleDuration(String soundPath) {
+		// ak nemame zvuk
+		if (soundPath == null) {
+			// nie je tlacitko zvuku
+			playSoundBtn.setVisible(false);
+			// ak je stacionarny bicykel
+			if (isStationaryBicycle()) {
+				// caka sa tolko, kolko sa urcilo
+				showAnswerBtn.setVisible(false);
+				StationaryBicycle sb = (StationaryBicycle)mode;
+				itemDurationTimer = new WaitAndCallGuiMethod(sb.getPauseDurationInSecs(), () -> {
+					nextInStationaryBicycle();
+					return null;
+				});
+			}
+		}
+		// ak mame zvuk
+		else {
+			// tlacitko je viditelne
+			playSoundBtn.setVisible(true);
+			// aj je stacionarny bicykel
+			if (isStationaryBicycle()) {
+				// caka sa tolko, ako dlho trva prehrat zvuk zvoleny pocet krat s nejakou prestavkou medzi prehratiami
+				showAnswerBtn.setVisible(false);
+				StationaryBicycle sb = (StationaryBicycle) mode;
+				playSoundBtn.setDisable(true);
+				Double soundDuration = Main.mainController.getSoundDuration(soundPath);
+				Double pauseAfterSoundInSeconds = 2.0; 
+				Double waitDuration = soundDuration + pauseAfterSoundInSeconds;
+				playSoundRecursive(soundPath, sb.getNumberOfPlay(), waitDuration);
+			}
 		}
 	}
 	
@@ -125,16 +183,18 @@ public class ModeController extends ControllerBase {
 		}
 	}
 	
+	private void nextInStationaryBicycle() {
+		if (isQuestion) {
+			showAnswer();
+		}
+		else {
+			right();
+		}
+	}
+	
 	private boolean checkItem() {
 		if (item == null) {
-			boolean startModeAgain = showQuitDialog();
-			if (startModeAgain) {
-				mode.reinitialize();
-				start();
-			}
-			else {
-				redirect(Scenes.START_LESSON, quitBtn);
-			}
+			quit();
 			return false;
 		}
 		return true;
@@ -145,21 +205,38 @@ public class ModeController extends ControllerBase {
         Image image = new Image(file.toURI().toString());
         imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
+        imageView.setFitHeight(imageParent.getHeight());
 		imageView.fitHeightProperty().bind(imageParent.heightProperty());
 		imageParent.setCenter(imageView);
 	}
 	
-	private void playSound() {
-		String soundPath = null;
-		if (showAnswerBtn.isVisible()) {
-			soundPath = item.getQuestionSound();
+	private String getSoundPathOfCurrentItem() {
+		if (isQuestion) {
+			return item.getQuestionSound();
 		}
-		else {
-			soundPath = item.getAnswerSound();
+		return item.getAnswerSound();
+	}
+	
+	private void playSound(String soundPath) {
+		if ( soundPath == null ) {
+			soundPath = getSoundPathOfCurrentItem();
 		}
-		if (soundPath != null) {
+		if ( soundPath != null ) {
 			Main.mainController.playSound(soundPath);
 		}
+	}
+	
+	private void playSoundRecursive(String soundPath, int countOfPlays, Double waitDuration) {
+		if (countOfPlays == 0) {
+			playSoundBtn.setDisable(false);
+			nextInStationaryBicycle();
+			return;
+		}
+		new WaitAndCallGuiMethod(waitDuration, () -> {
+			playSoundRecursive(soundPath, countOfPlays-1, waitDuration);
+			return null;
+		});
+		playSound(soundPath);
 	}
 	
 	private boolean showQuitDialog() {
@@ -181,6 +258,7 @@ public class ModeController extends ControllerBase {
 		} catch (IOException e)  { e.printStackTrace(); }
 
         Scene scene = new Scene(parent);
+    	scene.getStylesheets().add(getClass().getResource("/gui/styles.css").toExternalForm());
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinWidth(600);
@@ -189,7 +267,12 @@ public class ModeController extends ControllerBase {
         return stage;
 	}
 	
-	private void quit(MouseEvent e) {
-		redirect(Scenes.START_LESSON, e);
+	private boolean isStationaryBicycle() {
+		try {
+			StationaryBicycle sb = (StationaryBicycle) mode;
+			return true;
+		}
+		catch (ClassCastException e) {}
+		return false;
 	}
 }

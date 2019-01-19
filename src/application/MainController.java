@@ -66,6 +66,10 @@ public class MainController {
     public void playSound(String soundFilePath) {
         soundManager.PlaySound(soundFilePath);
     }
+    
+    public Double getSoundDuration(String soundFilePath) {
+    	return soundManager.sound_time(soundFilePath);
+    }
 
     public int getFontSize() {
         return dataController.getFontSize();

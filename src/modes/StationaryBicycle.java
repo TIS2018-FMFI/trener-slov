@@ -17,8 +17,7 @@ public class StationaryBicycle extends GameMode {
         this.lesson=less;
         this.numberOfAnswersPlay=number;
         this.pauseDurationInSecs=pause;
-        this.pauseDurationInSecs=modeDur;
-
+        this.modeDurationInSecs=modeDur;
         reinitialize();
     }
 
@@ -40,7 +39,6 @@ public class StationaryBicycle extends GameMode {
             }
         }
         randomize();
-        
         copiedItems=cloneList(items);
 	}
 
@@ -49,4 +47,7 @@ public class StationaryBicycle extends GameMode {
         for (Item i:list) newL.add(i);
         return newL;
     }
+    public Integer getNumberOfPlay(){ return numberOfAnswersPlay; }
+    public Integer getPauseDurationInSecs(){ return pauseDurationInSecs; }
+    public Integer getModeDurationInSecs(){ return modeDurationInSecs; }
 }

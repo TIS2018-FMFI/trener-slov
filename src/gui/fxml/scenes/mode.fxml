@@ -16,7 +16,7 @@
             <Button fx:id="showAnswerBtn" mnemonicParsing="false" text="Ukáž odpoveď" BorderPane.alignment="CENTER" />
          </center>
          <left>
-            <Button fx:id="wrongBtn" mnemonicParsing="false" BorderPane.alignment="CENTER">
+            <Button fx:id="wrongBtn" mnemonicParsing="false" visible="false" BorderPane.alignment="CENTER">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -27,7 +27,7 @@
             </Button>
          </left>
          <right>
-            <Button fx:id="rightBtn" mnemonicParsing="false" BorderPane.alignment="CENTER">
+            <Button fx:id="rightBtn" mnemonicParsing="false" visible="false" BorderPane.alignment="CENTER">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>

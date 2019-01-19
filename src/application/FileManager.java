@@ -6,6 +6,7 @@ import data.Lesson;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 public class FileManager {
@@ -15,6 +16,18 @@ public class FileManager {
     private String filesDirName = "files";
     private String imagesDirName = "images";
     private String soundsDirName = "sounds";
+
+    private String XMLTEMPLATETEXT =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+        "<data xmlns:ns2=\"item\" xmlns:ns3=\"group\" xmlns:ns4=\"lesson\">\n" +
+        "    <dataFilePath>data/data.xml</dataFilePath>\n" +
+        "    <config>\n" +
+        "        <fontSize>20</fontSize>\n" +
+        "    </config>\n" +
+        "    <fm/>\n" +
+        "    <lessons>\n" +
+        "    </lessons>\n" +
+        "</data>\n";
 
     public String getDataDirName() { return dataDirName; }
 
@@ -29,16 +42,11 @@ public class FileManager {
         createNonExistingDirectories();
     }
 
-    public void moveFileToFilesDir(String filePath, String targetDir) {
-
-    }
-
     public void deleteFile(String filePath) {
-
-    }
-
-    public void checkLessonsForNewFiles(ArrayList<Lesson> lessons) {
-
+        File fileToDelete = new File(filePath);
+        if (fileToDelete.exists()){
+            fileToDelete.delete();
+        }
     }
 
     public ArrayList<String> getAllFilesFromType(String fileTypeDirPath) {
@@ -56,16 +64,15 @@ public class FileManager {
         return filesName;
     }
 
-    public boolean fileIsAlreadyInApplication(String filePath) {
+    public boolean filePathIsInApplication(String filePath) {
         return filePath.contains(getFullImagesDirName()) || filePath.contains(getFullSoundsDirName());
     }
 
-
     private void createNonExistingDirectories(){
-        createFolderIfDoesntExist(  "\\" + appDirName + "\\" + dataDirName);
-        createFileIfDoesntExist(    "\\" + appDirName + "\\" + dataDirName + "\\data.xml");
+        createFolderIfDoesntExist(dataDirName);
+        createFileIfDoesntExist(dataDirName + "\\data.xml");
 
-        createFolderIfDoesntExist("\\" + appDirName + "\\" + dataDirName + "\\" + filesDirName);
+        createFolderIfDoesntExist(dataDirName + "\\" + filesDirName);
         createFolderIfDoesntExist(getFullImagesDirName());
         createFolderIfDoesntExist(getFullSoundsDirName());
     }
@@ -90,8 +97,14 @@ public class FileManager {
 
         try  {
 
-            if (checkedFile.createNewFile())
+            if (checkedFile.createNewFile()) {
                 System.out.println("File: " + path + " was created");
+
+                if (checkedFile.getPath().contains("data.xml")) {
+                    fillDataXMLWithTemplateData(checkedFile);
+                    System.out.println("filled in data.xml");
+                }
+            }
 
             else
                 System.out.println("!!! File: " + path + " WAS NOT created !!!");
@@ -103,12 +116,16 @@ public class FileManager {
         }
     }
 
+    private void fillDataXMLWithTemplateData(File dataXML) throws IOException {
+        Files.write(dataXML.toPath(), XMLTEMPLATETEXT.getBytes(), StandardOpenOption.APPEND);
+    }
+
     public String getFullImagesDirName() {
-        return  appDirName + "\\" + dataDirName + "\\" + filesDirName + "\\" + imagesDirName;
+        return getDataDirName() + "\\" + getFilesDirName() + "\\" + getImagesDirName();
     }
 
     public String getFullSoundsDirName() {
-        return appDirName + "\\" + dataDirName + "\\" + filesDirName + "\\" + soundsDirName;
+        return getDataDirName() + "\\" + getFilesDirName() + "\\" + getSoundsDirName();
     }
 
     public void copyFileFromTo(String srcPath, String destPath) {
