@@ -17,14 +17,20 @@ import java.io.IOException;
 public class SoundManager {
 
     public void PlaySound(String soundFilePath) {
-        if(check_path(soundFilePath) == true) {
-            if (soundFilePath.toLowerCase().endsWith("mp3")) {
-                mp3_player(soundFilePath);
+        Thread sound_thread = new Thread() {
+            public void run() {
+                if(check_path(soundFilePath) == true) {
+                    if (soundFilePath.toLowerCase().endsWith("mp3")) {
+                        mp3_player(soundFilePath);
+                    }
+                    if (soundFilePath.toLowerCase().endsWith("wav")) {
+                        wav_player(soundFilePath);
+                    }
+                }
+
             }
-            if (soundFilePath.toLowerCase().endsWith("wav")) {
-                wav_player(soundFilePath);
-            }
-        }
+        };
+        sound_thread.start();
     }
 
     private boolean check_path(String soundFilePath){
@@ -39,7 +45,6 @@ public class SoundManager {
         try {
             FileInputStream fileInputStream = new FileInputStream(soundFilePath);
             Player player = new Player(fileInputStream);
-           // System.out.println("Song is playing...");
             player.play();
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
