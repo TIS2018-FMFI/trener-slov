@@ -47,6 +47,7 @@ public class ModeController extends ControllerBase {
 	WaitAndCallGuiMethod itemDurationTimer;
 	Item item;
 	boolean isQuestion;
+	boolean modeQuited;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -55,6 +56,7 @@ public class ModeController extends ControllerBase {
 	}
 	
 	public void start() {
+		modeQuited = false;
 		if (isStationaryBicycle()) {
 			StationaryBicycle sb = (StationaryBicycle) mode;
 			Integer modeDuration = sb.getModeDurationInSecs();
@@ -95,6 +97,7 @@ public class ModeController extends ControllerBase {
 	}
 	
 	public void quit() {
+		modeQuited = true;
 		boolean startModeAgain = showQuitDialog();
 		if (startModeAgain) {
 			mode.reinitialize();
@@ -111,9 +114,7 @@ public class ModeController extends ControllerBase {
 		rightBtn.setVisible(false);
 		wrongBtn.setVisible(false);
 		text.setText( (item.getQuestionText() == null) ? "" : item.getQuestionText() );
-		if (item.getQuestionImg() != null) {
-			setImage(item.getQuestionImg());
-		}
+		setImage(item.getQuestionImg());
 		handleDuration(item.getQuestionSound());
 	}
 	
@@ -129,9 +130,7 @@ public class ModeController extends ControllerBase {
 			wrongBtn.setVisible(true);
 		}
 		text.setText( (item.getAnswerText() == null) ? "" : item.getAnswerText() );
-		if (item.getAnswerImg() != null) {
-			setImage(item.getAnswerImg());
-		}
+		setImage(item.getAnswerImg());
 		handleDuration(item.getAnswerSound());
 	}
 	
@@ -201,9 +200,14 @@ public class ModeController extends ControllerBase {
 	}
 
 	private void setImage(String imagePath) {
-        File file = new File(imagePath);
-        Image image = new Image(file.toURI().toString());
-        imageView = new ImageView(image);
+		if (imagePath != null) {
+	        File file = new File(imagePath);
+	        Image image = new Image(file.toURI().toString());
+	        imageView = new ImageView(image);
+		}
+		else {
+			imageView = new ImageView();
+		}
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(imageParent.getHeight());
 		imageView.fitHeightProperty().bind(imageParent.heightProperty());
@@ -227,6 +231,9 @@ public class ModeController extends ControllerBase {
 	}
 	
 	private void playSoundRecursive(String soundPath, int countOfPlays, Double waitDuration) {
+		if (modeQuited) {
+			return;
+		}
 		if (countOfPlays == 0) {
 			playSoundBtn.setDisable(false);
 			nextInStationaryBicycle();
