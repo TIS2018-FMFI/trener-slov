@@ -34,7 +34,7 @@ public class Export {
             JButton open = new JButton();
             JFileChooser choose_folder = new JFileChooser();
             choose_folder.setCurrentDirectory(new java.io.File("C:"));
-            choose_folder.setDialogTitle("chooser");
+            choose_folder.setDialogTitle("Export");
             choose_folder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             if(choose_folder.showOpenDialog(open) == JFileChooser.APPROVE_OPTION) {}
             targetPath = choose_folder.getSelectedFile().getAbsolutePath();

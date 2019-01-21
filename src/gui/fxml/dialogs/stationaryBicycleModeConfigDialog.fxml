@@ -13,11 +13,8 @@
    <bottom>
       <FlowPane alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="50.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="startBtn" mnemonicParsing="false" text="Spustiť" />
+            <Button fx:id="startBtn" mnemonicParsing="false" text="Spustiť" minWidth="100" />
          </children>
-         <padding>
-            <Insets right="20.0" />
-         </padding>
       </FlowPane>
    </bottom>
    <center>

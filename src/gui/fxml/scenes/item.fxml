@@ -14,33 +14,36 @@
 
 <BorderPane fx:id="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.sceneControllers.ItemController">
    <bottom>
-      <FlowPane alignment="CENTER_RIGHT" prefHeight="50.0" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets right="20.0" />
-         </padding>
-         <children>
-            <HBox spacing="20.0">
+      <BorderPane prefHeight="50.0" BorderPane.alignment="CENTER">
+         <left>
+            <Button fx:id="backBtn" mnemonicParsing="false" text="Späť" minWidth="100" />
+         </left>
+         <right>
+            <FlowPane alignment="CENTER_RIGHT" prefHeight="50.0" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
                <children>
-                  <Button fx:id="createSwitchedItemBtn" mnemonicParsing="false" text="Vytvoriť položku s vymenenou otázkou a odpoveďou" />
-                  <Button fx:id="okBtn" minWidth="100.0" mnemonicParsing="false" text="Ok" />
+                  <HBox spacing="20.0">
+                     <children>
+                        <Button fx:id="createSwitchedItemBtn" mnemonicParsing="false" text="Vytvoriť položku s vymenenou otázkou a odpoveďou" />
+                        <Button fx:id="okBtn" minWidth="100.0" mnemonicParsing="false" text="Ok" />
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
-         </children>
-      </FlowPane>
+            </FlowPane>
+         </right>
+      </BorderPane>
    </bottom>
    <top>
       <FlowPane alignment="CENTER_LEFT" prefHeight="50.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="backBtn" mnemonicParsing="false" text="Späť" />
             <Label fx:id="lessonGroupNameLabel">
                <FlowPane.margin>
                   <Insets left="20.0" />
                </FlowPane.margin>
             </Label>
          </children>
-         <padding>
-            <Insets left="20.0" />
-         </padding>
       </FlowPane>
    </top>
    <center>

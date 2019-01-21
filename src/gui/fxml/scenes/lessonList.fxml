@@ -12,23 +12,16 @@
       <ListView fx:id="lessonsListView" BorderPane.alignment="CENTER" />
    </center>
    <top>
-      <FlowPane alignment="CENTER_LEFT" prefHeight="50.0" BorderPane.alignment="CENTER_LEFT">
-         <children>
-            <Button fx:id="backBtn" mnemonicParsing="false" text="Späť" />
-         </children>
-         <padding>
-            <Insets left="20.0" />
-         </padding>
-      </FlowPane>
    </top>
    <bottom>
       <BorderPane prefHeight="50.0" BorderPane.alignment="CENTER">
          <left>
-            <Button fx:id="newLessonBtn" mnemonicParsing="false" text="Nová lekcia" BorderPane.alignment="CENTER" />
+            <Button fx:id="backBtn" mnemonicParsing="false" text="Späť" minWidth="100" />
          </left>
          <right>
             <HBox alignment="CENTER_RIGHT" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
+                  <Button fx:id="newLessonBtn" mnemonicParsing="false" text="Nová lekcia" BorderPane.alignment="CENTER" />
                   <Button fx:id="importBtn" mnemonicParsing="false" text="Import" />
                   <Button fx:id="exportBtn" mnemonicParsing="false" text="Export" />
                </children>
@@ -40,12 +33,7 @@
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
-         <padding>
-            <Insets right="20.0" />
-         </padding>
-         <BorderPane.margin>
-            <Insets left="20.0" />
-         </BorderPane.margin>
+
       </BorderPane>
    </bottom>
 </BorderPane>
