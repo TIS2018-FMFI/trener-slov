@@ -21,7 +21,7 @@
          <children>
             <HBox spacing="20.0">
                <children>
-                  <Button fx:id="switchBtn" mnemonicParsing="false" text="Vymeniť" />
+                  <Button fx:id="createSwitchedItemBtn" mnemonicParsing="false" text="Vytvoriť položku s vymenenou otázkou a odpoveďou" />
                   <Button fx:id="okBtn" minWidth="100.0" mnemonicParsing="false" text="Ok" />
                </children>
             </HBox>

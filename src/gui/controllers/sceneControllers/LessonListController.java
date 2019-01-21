@@ -27,8 +27,7 @@ public class LessonListController extends ControllerBase {
 	ObservableList<Lesson> lessonObservableList;
 	
 	public LessonListController() {
-		List<Lesson> lessons = Main.mainController.getLessons();	
-		lessonObservableList = FXCollections.observableArrayList(lessons);
+		loadLessons();
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class LessonListController extends ControllerBase {
 		backBtn.setOnMouseClicked(e -> redirect(Scenes.MAIN_MENU, e));
 		newLessonBtn.setOnMouseClicked(e -> newLesson(e));
 		
-		importBtn.setOnMouseClicked(e -> Main.mainController.importLesson());
+		importBtn.setOnMouseClicked(e -> importLessons());
 		exportBtn.setOnMouseClicked(e -> redirect(Scenes.EXPORT_LESSONS, e));
 	}
 
@@ -55,5 +54,17 @@ public class LessonListController extends ControllerBase {
 	private void newLesson(MouseEvent event) {
 		LessonController controller = (LessonController) redirect(Scenes.LESSON, event);
 		controller.createLesson();
+	}
+	
+	private void loadLessons() {
+		List<Lesson> lessons = Main.mainController.getLessons();	
+		lessonObservableList = FXCollections.observableArrayList(lessons);
+	}
+	
+	private void importLessons() {
+		Main.mainController.importLesson();
+		loadLessons();
+		lessonsListView.setItems(lessonObservableList);
+		lessonsListView.setCellFactory(lesson -> new LessonListCell(lessonsListView));
 	}
 }
