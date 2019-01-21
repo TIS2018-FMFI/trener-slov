@@ -44,7 +44,10 @@ public class Item implements Serializable{
         answerSound = tmpQuestionSound;
     }
 
-
+    public Item copy() {
+    	return new Item(questionText, questionImg, questionSound, answerText, answerImg, answerSound);
+    }
+    
     public String getQuestionText() {
         return questionText;
     }
