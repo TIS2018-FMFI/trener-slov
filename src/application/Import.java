@@ -33,6 +33,7 @@ public class Import {
     private String packagePath;
 
     private void choosePackagePath() throws IOException {
+        name="";
         boolean message_bad_zip = false;
        try {
            filechooser = new JFileChooser();
@@ -43,7 +44,9 @@ public class Import {
                if (is_zip_check(choose_file.getName()) == true) {
                    message_bad_zip = true;
                    packagePath = choose_file.getPath();
+
                    if(is_correct_zip(packagePath)) {
+                       //System.out.println(packagePath + "    "+END_SAVE_PATH);
                        unzip(packagePath, END_SAVE_PATH);
                    }
                    else{
@@ -81,6 +84,7 @@ public class Import {
             if(entry.getName().toLowerCase().endsWith("xml")){ is_xml = true; }
             count_file++;
         }
+
         if(count_file==3 && is_images==true && is_sounds == true && is_xml==true){
             return true;
         }
@@ -149,7 +153,7 @@ public class Import {
                 File newFile = newFile(destDir, zipEntry);
                 fos = new FileOutputStream(newFile);
                 int len;
-
+                System.out.println(zipEntry.getName());
                 while ((len = zis.read(buffer)) > 0) {
                     fos.write(buffer, 0, len);
                 }
