@@ -47,6 +47,7 @@ public class ModeController extends ControllerBase {
 	WaitAndCallGuiMethod itemDurationTimer;
 	Item item;
 	boolean isQuestion;
+	boolean modeQuited;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -55,6 +56,7 @@ public class ModeController extends ControllerBase {
 	}
 	
 	public void start() {
+		modeQuited = false;
 		if (isStationaryBicycle()) {
 			StationaryBicycle sb = (StationaryBicycle) mode;
 			Integer modeDuration = sb.getModeDurationInSecs();
@@ -95,6 +97,7 @@ public class ModeController extends ControllerBase {
 	}
 	
 	public void quit() {
+		modeQuited = true;
 		boolean startModeAgain = showQuitDialog();
 		if (startModeAgain) {
 			mode.reinitialize();
@@ -228,6 +231,9 @@ public class ModeController extends ControllerBase {
 	}
 	
 	private void playSoundRecursive(String soundPath, int countOfPlays, Double waitDuration) {
+		if (modeQuited) {
+			return;
+		}
 		if (countOfPlays == 0) {
 			playSoundBtn.setDisable(false);
 			nextInStationaryBicycle();
