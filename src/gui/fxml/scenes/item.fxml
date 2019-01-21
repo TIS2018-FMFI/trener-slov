@@ -30,6 +30,8 @@
                         <Button fx:id="okBtn" minWidth="100.0" mnemonicParsing="false" text="Ok" />
                      </children>
                   </HBox>
+                  <Button fx:id="createSwitchedItemBtn" mnemonicParsing="false" text="Vytvoriť položku s vymenenou otázkou a odpoveďou" />
+                  <Button fx:id="okBtn" minWidth="100.0" mnemonicParsing="false" text="Ok" />
                </children>
             </FlowPane>
          </right>

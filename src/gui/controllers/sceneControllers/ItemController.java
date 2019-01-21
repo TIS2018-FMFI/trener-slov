@@ -18,6 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
@@ -33,7 +35,7 @@ public class ItemController extends ControllerBase {
 	BorderPane pane;
 	
 	@FXML
-	Button backBtn, switchBtn, okBtn;
+	Button backBtn, createSwitchedItemBtn, okBtn;
 	
 	@FXML
 	Button qImageChooseBtn, qSoundChooseBtn, aImageChooseBtn, aSoundChooseBtn;
@@ -60,7 +62,7 @@ public class ItemController extends ControllerBase {
 		setFontSizeToTexts();
 		backBtn.setOnMouseClicked(e -> backToParentGroup(e));	
 		okBtn.setOnMouseClicked(e -> saveItem(e));
-		switchBtn.setOnMouseClicked(e -> switchQuestionAndAnswer());
+		createSwitchedItemBtn.setOnMouseClicked(e -> createItemWithSwitchedQuestionAndAnswer());
 		qImageChooseBtn.setOnMouseClicked(e -> {
 			setFilePathToTextField(qImageValue, extensionsImages,  e);
 		});
@@ -81,7 +83,7 @@ public class ItemController extends ControllerBase {
 		aLabel.setStyle(String.format("-fx-font-size: %dpx; -fx-font-weight: bold;", fontSize));
 		qLabel.setStyle(String.format("-fx-font-size: %dpx; -fx-font-weight: bold;", fontSize));
 		List<Node> nodes = Arrays.asList(
-				backBtn, switchBtn, okBtn, qTextLabel, qImageLabel, qSoundLabel, aTextLabel, aImageLabel, aSoundLabel, 
+				backBtn, createSwitchedItemBtn, okBtn, qTextLabel, qImageLabel, qSoundLabel, aTextLabel, aImageLabel, aSoundLabel, 
 				qTextValue, qTextValue, qImageValue, qImageValue, qSoundValue, aTextValue, aTextValue, aImageValue,
 				aImageValue, aSoundValue, qImageChooseBtn, qSoundChooseBtn, qSoundChooseBtn, aImageChooseBtn, aSoundChooseBtn,
 				lessonGroupNameLabel
@@ -106,9 +108,13 @@ public class ItemController extends ControllerBase {
 		lessonGroupNameLabel.setText(lesson.getName() + " - " + group.getName());
 	}
 	
-	private void switchQuestionAndAnswer() {
-		item.switchQuestionAndAnswer();
-		setTexts();
+	private void createItemWithSwitchedQuestionAndAnswer() {
+		Item itemToBeSwitched = item.copy();
+		itemToBeSwitched.switchQuestionAndAnswer();
+		group.addItem(itemToBeSwitched);
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setHeaderText("Nová položka s vymenenou otázkou a odpoveďou vytvorená.");
+		alert.showAndWait();
 	}
 
 	private void setTexts() {

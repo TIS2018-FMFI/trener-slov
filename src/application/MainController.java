@@ -37,6 +37,11 @@ public class MainController {
             return;
 
         dataController.addLessons(importedLessons);
+        try {
+            dataController.saveData();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     public void exportLesson(ArrayList<Lesson> lessons) {
