@@ -36,15 +36,14 @@ public class Export {
             choose_folder.setCurrentDirectory(new java.io.File("C:"));
             choose_folder.setDialogTitle("chooser");
             choose_folder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            if (choose_folder.showOpenDialog(open) == JFileChooser.APPROVE_OPTION) {
-                //
-            }
+            if(choose_folder.showOpenDialog(open) == JFileChooser.APPROVE_OPTION) {}
             targetPath = choose_folder.getSelectedFile().getAbsolutePath();
+            targetPath = check_rename_folder(targetPath);
             zipFile("images");
             zipFile("sounds");
         }
         catch(Exception e){
-            System.out.println("zavrel okno");
+            System.out.println("closed window");
         }
 
     }
@@ -81,17 +80,17 @@ public class Export {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
-
                         }
                     });
         }
     }
 
     private boolean is_in_xml(String name, String type){
-
-        if(type.equals("all") && (name.equals("images.zip") || name.equals("sounds.zip") || name.endsWith(".xml"))){
+        if(type.equals("all") && (name.equals("images.zip") || name.equals("sounds.zip") || name.endsWith("lessons.xml"))){
             return true;
+        }
+        else if(type.equals("all")){
+            return false;
         }
         Iterator<Lesson> it = xml.iterator();
         while(it.hasNext()) {
@@ -111,7 +110,6 @@ public class Export {
                                 return true;
                             }
                         }
-
                     }
                     else if(type.equals("sounds")){
                         if(fi.getAnswerSound()!=null){
@@ -137,6 +135,21 @@ public class Export {
     public Boolean hasWriteAccess() {
         File file = new File(targetPath+"/data.zip");
         return file.exists() && file.canWrite();
+    }
+
+    private String check_rename_folder(String path){
+        File new_folder = new File(targetPath+"/lessons-export");
+        if (new_folder.exists() == false){
+            new_folder.mkdir();
+            return path+"/lessons-export";
+        }
+        int new_index_file = 0;
+        while (new_folder.exists()){
+            new_index_file++;
+            new_folder = new File(path+"/lessons-export"+new_index_file);
+        }
+        new_folder.mkdir();
+        return  path+"/lessons-export"+new_index_file;
     }
 
     private String check_rename_filename(String path){
@@ -182,8 +195,8 @@ public class Export {
             m.marshal(dcToExport, new File(targetPath+"/lessons.xml"));
 
             try {
-                String a = check_rename_filename(targetPath+"/data");
-                zipDirectory(targetPath, a,"all");
+                String export_zip_path = check_rename_filename(targetPath+"/data");
+                zipDirectory(targetPath, export_zip_path,"all");
             } catch (IOException e) {
                 e.printStackTrace();
             }
