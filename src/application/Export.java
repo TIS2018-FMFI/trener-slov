@@ -82,7 +82,10 @@ public class Export {
                             }
                         }
                     });
+            zipOutputStream.closeEntry();
+            zipOutputStream.close();
         }
+
     }
 
     private boolean is_in_xml(String name, String type){
