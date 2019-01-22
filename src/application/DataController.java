@@ -5,9 +5,14 @@ import data.*;
 import javax.xml.bind.*;
 import javax.xml.bind.annotation.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +103,13 @@ public class DataController {
     private DataController CreateDataControllerFromXML(String path) throws JAXBException, FileNotFoundException {
         JAXBContext context = JAXBContext.newInstance(DataController.class);
         Unmarshaller um = context.createUnmarshaller();
-        return (DataController) um.unmarshal(new FileReader(path));
+        Reader reader = null;
+		try {
+			reader = new InputStreamReader(new FileInputStream(path), "UTF8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+        return (DataController) um.unmarshal(reader);
     }
 
     public void saveFilesInItem(Item item, String newQImage, String newQSound, String newAImage, String newASound) {

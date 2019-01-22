@@ -234,7 +234,14 @@ public class Import {
         try {
             JAXBContext context = JAXBContext.newInstance(DataController.class);
             Unmarshaller um = context.createUnmarshaller();
-            return ((DataController) um.unmarshal(new FileReader(path))).getLessons();
+            Reader reader = null;
+    		try {
+    			reader = new InputStreamReader(new FileInputStream(path), "UTF8");
+    		} catch (UnsupportedEncodingException e) {
+    			e.printStackTrace();
+    		}
+    		DataController dataController = (DataController) um.unmarshal(reader);
+            return dataController.getLessons();
         }
         catch (JAXBException | FileNotFoundException e)  {
             return null;
