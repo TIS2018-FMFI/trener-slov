@@ -6,6 +6,7 @@ import data.Lesson;
 import javax.xml.bind.JAXBException;
 
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class MainController {
@@ -25,7 +26,7 @@ public class MainController {
     public void loadData() {
     	try {
 			dataController.loadData();
-		} catch (FileNotFoundException | JAXBException e) {
+		} catch (FileNotFoundException | JAXBException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
     }
