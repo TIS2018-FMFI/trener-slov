@@ -28,6 +28,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modes.GameMode;
 import modes.StationaryBicycle;
+import modes.UnsatisfactoryLessonException;
 
 public class ModeController extends ControllerBase {
 	
@@ -99,7 +100,11 @@ public class ModeController extends ControllerBase {
 		boolean startModeAgain = showQuitDialog();
 		stopThreads();
 		if (startModeAgain) {
-			mode.reinitialize();
+			try {
+				mode.reinitialize();
+			} catch (UnsatisfactoryLessonException e) {
+				e.printStackTrace();
+			}
 			start();
 		}
 		else {

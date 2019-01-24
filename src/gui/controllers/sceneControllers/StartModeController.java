@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -28,6 +29,7 @@ import modes.Examination;
 import modes.GameMode;
 import modes.Learning;
 import modes.StationaryBicycle;
+import modes.UnsatisfactoryLessonException;
 
 public class StartModeController extends ControllerBase {
 	
@@ -43,10 +45,10 @@ public class StartModeController extends ControllerBase {
 	public void initialize(URL location, ResourceBundle resources) {
 		setFontSizeToTexts();
 		backBtn.setOnMouseClicked(e -> redirect(Scenes.START_LESSON, e));
-		learningModeBtn.setOnMouseClicked(e -> startMode(Learning.class, e));
-		ExaminationModeBtn.setOnMouseClicked(e -> startMode(Exception.class, e));
-		DictateModeBtn.setOnMouseClicked(e -> startMode(Dictate.class, e));
-		StationaryBicycleModeBtn.setOnMouseClicked(e -> startMode(StationaryBicycle.class, e));
+		learningModeBtn.setOnMouseClicked(e -> catchExceptionAndStartMode(Learning.class, e));
+		ExaminationModeBtn.setOnMouseClicked(e -> catchExceptionAndStartMode(Exception.class, e));
+		DictateModeBtn.setOnMouseClicked(e -> catchExceptionAndStartMode(Dictate.class, e));
+		StationaryBicycleModeBtn.setOnMouseClicked(e -> catchExceptionAndStartMode(StationaryBicycle.class, e));
 	}
 
 	@Override
@@ -61,7 +63,16 @@ public class StartModeController extends ControllerBase {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private void startMode(Class modeClass, MouseEvent e) {
+	private void catchExceptionAndStartMode(Class modeClass, MouseEvent e) {
+		try {
+			startMode(modeClass, e);
+		} catch (UnsatisfactoryLessonException exeption) {
+			showAlert(exeption);
+		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private void startMode(Class modeClass, MouseEvent e) throws UnsatisfactoryLessonException {
 		GameMode mode = null;
 		String title = "";
 		if (modeClass.equals(Learning.class)) {
@@ -138,5 +149,11 @@ public class StartModeController extends ControllerBase {
         stage.setMinHeight(300);
         stage.setScene(scene);
         return stage;
+	}
+	
+	private void showAlert(UnsatisfactoryLessonException exeption) {
+		Alert alert = new Alert(Alert.AlertType.WARNING);
+		alert.setHeaderText(exeption.getMessage());
+		alert.showAndWait();
 	}
 }
