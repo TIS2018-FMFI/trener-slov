@@ -45,6 +45,7 @@ public class ModeController extends ControllerBase {
 	GameMode mode;
 	WaitAndCallGuiMethod modeTimer;
 	WaitAndCallGuiMethod itemDurationTimer;
+	WaitAndCallGuiMethod soundTimer;
 	Item item;
 	boolean isQuestion;
 	boolean modeQuited;
@@ -62,9 +63,6 @@ public class ModeController extends ControllerBase {
 			Integer modeDuration = sb.getModeDurationInSecs();
 			if (modeDuration != 0) {
 				modeTimer = new WaitAndCallGuiMethod(modeDuration, () -> {
-					if (itemDurationTimer != null) {
-						itemDurationTimer.stop();
-					}
 					quit();
 					return null;
 				});
@@ -99,12 +97,25 @@ public class ModeController extends ControllerBase {
 	public void quit() {
 		modeQuited = true;
 		boolean startModeAgain = showQuitDialog();
+		stopThreads();
 		if (startModeAgain) {
 			mode.reinitialize();
 			start();
 		}
 		else {
 			redirect(Scenes.START_LESSON, quitBtn);
+		}
+	}
+	
+	private void stopThreads() {
+		if (modeTimer != null) {
+			modeTimer.stop();
+		}
+		if(soundTimer != null) {
+			soundTimer.stop();
+		}
+		if (itemDurationTimer != null) {
+			itemDurationTimer.stop();
 		}
 	}
 	
@@ -161,7 +172,7 @@ public class ModeController extends ControllerBase {
 				StationaryBicycle sb = (StationaryBicycle) mode;
 				playSoundBtn.setDisable(true);
 				Double soundDuration = Main.mainController.getSoundDuration(soundPath);
-				Double pauseAfterSoundInSeconds = 2.0; 
+				Double pauseAfterSoundInSeconds = 1.5; 
 				Double waitDuration = soundDuration + pauseAfterSoundInSeconds;
 				playSoundRecursive(soundPath, sb.getNumberOfPlay(), waitDuration);
 			}
@@ -239,7 +250,7 @@ public class ModeController extends ControllerBase {
 			nextInStationaryBicycle();
 			return;
 		}
-		new WaitAndCallGuiMethod(waitDuration, () -> {
+		soundTimer = new WaitAndCallGuiMethod(waitDuration, () -> {
 			playSoundRecursive(soundPath, countOfPlays-1, waitDuration);
 			return null;
 		});
