@@ -9,8 +9,10 @@ import java.util.Collections;
 public class Dictate extends GameMode {
     private ArrayList<Item> items;
 
-    public Dictate(Lesson less){
+
+    public Dictate(Lesson less) throws UnsatisfactoryLessonException {
         this.lesson=less;
+        if (less.getGroupsInLesson().size()<1) throw new UnsatisfactoryLessonException("Lekcia má málo skupín.");
         reinitialize();
         this.printItems();
     }
@@ -47,10 +49,13 @@ public class Dictate extends GameMode {
     }
 
 	@Override
-	public void reinitialize() {
+	public void reinitialize() throws UnsatisfactoryLessonException {
         items=new ArrayList<>();
         for (Group group : lesson.getGroupsInLesson()) {
-            for (Item item : group.getItemsInGroup()) {
+            if (group.getItemsInGroup().size()<3){
+                throw new UnsatisfactoryLessonException("Skupina v tejto lekcii obsahuje nedostatočný počet položiek.");
+            }
+                for (Item item : group.getItemsInGroup()) {
                 if (item.getQuestionSound() != null && item.getAnswerText() != null) items.add(item);
             }
         }

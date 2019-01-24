@@ -13,6 +13,7 @@ import javafx.stage.StageStyle;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class Main extends Application{
@@ -40,7 +41,7 @@ public class Main extends Application{
 		//testDataController();
 	}
 
-	private void testDataController() throws FileNotFoundException, JAXBException {
+	private void testDataController() throws FileNotFoundException, JAXBException, UnsupportedEncodingException {
 		DataController test = new DataController(new ArrayList<Lesson>(), "data/data.xml", new Configuration());
 		test.loadData();
 

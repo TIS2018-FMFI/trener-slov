@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,7 @@ public class DataController {
         return lessons1;
     }
 
-    public void loadData() throws FileNotFoundException, JAXBException {
+    public void loadData() throws FileNotFoundException, JAXBException, UnsupportedEncodingException {
         DataController loadedDataController = CreateDataControllerFromXML(dataFilePath);
         config = loadedDataController.getConfig();
         setLessons(loadedDataController.getLessons());
@@ -99,8 +100,7 @@ public class DataController {
         m.marshal(this, new File(dataFilePath));
     }
 
-
-    private DataController CreateDataControllerFromXML(String path) throws JAXBException, FileNotFoundException {
+    private DataController CreateDataControllerFromXML(String path) throws JAXBException, FileNotFoundException, UnsupportedEncodingException {
         JAXBContext context = JAXBContext.newInstance(DataController.class);
         Unmarshaller um = context.createUnmarshaller();
         Reader reader = null;
@@ -109,7 +109,7 @@ public class DataController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-        return (DataController) um.unmarshal(reader);
+        return (DataController) um.unmarshal(new InputStreamReader(new FileInputStream(path), "UTF-8"));
     }
 
     public void saveFilesInItem(Item item, String newQImage, String newQSound, String newAImage, String newASound) {

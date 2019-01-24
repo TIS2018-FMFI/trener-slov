@@ -9,8 +9,9 @@ import java.util.Collections;
 
 public class Examination extends GameMode {
     ArrayList<Item> items;
-    public Examination(Lesson less){
+    public Examination(Lesson less) throws UnsatisfactoryLessonException {
         this.lesson=less;
+        if (less.getGroupsInLesson().size()<1) throw new UnsatisfactoryLessonException("Lekcia má málo skupín.");
         reinitialize();
         this.printItems();
     }
@@ -47,9 +48,12 @@ public class Examination extends GameMode {
         System.out.println(arr);
     }
 	@Override
-	public void reinitialize() {
+	public void reinitialize() throws UnsatisfactoryLessonException {
         items = new ArrayList<>();
         for (Group group : lesson.getGroupsInLesson()) {
+            if (group.getItemsInGroup().size()<3){
+                throw new UnsatisfactoryLessonException("Skupina v tejto lekcii obsahuje nedostatočný počet položiek.");
+            }
             for (Item item : group.getItemsInGroup()) {
                 items.add(item);
             }
