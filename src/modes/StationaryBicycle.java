@@ -13,7 +13,7 @@ public class StationaryBicycle extends GameMode {
     private Integer pauseDurationInSecs;
     private Integer modeDurationInSecs;
 
-    public StationaryBicycle(Lesson less, Integer number, Integer pause, Integer modeDur){
+    public StationaryBicycle(Lesson less, Integer number, Integer pause, Integer modeDur) throws UnsatisfactoryLessonException {
         this.lesson=less;
         this.numberOfAnswersPlay=number;
         this.pauseDurationInSecs=pause;
@@ -31,9 +31,12 @@ public class StationaryBicycle extends GameMode {
     protected void randomize() { Collections.shuffle(items); }
     
 	@Override
-	public void reinitialize() {
+	public void reinitialize() throws UnsatisfactoryLessonException {
         items = new ArrayList<>();
         for (Group group : lesson.getGroupsInLesson()) {
+            if (group.getItemsInGroup().size()<3){
+                throw new UnsatisfactoryLessonException("Unsatisfactory Lesson");
+            }
             for (Item item : group.getItemsInGroup()) {
                 items.add(item);
             }

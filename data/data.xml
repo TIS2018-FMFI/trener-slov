@@ -2,7 +2,7 @@
 <data xmlns:ns2="item" xmlns:ns3="group" xmlns:ns4="lesson">
     <dataFilePath>data/data.xml</dataFilePath>
     <config>
-        <fontSize>18</fontSize>
+        <fontSize>25</fontSize>
     </config>
     <fm/>
     <lessons>

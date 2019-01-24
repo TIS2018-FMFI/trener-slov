@@ -16,7 +16,7 @@ public class Learning extends GameMode {
     Boolean phaseOneDone;
     HashMap<Group,Integer> corrAnswers;
 
-    public Learning(Lesson less, Integer num){
+    public Learning(Lesson less, Integer num) throws UnsatisfactoryLessonException {
         numOfRepeat=num;
         this.lesson=less;
         reinitialize();
@@ -55,7 +55,7 @@ public class Learning extends GameMode {
     protected void randomize() { }
     
 	@Override
-	public void reinitialize() {
+	public void reinitialize() throws UnsatisfactoryLessonException {
         actual=-1;
         end=2;
         phaseOneDone = false;
@@ -63,6 +63,9 @@ public class Learning extends GameMode {
         row=new ArrayList<>();
         corrAnswers=new HashMap<>();
         for (Group g:lesson.getGroupsInLesson()) {
+            if (g.getItemsInGroup().size()<3){
+                throw new UnsatisfactoryLessonException("Unsatisfactory Lesson");
+            }
             skupiny.add(g);
             corrAnswers.put(g,0);
         }
@@ -84,7 +87,7 @@ public class Learning extends GameMode {
             }
             if (checkAll()){
                 phaseOneDone = true;
-                System.out.println("Prva faza ukoncena!!!!!!!!!!!!!!!!!");
+                //System.out.println("Prva faza ukoncena!!!!!!!!!!!!!!!!!");
                 for (Group g:skupiny) {
                     for (Item i:g.getItemsInGroup()) {
                         row.add(i);
