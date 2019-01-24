@@ -18,6 +18,7 @@ public class StationaryBicycle extends GameMode {
         this.numberOfAnswersPlay=number;
         this.pauseDurationInSecs=pause;
         this.modeDurationInSecs=modeDur;
+        if (less.getGroupsInLesson().size()<1) throw new UnsatisfactoryLessonException("Lekcia má málo skupín.");
         reinitialize();
     }
 
@@ -35,7 +36,7 @@ public class StationaryBicycle extends GameMode {
         items = new ArrayList<>();
         for (Group group : lesson.getGroupsInLesson()) {
             if (group.getItemsInGroup().size()<3){
-                throw new UnsatisfactoryLessonException("Unsatisfactory Lesson");
+                throw new UnsatisfactoryLessonException("Skupina v tejto lekcii obsahuje nedostatočný počet položiek.");
             }
             for (Item item : group.getItemsInGroup()) {
                 items.add(item);

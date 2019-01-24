@@ -19,6 +19,7 @@ public class Learning extends GameMode {
     public Learning(Lesson less, Integer num) throws UnsatisfactoryLessonException {
         numOfRepeat=num;
         this.lesson=less;
+        if (less.getGroupsInLesson().size()<1) throw new UnsatisfactoryLessonException("Lekcia má málo skupín.");
         reinitialize();
     }
 
@@ -64,7 +65,7 @@ public class Learning extends GameMode {
         corrAnswers=new HashMap<>();
         for (Group g:lesson.getGroupsInLesson()) {
             if (g.getItemsInGroup().size()<3){
-                throw new UnsatisfactoryLessonException("Unsatisfactory Lesson");
+                throw new UnsatisfactoryLessonException("Skupina v tejto lekcii obsahuje nedostatočný počet položiek.");
             }
             skupiny.add(g);
             corrAnswers.put(g,0);

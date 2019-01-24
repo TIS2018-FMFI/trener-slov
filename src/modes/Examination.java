@@ -11,6 +11,7 @@ public class Examination extends GameMode {
     ArrayList<Item> items;
     public Examination(Lesson less) throws UnsatisfactoryLessonException {
         this.lesson=less;
+        if (less.getGroupsInLesson().size()<1) throw new UnsatisfactoryLessonException("Lekcia má málo skupín.");
         reinitialize();
         this.printItems();
     }
@@ -51,7 +52,7 @@ public class Examination extends GameMode {
         items = new ArrayList<>();
         for (Group group : lesson.getGroupsInLesson()) {
             if (group.getItemsInGroup().size()<3){
-                throw new UnsatisfactoryLessonException("Unsatisfactory Lesson");
+                throw new UnsatisfactoryLessonException("Skupina v tejto lekcii obsahuje nedostatočný počet položiek.");
             }
             for (Item item : group.getItemsInGroup()) {
                 items.add(item);
