@@ -18,7 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
-class SoundManager {
+public class SoundManager {
     Thread sound_thread;
     Clip clip;
     Player player;
@@ -26,7 +26,7 @@ class SoundManager {
     boolean type_wav = false;
 
     public void PlaySound(String soundFilePath) {
-        player_and_thread_stop();
+        Player_And_Thread_Stop();
         sound_thread = new Thread() {
             public void run() {
                 if (check_path(soundFilePath) == true) {
@@ -70,7 +70,7 @@ class SoundManager {
         }
     }
 
-    private void player_and_thread_stop() {
+    public void Player_And_Thread_Stop() {
         try {
             if(type_wav) {
                 clip.close();
@@ -103,7 +103,7 @@ class SoundManager {
     }
 
 
-    public double sound_time(String soundFilePath) {
+    public double Sound_Time(String soundFilePath) {
         if (check_path(soundFilePath) == true) {
             if (soundFilePath.toLowerCase().endsWith("wav")) {
                 return duration_wav(soundFilePath);
