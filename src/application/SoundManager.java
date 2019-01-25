@@ -8,18 +8,28 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.TagException;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+
 public class SoundManager {
+    Thread sound_thread;
+    Clip clip;
+    Player player;
+    boolean type_mp3 = false;
+    boolean type_wav = false;
 
     public void PlaySound(String soundFilePath) {
-        Thread sound_thread = new Thread() {
+        Player_And_Thread_Stop();
+        sound_thread = new Thread() {
             public void run() {
-                if(check_path(soundFilePath) == true) {
+                if (check_path(soundFilePath) == true) {
                     if (soundFilePath.toLowerCase().endsWith("mp3")) {
                         mp3_player(soundFilePath);
                     }
@@ -27,25 +37,30 @@ public class SoundManager {
                         wav_player(soundFilePath);
                     }
                 }
-
             }
+
+
         };
+
         sound_thread.start();
+
     }
 
-    private boolean check_path(String soundFilePath){
+    private boolean check_path(String soundFilePath) {
         File f = new File(soundFilePath);
-        if(f.exists()) {
+        if (f.exists()) {
             return true;
         }
         return false;
     }
 
-    private void mp3_player(String soundFilePath){
+    private void mp3_player(String soundFilePath) {
         try {
             FileInputStream fileInputStream = new FileInputStream(soundFilePath);
-            Player player = new Player(fileInputStream);
+            player = new Player(fileInputStream);
             player.play();
+            type_mp3 = true;
+            type_wav = false;
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -55,28 +70,40 @@ public class SoundManager {
         }
     }
 
-    private void wav_player(String soundFilePath){
+    public void Player_And_Thread_Stop() {
+        try {
+            if(type_wav) {
+                clip.close();
+                sound_thread.interrupt();
+            }
+            if(type_mp3){
+                player.close();
+                sound_thread.interrupt();
+            }
+        }
+        catch(Exception e){}
+    }
+
+    private void wav_player(String soundFilePath) {
         File Clap = new File(soundFilePath);
         try {
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(Clap));
             clip.start();
-            Thread.sleep(clip.getMicrosecondLength()/1000);
+            type_wav = true;
+            type_mp3 = false;
+            Thread.sleep(clip.getMicrosecondLength() / 1000);
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        } catch (InterruptedException e) {}
     }
 
 
-
-
-    public double sound_time(String soundFilePath) {
+    public double Sound_Time(String soundFilePath) {
         if (check_path(soundFilePath) == true) {
             if (soundFilePath.toLowerCase().endsWith("wav")) {
                 return duration_wav(soundFilePath);
@@ -93,7 +120,7 @@ public class SoundManager {
         try {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(Clap));
-            return clip.getMicrosecondLength()/1000000;
+            return clip.getMicrosecondLength() / 1000000;
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -104,9 +131,9 @@ public class SoundManager {
         return 0.0;
     }
 
-    private double duration_mp3(String soundFilePath){
-        double duration=0;
-        File file=new File(soundFilePath);
+    private double duration_mp3(String soundFilePath) {
+        double duration = 0;
+        File file = new File(soundFilePath);
 
         AudioFile audioFile = null;
         try {
@@ -122,9 +149,7 @@ public class SoundManager {
         } catch (InvalidAudioFrameException e) {
             e.printStackTrace();
         }
-        duration= audioFile.getAudioHeader().getTrackLength();
+        duration = audioFile.getAudioHeader().getTrackLength();
         return duration;
     }
-
-
 }
