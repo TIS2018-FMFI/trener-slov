@@ -97,8 +97,8 @@ public class ModeController extends ControllerBase {
 	
 	public void quit() {
 		modeQuited = true;
-		boolean startModeAgain = showQuitDialog();
 		stopThreads();
+		boolean startModeAgain = showQuitDialog();
 		if (startModeAgain) {
 			try {
 				mode.reinitialize();
@@ -122,6 +122,7 @@ public class ModeController extends ControllerBase {
 		if (itemDurationTimer != null) {
 			itemDurationTimer.stop();
 		}
+		Main.mainController.stopAllSoundThreads();
 	}
 	
 	private void showQuestion() {
