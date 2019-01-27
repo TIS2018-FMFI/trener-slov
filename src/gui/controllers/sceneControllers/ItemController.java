@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -45,6 +46,9 @@ public class ItemController extends ControllerBase {
 	
 	@FXML
 	Label qLabel, aLabel, qTextLabel, qImageLabel, qSoundLabel, aTextLabel, aImageLabel, aSoundLabel, lessonGroupNameLabel;
+	
+	@FXML
+	TextArea hintText;
 	
 	@FXML
 	TextField qTextValue, qImageValue, qSoundValue, aTextValue, aImageValue, aSoundValue;
@@ -86,7 +90,7 @@ public class ItemController extends ControllerBase {
 				backBtn, createSwitchedItemBtn, okBtn, qTextLabel, qImageLabel, qSoundLabel, aTextLabel, aImageLabel, aSoundLabel, 
 				qTextValue, qTextValue, qImageValue, qImageValue, qSoundValue, aTextValue, aTextValue, aImageValue,
 				aImageValue, aSoundValue, qImageChooseBtn, qSoundChooseBtn, qSoundChooseBtn, aImageChooseBtn, aSoundChooseBtn,
-				lessonGroupNameLabel
+				lessonGroupNameLabel, hintText
 		);
 		setFontSizeToAllNodes(nodes, fontSize);
 	}
@@ -148,7 +152,8 @@ public class ItemController extends ControllerBase {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
-		backToParentGroup(event);
+		GroupController controller = (GroupController) redirect(Scenes.GROUP, event);
+		controller.setGroup(lesson, group);
 	}
 	
 	private boolean check() {
@@ -166,6 +171,11 @@ public class ItemController extends ControllerBase {
     }
 
 	private void backToParentGroup(MouseEvent event) {
+		Alert alert = new Alert(AlertType.CONFIRMATION, "Naozaj chcete íst späť bez uloženia zmien ?", ButtonType.YES, ButtonType.NO);
+		alert.showAndWait();
+		if (alert.getResult() == ButtonType.NO) {
+		   return;
+		}
 		GroupController controller = (GroupController) redirect(Scenes.GROUP, event);
 		controller.setGroup(lesson, group);
 	}

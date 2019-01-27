@@ -20,16 +20,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 public class GroupController extends ControllerBase {
 	
 	@FXML
-	Button backBtn, newItemBtn, okBtn;
+	Button newItemBtn, okBtn;
 	
 	@FXML
 	Label nameLabel, lessonNameLabel;
+	
+	@FXML
+	TextArea hintText;
 	
 	@FXML
 	TextField name, search;
@@ -41,14 +45,14 @@ public class GroupController extends ControllerBase {
 	Group group;
 	boolean isNewGroup;
 	ObservableList<Item> itemObservableList;
-	
-	// TODO drag and drop reordering
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		setFontSizeToTexts();
-		backBtn.setOnMouseClicked(e -> backToParentLesson(e));	
-		okBtn.setOnMouseClicked(e -> saveGroup(e));
+		okBtn.setOnMouseClicked(e -> {
+			saveGroup(e);
+			backToParentLesson(e);
+		});
 		newItemBtn.setOnMouseClicked(e -> newItem(e));
 		search.textProperty().addListener((observable, oldValue, newValue) -> filterItems(newValue) );
 	}
@@ -56,13 +60,13 @@ public class GroupController extends ControllerBase {
 	@Override
 	protected void setFontSizeToTexts() {
 		int fontSize = Main.mainController.getFontSize();
-		setFontSizeToNode(backBtn, fontSize);
 		setFontSizeToNode(newItemBtn, fontSize);
 		setFontSizeToNode(okBtn, fontSize);
 		setFontSizeToNode(nameLabel, fontSize);
 		setFontSizeToNode(name, fontSize);
 		setFontSizeToNode(search, fontSize);
 		setFontSizeToNode(lessonNameLabel, fontSize);
+		setFontSizeToNode(hintText, fontSize);
 	}
 
 	public void setGroup(Lesson lesson, Group group) {
@@ -100,6 +104,7 @@ public class GroupController extends ControllerBase {
 	}
 	
 	private void newItem(MouseEvent event) {
+		saveGroup(event);
 		ItemController controller = (ItemController) redirect(Scenes.ITEM, event);
 		controller.createItem(lesson, group);
 	}
@@ -114,7 +119,6 @@ public class GroupController extends ControllerBase {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
-		backToParentLesson(event);
 	}
 	
 	private void backToParentLesson(MouseEvent event) {

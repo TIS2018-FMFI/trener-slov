@@ -6,24 +6,26 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane fx:id="pane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="gui.controllers.sceneControllers.StartModeController">
+<BorderPane fx:id="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.sceneControllers.StartModeController">
    <top>
    </top>
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="learningModeBtn" minWidth="-Infinity" mnemonicParsing="false" prefWidth="200.0" text="Učenie" textAlignment="CENTER" />
-            <Button fx:id="ExaminationModeBtn" minWidth="-Infinity" mnemonicParsing="false" prefWidth="200.0" text="Škúšanie" textAlignment="CENTER" />
-            <Button fx:id="DictateModeBtn" minWidth="-Infinity" mnemonicParsing="false" prefWidth="200.0" text="Diktát" textAlignment="CENTER" />
-            <Button fx:id="StationaryBicycleModeBtn" minWidth="-Infinity" mnemonicParsing="false" prefWidth="200.0" text="Stacionárny bicykel" textAlignment="CENTER" />
+            <Button fx:id="learningModeBtn" minWidth="-Infinity" mnemonicParsing="false" prefWidth="300.0" text="Učenie" textAlignment="CENTER" />
+            <Button fx:id="ExaminationModeBtn" minWidth="-Infinity" mnemonicParsing="false" prefWidth="300.0" text="Škúšanie" textAlignment="CENTER" />
+            <Button fx:id="DictateModeBtn" minWidth="-Infinity" mnemonicParsing="false" prefWidth="300.0" text="Diktát" textAlignment="CENTER" />
+            <Button fx:id="StationaryBicycleModeBtn" minWidth="-Infinity" mnemonicParsing="false" prefWidth="300.0" text="Stacionárny bicykel" textAlignment="CENTER" />
          </children>
       </VBox>
    </center>
    <bottom>
       <FlowPane alignment="CENTER_LEFT" minHeight="50.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="backBtn" mnemonicParsing="false" text="Späť" minWidth="100" />
+            <Button fx:id="backBtn" minWidth="100" mnemonicParsing="false" text="Späť">
+               <FlowPane.margin>
+                  <Insets bottom="20.0" left="20.0" />
+               </FlowPane.margin></Button>
          </children>
       </FlowPane>
    </bottom>

@@ -124,6 +124,8 @@ public class StartModeController extends ControllerBase {
 	private List<Integer> openStationaryBicycleModeConfigDialog() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/fxml/dialogs/stationaryBicycleModeConfigDialog.fxml"));
         Stage stage = createDialogStage(fxmlLoader);
+        stage.setMinWidth(500);
+        stage.setMinHeight(500);
         
 		AtomicInteger numberOfAnswersPlay = new AtomicInteger(3);
 		AtomicInteger pauseDurationInSecs = new AtomicInteger(0);

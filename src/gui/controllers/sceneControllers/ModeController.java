@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import application.Main;
@@ -14,6 +16,7 @@ import gui.WaitAndCallGuiMethod;
 import gui.Scenes;
 import gui.controllers.ControllerBase;
 import gui.controllers.dialogControllers.ModeQuitDialogController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,6 +26,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -50,11 +55,28 @@ public class ModeController extends ControllerBase {
 	Item item;
 	boolean isQuestion;
 	boolean modeQuited;
+	
+	final Set<KeyCode> keyCodesForRight =  new HashSet<>(Arrays.asList(KeyCode.J, KeyCode.K, KeyCode.L, KeyCode.SEMICOLON));
+	final Set<KeyCode> keyCodesForWrong =  new HashSet<>(Arrays.asList(KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F));
+	final Set<KeyCode> keyCodesForShowAnswer =  new HashSet<>(Arrays.asList(KeyCode.U, KeyCode.T));
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		setFontSizeToTexts();
 		initializeBtns();
+	}
+	
+	@FXML
+	private void handleOnKeyPressed(KeyEvent e) {
+	    if (keyCodesForRight.contains(e.getCode()) && rightBtn.isVisible()) {
+	        right();
+	    }
+	    if (keyCodesForWrong.contains(e.getCode()) && wrongBtn.isVisible()) {
+	        wrong();
+	    }
+	    if (keyCodesForShowAnswer.contains(e.getCode()) && showAnswerBtn.isVisible()) {
+	        showAnswer();
+	    }
 	}
 	
 	public void start() {
