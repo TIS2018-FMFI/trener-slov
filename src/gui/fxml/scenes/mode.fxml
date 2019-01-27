@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.sceneControllers.ModeController">
+<BorderPane onKeyPressed="#handleOnKeyPressed" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.sceneControllers.ModeController">
    <bottom>
       <BorderPane minHeight="-Infinity" prefHeight="100.0" BorderPane.alignment="CENTER">
          <center>
@@ -80,7 +80,10 @@
    <top>
       <FlowPane alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="quitBtn" mnemonicParsing="false" text="Skončiť" minWidth="100" />
+            <Button fx:id="quitBtn" minWidth="100" mnemonicParsing="false" text="Skončiť">
+               <FlowPane.margin>
+                  <Insets left="20.0" top="20.0" />
+               </FlowPane.margin></Button>
          </children>
       </FlowPane>
    </top>

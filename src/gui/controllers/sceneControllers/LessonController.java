@@ -20,19 +20,23 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 public class LessonController extends ControllerBase {
 	
 	@FXML
-	Button backBtn, newGroupBtn, okBtn;
+	Button newGroupBtn, okBtn;
 	
 	@FXML
 	Label nameLabel;
 	
 	@FXML
 	TextField name;
+	
+	@FXML
+	TextArea hintText;
 	
 	@FXML
 	ListView<Group> groupsListView;
@@ -45,19 +49,21 @@ public class LessonController extends ControllerBase {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		setFontSizeToTexts();
-		backBtn.setOnMouseClicked(e -> redirect(Scenes.LESSON_LIST, e));
-		okBtn.setOnMouseClicked(e -> saveLesson(e));
+		okBtn.setOnMouseClicked(e -> {
+			saveLesson(e);
+			redirect(Scenes.LESSON_LIST, e);
+		});
 		newGroupBtn.setOnMouseClicked(e -> newGroup(e));
 	}
 
 	@Override
 	protected void setFontSizeToTexts() {
 		int fontSize = Main.mainController.getFontSize();
-		setFontSizeToNode(backBtn, fontSize);
 		setFontSizeToNode(newGroupBtn, fontSize);
 		setFontSizeToNode(okBtn, fontSize);
 		setFontSizeToNode(nameLabel, fontSize);
 		setFontSizeToNode(name, fontSize);
+		setFontSizeToNode(hintText, fontSize);
 	}
 
 	public void setLesson(Lesson lesson) {
@@ -92,7 +98,6 @@ public class LessonController extends ControllerBase {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
-		redirect(Scenes.LESSON_LIST, event);
 	}
 	
 	private void updateGroupsOrder() {
@@ -106,6 +111,7 @@ public class LessonController extends ControllerBase {
 	}
 
 	private void newGroup(MouseEvent event) {
+		saveLesson(event);
 		GroupController controller = (GroupController) redirect(Scenes.GROUP, event);
 		controller.createGroup(lesson);
 	}
