@@ -6,6 +6,7 @@ import data.Lesson;
 import javax.xml.bind.JAXBException;
 
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class MainController {
@@ -25,7 +26,7 @@ public class MainController {
     public void loadData() {
     	try {
 			dataController.loadData();
-		} catch (FileNotFoundException | JAXBException e) {
+		} catch (FileNotFoundException | JAXBException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
     }
@@ -73,7 +74,7 @@ public class MainController {
     }
     
     public Double getSoundDuration(String soundFilePath) {
-    	return soundManager.sound_time(soundFilePath);
+    	return soundManager.Sound_Time(soundFilePath);
     }
 
     public int getFontSize() {
@@ -87,5 +88,9 @@ public class MainController {
     public void saveFilesInItem(Item item, String newQImage, String newQSound, String newAImage, String newASound) {
         dataController.saveFilesInItem(item, newQImage, newQSound, newAImage, newASound);
     }
+
+	public void stopAllSoundThreads() {
+		soundManager.Player_And_Thread_Stop();
+	}
 
 }

@@ -8,5 +8,5 @@ public abstract class GameMode {
 
     public abstract Item next(Boolean answerToPrevious);
     protected abstract void randomize();
-    public abstract void reinitialize();
+    public abstract void reinitialize() throws UnsatisfactoryLessonException;
 }
