@@ -1,0 +1,54 @@
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="nastavenia">
+          <xs:complexType>
+            <xs:element name="font_size" type="xs:integer"/>
+          </xs:complexType> 
+        </xs:element>
+        <xs:element name="lekcie">
+          <xs:complexType>
+            <xs:element name="lekcia" maxOccurs="unbounded" minOccurs="1">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element type="xs:string" name="nazov"/>
+                  <xs:element name="skupiny">
+                    <xs:complexType>
+                      <xs:element name="skupina" maxOccurs="unbounded" minOccurs="1">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element type="xs:string" name="nazov"/>
+                            <xs:element type="xs:integer" name="poradie"/>
+                            <xs:element name="polozky">
+                              <xs:complexType>
+                                <xs:element name="polozka" maxOccurs="unbounded" minOccurs="3">
+                                  <xs:complexType>
+                                    <xs:choice>
+                                      <xs:element type="xs:string" name="text_otazky"/>
+                                      <xs:element type="xs:string" name="obrazok_otazky"/>
+                                      <xs:element type="xs:string" name="zvuk_otazky"/>
+                                    </xs:choice>
+                                    <xs:choice>
+                                      <xs:element type="xs:string" name="text_odpovede"/>
+                                      <xs:element type="xs:string" name="obrazok_odpovede"/>
+                                      <xs:element type="xs:string" name="zvuk_odpovede"/>
+                                    </xs:choice>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
