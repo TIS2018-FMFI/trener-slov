@@ -63,6 +63,7 @@ public class ItemController extends ControllerBase {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		createSwitchedItemBtn.setVisible(false);
 		setFontSizeToTexts();
 		backBtn.setOnMouseClicked(e -> backToParentGroup(e));	
 		okBtn.setOnMouseClicked(e -> saveItem(e));
@@ -100,7 +101,8 @@ public class ItemController extends ControllerBase {
 		this.group = group;
 		this.item = item;
 		setTexts();
-		isNewItem = false;		
+		isNewItem = false;	
+		createSwitchedItemBtn.setVisible(true);
 		lessonGroupNameLabel.setText(lesson.getName() + " - " + group.getName());
 	}
 	
