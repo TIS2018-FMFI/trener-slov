@@ -4,6 +4,7 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -48,158 +49,166 @@
       </FlowPane>
    </top>
    <center>
-      <BorderPane BorderPane.alignment="CENTER">
+      <BorderPane>
          <center>
-            <VBox alignment="CENTER" prefWidth="100.0" spacing="20.0">
+            <VBox alignment="CENTER" spacing="20.0">
                <children>
-                  <BorderPane>
-                     <top>
-                        <Label fx:id="qLabel" text="Otázka" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" />
-                           </padding>
-                        </Label>
-                     </top>
-                     <center>
-                        <VBox spacing="10.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <HBox>
-                                 <children>
-                                    <Label fx:id="qTextLabel" minWidth="100.0" text="Text: " />
-                                    <TextField fx:id="qTextValue" />
-                                 </children>
+                  <ScrollPane>
+                     <content>
+                        <BorderPane>
+                           <top>
+                              <Label fx:id="qLabel" text="Otázka" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
                                  <padding>
-                                    <Insets left="20.0" />
+                                    <Insets bottom="10.0" left="20.0" />
                                  </padding>
-                              </HBox>
-                              <HBox>
+                              </Label>
+                           </top>
+                           <center>
+                              <VBox spacing="10.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Label fx:id="qImageLabel" minWidth="100.0" text="Obrázok:" />
-                                    <TextField fx:id="qImageValue">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin>
-                                    </TextField>
-                                    <Button fx:id="qImageChooseBtn" mnemonicParsing="false">
-                                       <graphic>
-                                          <ImageView fx:id="qImageChooseImg" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/file.png" />
-                                             </image>
-                                             <viewport>
-                                                <Rectangle2D />
-                                             </viewport>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
+                                    <HBox>
+                                       <children>
+                                          <Label fx:id="qTextLabel" minWidth="100.0" text="Text: " />
+                                          <TextField fx:id="qTextValue" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label fx:id="qImageLabel" minWidth="100.0" text="Obrázok:" />
+                                          <TextField fx:id="qImageValue">
+                                             <HBox.margin>
+                                                <Insets right="5.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                          <Button fx:id="qImageChooseBtn" mnemonicParsing="false">
+                                             <graphic>
+                                                <ImageView fx:id="qImageChooseImg" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/file.png" />
+                                                   </image>
+                                                   <viewport>
+                                                      <Rectangle2D />
+                                                   </viewport>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label fx:id="qSoundLabel" minWidth="100.0" text="Zvuk" />
+                                          <TextField fx:id="qSoundValue">
+                                             <HBox.margin>
+                                                <Insets right="5.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                          <Button fx:id="qSoundChooseBtn" mnemonicParsing="false">
+                                             <graphic>
+                                                <ImageView fx:id="qSoundChooseImg" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/file.png" />
+                                                   </image>
+                                                   <viewport>
+                                                      <Rectangle2D />
+                                                   </viewport>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </HBox>
                                  </children>
+                              </VBox>
+                           </center>
+                        </BorderPane>
+                     </content>
+                  </ScrollPane>
+                  <ScrollPane>
+                     <content>
+                        <BorderPane>
+                           <top>
+                              <Label fx:id="aLabel" text="Odpoveď" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
                                  <padding>
-                                    <Insets left="20.0" />
+                                    <Insets bottom="10.0" left="20.0" />
                                  </padding>
-                              </HBox>
-                              <HBox>
+                              </Label>
+                           </top>
+                           <center>
+                              <VBox spacing="10.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Label fx:id="qSoundLabel" minWidth="100.0" text="Zvuk" />
-                                    <TextField fx:id="qSoundValue">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin>
-                                    </TextField>
-                                    <Button fx:id="qSoundChooseBtn" mnemonicParsing="false">
-                                       <graphic>
-                                          <ImageView fx:id="qSoundChooseImg" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/file.png" />
-                                             </image>
-                                             <viewport>
-                                                <Rectangle2D />
-                                             </viewport>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
+                                    <HBox>
+                                       <children>
+                                          <Label fx:id="aTextLabel" minWidth="100.0" text="Text: " />
+                                          <TextField fx:id="aTextValue" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label fx:id="aImageLabel" minWidth="100.0" text="Obrázok:" />
+                                          <TextField fx:id="aImageValue">
+                                             <HBox.margin>
+                                                <Insets right="5.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                          <Button fx:id="aImageChooseBtn" mnemonicParsing="false">
+                                             <graphic>
+                                                <ImageView fx:id="aImageChooseImg" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/file.png" />
+                                                   </image>
+                                                   <viewport>
+                                                      <Rectangle2D />
+                                                   </viewport>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label fx:id="aSoundLabel" minWidth="100.0" text="Zvuk" />
+                                          <TextField fx:id="aSoundValue">
+                                             <HBox.margin>
+                                                <Insets right="5.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                          <Button fx:id="aSoundChooseBtn" mnemonicParsing="false">
+                                             <graphic>
+                                                <ImageView fx:id="aSoundChooseImg" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/file.png" />
+                                                   </image>
+                                                   <viewport>
+                                                      <Rectangle2D />
+                                                   </viewport>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </HBox>
                                  </children>
-                                 <padding>
-                                    <Insets left="20.0" />
-                                 </padding>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </center>
-                  </BorderPane>
-                  <BorderPane>
-                     <top>
-                        <Label fx:id="aLabel" text="Odpoveď" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" />
-                           </padding>
-                        </Label>
-                     </top>
-                     <center>
-                        <VBox spacing="10.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <HBox>
-                                 <children>
-                                    <Label fx:id="aTextLabel" minWidth="100.0" text="Text: " />
-                                    <TextField fx:id="aTextValue" />
-                                 </children>
-                                 <padding>
-                                    <Insets left="20.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <Label fx:id="aImageLabel" minWidth="100.0" text="Obrázok:" />
-                                    <TextField fx:id="aImageValue">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin>
-                                    </TextField>
-                                    <Button fx:id="aImageChooseBtn" mnemonicParsing="false">
-                                       <graphic>
-                                          <ImageView fx:id="aImageChooseImg" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/file.png" />
-                                             </image>
-                                             <viewport>
-                                                <Rectangle2D />
-                                             </viewport>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                 </children>
-                                 <padding>
-                                    <Insets left="20.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <Label fx:id="aSoundLabel" minWidth="100.0" text="Zvuk" />
-                                    <TextField fx:id="aSoundValue">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin>
-                                    </TextField>
-                                    <Button fx:id="aSoundChooseBtn" mnemonicParsing="false">
-                                       <graphic>
-                                          <ImageView fx:id="aSoundChooseImg" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/file.png" />
-                                             </image>
-                                             <viewport>
-                                                <Rectangle2D />
-                                             </viewport>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                 </children>
-                                 <padding>
-                                    <Insets left="20.0" />
-                                 </padding>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </center>
-                  </BorderPane>
+                              </VBox>
+                           </center>
+                        </BorderPane>
+                     </content>
+                  </ScrollPane>
                </children>
                <padding>
                   <Insets bottom="10.0" top="10.0" />
