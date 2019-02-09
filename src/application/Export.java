@@ -43,7 +43,7 @@ public class Export {
             zipFile("sounds");
         }
         catch(Exception e){
-            System.out.println("closed window");
+            
         }
 
     }
@@ -209,7 +209,6 @@ public class Export {
             return true;
         }
         catch (JAXBException e) {
-            System.out.println("FAILED EXPORT:\n" + e);
             return false;
         }
 

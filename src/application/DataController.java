@@ -188,7 +188,7 @@ public class DataController {
         else {
             checkedFile = new File(filePath);
             if (!checkedFile.exists()) {
-                System.out.println("FILE: " + checkedFile.getPath() + " DOESNT EXIST INSIDE APPLICATION!");
+                
             }
 
         }

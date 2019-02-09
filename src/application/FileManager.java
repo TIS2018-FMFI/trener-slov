@@ -82,11 +82,7 @@ public class FileManager {
         if (checkedFile.exists())
             return;
 
-        if (checkedFile.mkdir())
-            System.out.println("Directory: " + path + " was created");
-
-        else
-            System.out.println("!!! Directory: " + path + " WAS NOT created !!!");
+        checkedFile.mkdir();
 
     }
 
@@ -98,21 +94,15 @@ public class FileManager {
         try  {
 
             if (checkedFile.createNewFile()) {
-                System.out.println("File: " + path + " was created");
 
                 if (checkedFile.getPath().contains("data.xml")) {
                     fillDataXMLWithTemplateData(checkedFile);
-                    System.out.println("filled in data.xml");
                 }
             }
 
-            else
-                System.out.println("!!! File: " + path + " WAS NOT created !!!");
-
-
         }
         catch (IOException e) {
-            System.out.println(path + " wasnt created due to error");
+        	
         }
     }
 
@@ -135,7 +125,7 @@ public class FileManager {
             Files.copy(srcFile.toPath(), destFile.toPath());
         }
         catch (IOException e) {
-            System.out.println("error during copying from " + srcPath + " to " + destPath);
+        	
         }
     }
 }
