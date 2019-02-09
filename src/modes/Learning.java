@@ -88,7 +88,6 @@ public class Learning extends GameMode {
             }
             if (checkAll()){
                 phaseOneDone = true;
-                //System.out.println("Prva faza ukoncena!!!!!!!!!!!!!!!!!");
                 for (Group g:skupiny) {
                     for (Item i:g.getItemsInGroup()) {
                         row.add(i);
@@ -129,14 +128,12 @@ public class Learning extends GameMode {
         String vysl="{ ";
         for (Group g : rowOfG){ vysl+=g.getName()+", ";}
         vysl+="}";
-        System.out.println(vysl);
     }
 
     protected void printGroups(){
         String vysl="{ ";
         for (Group g : skupiny){ vysl+=g.getName()+", ";}
         vysl+="}";
-        System.out.println(vysl);
     }
 
     protected int count(Group g){
@@ -165,7 +162,6 @@ public class Learning extends GameMode {
         for (Group g: corrAnswers.keySet()) {
             v+=g.getName()+":"+corrAnswers.get(g)+" ";
         }
-        System.out.println(v+"}");
     }
 }
 

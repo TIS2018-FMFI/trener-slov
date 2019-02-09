@@ -45,7 +45,6 @@ public class Dictate extends GameMode {
         String arr="[";
         for (Item i:items) arr += i.getQuestionText()+", ";
         arr+="]";
-        System.out.println(arr);
     }
 
 	@Override

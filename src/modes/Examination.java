@@ -45,7 +45,6 @@ public class Examination extends GameMode {
         String arr="[";
         for (Item i:items) arr += i.getQuestionText()+", ";
         arr+="]";
-        System.out.println(arr);
     }
 	@Override
 	public void reinitialize() throws UnsatisfactoryLessonException {

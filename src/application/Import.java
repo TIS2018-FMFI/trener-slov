@@ -46,7 +46,6 @@ public class Import {
                    packagePath = choose_file.getPath();
 
                    if(is_correct_zip(packagePath)) {
-                       //System.out.println(packagePath + "    "+END_SAVE_PATH);
                        unzip(packagePath, END_SAVE_PATH);
                    }
                    else{
@@ -63,7 +62,7 @@ public class Import {
                JOptionPane.showMessageDialog(null, "chybný zip súbor");
            }
            else {
-               System.out.println("closed window/problem");
+        	   
            }
         }
     }
@@ -153,7 +152,6 @@ public class Import {
                 File newFile = newFile(destDir, zipEntry);
                 fos = new FileOutputStream(newFile);
                 int len;
-                System.out.println(zipEntry.getName());
                 while ((len = zis.read(buffer)) > 0) {
                     fos.write(buffer, 0, len);
                 }
@@ -162,7 +160,6 @@ public class Import {
                 }
                 if (zipEntry.getName().toLowerCase().endsWith("xml") == true) {
                     name = zipEntry.getName();
-                    System.out.println("moje meno " + name);
                 }
 
                 fos.close();
