@@ -5,7 +5,23 @@ Tréner slovnej zásoby
 # Návod na inštaláciu
 Stiahnut projekt z master branche
 - ### Ak je projekt otvorený v IntelliJ
-Stačí pridať JAR artifact a ten buildnut, nasledne spustit vytvorený .jar 
+Ak nemáte pridaný Maven v projekte tak pravým tlačitkom myši kliknite na projektový priečinok -> Add Framework Support a v nom vyberte Maven </br>
+Pridajte kniznice **jaudiotagger** a **jl1.0.1** do projektových nastavení. </br>
+Podla toho na akú verziu Javy chcete buildnut program prepíšte
+```
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.8.0</version>
+    <configuration>
+        <source>1.8</source>
+        <target>1.8</target>
+    </configuration>
+</plugin>
+```
+"\<source>" a "\<target>" cislo na napr 1.9 ak chcete buildnut pre Javu 9 a zmenit verziu v Project Structure v IntelliJ. 
+(Vždy ked zmenite pom.xml súbor sa vás IntelliJ spýta či chcete Importnut zmeny tak nezabudnite to potrvdiť pokial to nemáte automaticky importované) </br>
+Ako posledné pridať JAR artifact a ten buildnut, nasledne spustit vytvorený .jar 
 (na vytvorenie JAR artifactu v intelliJ navod [tu](https://blog.jetbrains.com/idea/2010/08/quickly-create-jar-artifact/))
 
 - ### Ak chcete vybuildovať projekt cez cmd
@@ -24,7 +40,9 @@ a na spustenie:
 java -cp "../lib/jaudiotagger-2.0.2.jar;../lib/jl1.0.1.jar;." application.Main
 ```
 
-**Java verzia 9 a vyššie sa da vybuildovať iba stiahnutím projektu z branche s názvom 'Java10' a vytvorením JARka z programovacieho prostredia ako IntelliJ alebo Eclipse**
+**Nakoniec program viete spustit cez .jar(ked to nefunguje) subor alebo spustenim prikazu** ```java -jar (cesta k jar suboru)``` 
+
+Verzia väčšia ako Java 8 sa da buildovať iba cez programovanie prostredie ako napr IntelliJ
  
  # Popis módov:
  - ### Učenie - interaktívny mód, ktorý podporuje učenie slovnej zásoby
