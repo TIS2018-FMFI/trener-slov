@@ -42,7 +42,7 @@ java -cp "../lib/jaudiotagger-2.0.2.jar;../lib/jl1.0.1.jar;." application.Main
 
 **Nakoniec program viete spustit cez .jar(ked to nefunguje) subor alebo spustenim prikazu** ```java -jar (cesta k jar suboru)``` 
 
-Verzia väčšia ako Java 8 sa da buildovať iba cez programovanie prostredie ako napr IntelliJ
+Verziu väčšiu ako Java 8 odporúčame buildovať cez programovacie prostredie ako napr IntelliJ
  
  # Popis módov:
  - ### Učenie - interaktívny mód, ktorý podporuje učenie slovnej zásoby
