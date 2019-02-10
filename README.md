@@ -1,5 +1,5 @@
 # trener-slov
-Tréner slovnej zásoba
+Tréner slovnej zásoby
 
 
 # Návod na inštaláciu
@@ -12,18 +12,21 @@ Stačí pridať JAR artifact a ten buildnut, nasledne spustit vytvorený .jar
 Java verzia 8 a nižsie
 v prienčinku src/ :
 
-javac -encoding "UTF-8" -cp ../lib/jaudiotagger-2.0.2.jar -cp
-"../lib/*" */*.java */*/*.java */*/*/*.java
+```
+javac -encoding "UTF-8" -cp ../lib/jaudiotagger-2.0.2.jar -cp "../lib/*" */*.java */*/*.java */*/*/*.java
+```
 
 **Ak javac hodí exception 'javac is not recognized as an internal or external command...'**
 treba si nainstalovat java jdk 1.8 a spravne si nastavit PATH (navod [tu](https://stackoverflow.com/questions/7709041/javac-is-not-recognized-as-an-internal-or-external-command-operable-program-or))
 
 a na spustenie:
+```
 java -cp "../lib/jaudiotagger-2.0.2.jar;../lib/jl1.0.1.jar;." application.Main
+```
 
 **Java verzia 9 a vyššie sa da vybuildovať iba stiahnutím projektu z branche s názvom 'Java10' a vytvorením JARka z programovacieho prostredia ako IntelliJ alebo Eclipse**
  
- Popis módov:
+ # Popis módov:
  - ### Učenie - interaktívny mód, ktorý podporuje učenie slovnej zásoby
  - ### Skúšanie - interaktívny mód, ktorý skúša naučenú slovnú zásobu
  - ### Stacionárny bicykel - prezentácia obrázkov a odpovedí
@@ -32,6 +35,7 @@ java -cp "../lib/jaudiotagger-2.0.2.jar;../lib/jl1.0.1.jar;." application.Main
 # Návod na ovládanie
 
 **Ovládanie**
+
 Celá aplikácia sa ovláda iba pomocou myši. Klávesnica sa používa iba na písanie textov a v módoch.
 Po zapnutí aplikácie sa zobrazia dve tlačidlá v strede a jedno v pravom dolnom rohu.
     - ### Po kliknutí na tlačidlo Štart sa používateľ dostane na prehľad lekcii, z ktorej si jenu vyberie – klikne na ňu a potom klikne na tlačidlo v pravom dolnom rohu - dostane sa na výber módov z ktorých si vyberie kliknutím na jednotlivé tlačidlá
@@ -39,15 +43,18 @@ Po zapnutí aplikácie sa zobrazia dve tlačidlá v strede a jedno v pravom doln
     - ### Po kliknutí na tlačidlo v pravom dolnom rohu si používateľ môže nastaviť veľkosť zobrazovaného fontu v celej aplikácii
 
 **Ovládanie v módoch**
+
 Tento postup platí pre módy:
-    - ### Učenie – pred spustením módu treba zadať počet, koľkokrát sa má jedna otázka položiť, aby bola naučená
-    - ### Skúšanie
-    - ### Diktát
+- Učenie – pred spustením módu treba zadať počet, koľkokrát sa má jedna otázka položiť, aby bola naučená
+- Skúšanie
+-  Diktát
+
 Keď začne bežať mód, používateľovi budú prezentované jednotlivé otázky, na ktoré si sám slovne odpovie. Potom klikne na tlačidlo zobraziť odpoveď - na vykonanie tohto úkonu môže použiť aj ľubovoľnú z kláves U, T - a následne na tlačidlo s fajkou - na vykonanie tohto úkonu môže použiť aj ľubovoľnú z kláves J, K, L - ak bola odpoveď správna. Ak bola odpoveď nesprávna klikne na tlačidlo s krížikom - na vykonanie tohto úkonu môže použiť aj ľubovoľnú z kláves A, S, D, F. Takto odpovedá, až kým aplikácia nevypíše, že sa mód skončil. Potom si môže vybrať, či chce mód spustiť znova alebo ísť do menu.
 Tento postup platí pre mód stacionárny bicykel
 Pred začatím módu si používateľ musí nastaviť:
-    - ### Počet prehratí odpovede – koľkokrát sa má odpoveď prehrať za sebou
-    - ### Trvanie otázky v sekundách – koľko sekúnd má trvať dokopy prehranie zvuku otázky a odpovede – teda uplné zobrazenie položky
-    - ### Trvanie módu v sekundách – po koľkých sekundách sa má mód skončiť
+- Počet prehratí odpovede – koľkokrát sa má odpoveď prehrať za sebou
+- Trvanie otázky v sekundách – koľko sekúnd má trvať dokopy prehranie zvuku otázky a odpovede – teda uplné zobrazenie položky
+- Trvanie módu v sekundách – po koľkých sekundách sa má mód skončiť
+
 Po začatí módu používateľ už len sleduje prezentáciu jednotlivých položiek. Po zadanom časovom intervale sa mód skončí.
  
