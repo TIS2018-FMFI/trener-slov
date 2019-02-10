@@ -212,7 +212,7 @@ public class DataController {
 
     private String createNewFileNameIfThisExists(String fileNameToCheck, String fileTypeDirPath) {
         String newFilePath = fileTypeDirPath;
-        String fileNameWithoutExtension = stringBeforeLastSeparator(fileNameToCheck, ".");
+        String fileNameWithoutExtension = stringBeforeLastSeparator(fileNameToCheck, "");
 
         newFilePath += "\\" + fileNameWithoutExtension;
 
@@ -229,9 +229,9 @@ public class DataController {
             }
         }
 
-        String fileExtension = stringAfterLastSeparator(fileNameToCheck, ".");
+        String fileExtension = stringAfterLastSeparator(fileNameToCheck, "");
 
-        return newFilePath + "." + fileExtension;
+        return newFilePath + "" + fileExtension;
     }
 
     private boolean hasStringValue(String string) {

@@ -198,7 +198,7 @@ public class Export {
             m.marshal(dcToExport, new File(targetPath+"/lessons.xml"));
 
             try {
-                String export_zip_path = check_rename_filename(targetPath+"/data");
+                String export_zip_path = check_rename_filename(targetPath+ "/data");
                 zipDirectory(targetPath, export_zip_path,"all");
             } catch (IOException e) {
                 e.printStackTrace();
